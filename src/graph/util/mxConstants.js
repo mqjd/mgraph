@@ -82,6 +82,14 @@ var mxConstants = {
    */
   DIALECT_STRICTHTML: 'strictHtml',
 
+
+  /**
+   * Variable: DIALECT_MARKDOWN
+   *
+   * Defines the markdown HTML display dialect.
+   */
+  DIALECT_MARKDOWN: 'markdown',
+
   /**
    * Variable: NS_SVG
    *

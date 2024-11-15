@@ -1620,7 +1620,7 @@ EditorUi.prototype.centerShapePicker = function (div, rect, x, y, dir) {
 EditorUi.prototype.showShapePicker = function (x, y, source, callback, direction, hovering, getInsertLocationFn, showEdges, startEditing) {
   var div = null
 
-  if (!this.editor.graph.freehand.isDrawing()) {
+  if (this.editor.graph.freehand && !this.editor.graph.freehand.isDrawing()) {
     showEdges = showEdges || source == null
 
     div = this.createShapePicker(

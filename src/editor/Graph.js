@@ -11791,7 +11791,11 @@ if (typeof mxVertexHandler !== 'undefined') {
       var state = this.graph.view.getState(cell)
 
       if (state != null && state.style['html'] == 1) {
-        this.textarea.className = 'mxCellEditor geContentEditable'
+        if (state.style['md'] == 1) {
+          this.textarea.className = 'mxCellEditor geContentEditable markdown-body'
+        } else {
+          this.textarea.className = 'mxCellEditor geContentEditable'
+        }
       } else {
         this.textarea.className = 'mxCellEditor mxPlainTextEditor'
       }
@@ -11972,6 +11976,8 @@ if (typeof mxVertexHandler !== 'undefined') {
     mxCellEditor.prototype.getInitialValue = function (state, trigger) {
       if (mxUtils.getValue(state.style, 'html', '0') == '0') {
         return mxCellEditorGetInitialValue.apply(this, arguments)
+      } else if (mxUtils.getValue(state.style, 'md', '0') == '1') {
+        return state.text.markdown
       } else {
         var result = this.graph.getEditingValue(state.cell, trigger)
 
@@ -13887,6 +13893,11 @@ Graph.prototype.defaultThemes['default-style2'] = mxUtils.parseXml(
 Graph.prototype.defaultThemeName = 'default-style2'
 Graph.prototype.getFormatValue = function (format) {
   return this.format.getFormatValue(format)
+}
+
+Graph.prototype.isMarkdown = function (cell) {
+  var style = this.getCurrentCellStyle(cell)
+  return style != null && style['md'] == '1'
 }
 
 export default Graph

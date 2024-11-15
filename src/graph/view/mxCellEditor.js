@@ -499,6 +499,13 @@ mxCellEditor.prototype.resize = function () {
     this.bounds.x += m.x == -0.5 ? 0 : m.x == 0 ? -scale : scale
     this.bounds.y += m.y == -0.5 ? 0 : m.y == 0 ? -scale : scale
 
+    if (state.style['md'] == 1) {
+      var h = state.height / scale
+      var w = state.width / scale
+      this.textarea.style.width = `${w}px`
+      this.textarea.style.height = `${h}px`
+    }
+
     this.textarea.style.left = Math.max(0, Math.round(this.bounds.x)) + 'px'
     this.textarea.style.top = Math.max(0, Math.round(this.bounds.y)) + 'px'
 

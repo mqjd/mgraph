@@ -124,6 +124,14 @@ mxUtils.extend(mxText, mxShape)
  */
 mxText.prototype.baseSpacingTop = 0
 
+
+/**
+ * Variable: markdown
+ *
+ * when fmt is md then render markdown
+ */
+mxText.prototype.markdown = null
+
 /**
  * Variable: baseSpacingBottom
  *
@@ -299,8 +307,9 @@ mxText.prototype.paint = function (c, update) {
     var realHtml = mxUtils.isNode(this.value) || this.dialect == mxConstants.DIALECT_STRICTHTML
 
     // Always renders labels as HTML in VML
-    var fmt = realHtml ? 'html' : ''
-    var val = this.value
+    var fmt = this.dialect == mxConstants.DIALECT_MARKDOWN ? 'md' : realHtml ? 'html' : ''
+
+    var val = fmt == 'md' ? this.markdown : this.value
 
     if (!realHtml && fmt == 'html') {
       val = mxUtils.htmlEntities(val, false)

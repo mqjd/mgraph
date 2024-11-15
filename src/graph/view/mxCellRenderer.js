@@ -24,6 +24,31 @@ import mxSwimlane from '../shape/mxSwimlane'
 import mxImageShape from '../shape/mxImageShape'
 import mxLabel from '../shape/mxLabel'
 
+import hljs from 'highlight.js/lib/core'
+import sql from 'highlight.js/lib/languages/sql'
+hljs.registerLanguage('sql', sql)
+
+import markdownit from 'markdown-it'
+const markdownRender = markdownit({
+  html: true, // Enable HTML tags in source
+  xhtmlOut: false, // Use '/' to close single tags (<br />)
+  breaks: true, // Convert '\n' in paragraphs into <br>
+  langPrefix: 'language-', // CSS language prefix for fenced blocks
+  linkify: true, // autoconvert URL-like texts to links
+  typographer: true, // Enable smartypants and other sweet transforms
+  sourceMap: true, // Enable source map
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return '<pre><code class="hljs">' + hljs.highlight(str, { language: lang, ignoreIllegals: true }).value + '</code></pre>'
+      } catch (__) {}
+    }
+
+    return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>'
+  }
+})
+
+
 /**
  * Copyright (c) 2006-2017, JGraph Ltd
  * Copyright (c) 2006-2017, Gaudenz Alder
@@ -414,6 +439,7 @@ mxCellRenderer.prototype.createTextShape = function (state, value, dialect) {
   text.dialect = dialect
   text.style = state.style
   text.state = state
+  text.markdown = markdownRender.render(value)
 
   return text
 }
@@ -433,7 +459,12 @@ mxCellRenderer.prototype.createLabel = function (state, value) {
   if (state.style[mxConstants.STYLE_FONTSIZE] > 0 || state.style[mxConstants.STYLE_FONTSIZE] == null) {
     // Avoids using DOM node for empty labels
     var isForceHtml = graph.isHtmlLabel(state.cell) || (value != null && mxUtils.isNode(value))
-    state.text = this.createTextShape(state, value, isForceHtml ? mxConstants.DIALECT_STRICTHTML : state.view.graph.dialect)
+    var dialect = isForceHtml
+      ? graph.isMarkdown(state.cell)
+        ? mxConstants.DIALECT_MARKDOWN
+        : mxConstants.DIALECT_STRICTHTML
+      : state.view.graph.dialect
+    state.text = this.createTextShape(state, value, dialect)
     this.initializeLabel(state, state.text)
     this.configureShape(state)
 
@@ -849,7 +880,12 @@ mxCellRenderer.prototype.redrawLabel = function (state, forced) {
   var wrapping = graph.isWrapping(state.cell)
   var clipping = graph.isLabelClipped(state.cell)
   var isForceHtml = state.view.graph.isHtmlLabel(state.cell) || (value != null && mxUtils.isNode(value))
-  var dialect = isForceHtml ? mxConstants.DIALECT_STRICTHTML : state.view.graph.dialect
+  var dialect = isForceHtml
+    ? graph.isMarkdown(state.cell)
+      ? mxConstants.DIALECT_MARKDOWN
+      : mxConstants.DIALECT_STRICTHTML
+    : state.view.graph.dialect
+
   var overflow = state.style[mxConstants.STYLE_OVERFLOW] || 'visible'
 
   if (

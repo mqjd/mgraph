@@ -3,6 +3,7 @@ import mxClient from '../mxClient'
 import mxAbstractCanvas2D from './mxAbstractCanvas2D'
 import mxConstants from './mxConstants'
 import mxShape from '../shape/mxShape'
+
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder
@@ -1473,10 +1474,9 @@ mxSvgCanvas2D.prototype.addForeignObject = function (x, y, w, h, str, align, val
   if (div.ownerDocument != document) {
     div = mxUtils.importNodeImplementation(fo.ownerDocument, div, true)
   }
-
   fo.appendChild(div)
   group.appendChild(fo)
-  this.updateTextNodes(x, y, w, h, align, valign, wrap, overflow, clip, rotation, dir, group)
+  this.updateTextNodes(x, y, w, h, align, valign, wrap, overflow, clip, rotation, dir, group, format)
 
   // Alternate content if foreignObject not supported
   if (this.root.ownerDocument != document) {
@@ -1497,7 +1497,7 @@ mxSvgCanvas2D.prototype.addForeignObject = function (x, y, w, h, str, align, val
 /**
  * Updates existing DOM nodes for text rendering.
  */
-mxSvgCanvas2D.prototype.updateTextNodes = function (x, y, w, h, align, valign, wrap, overflow, clip, rotation, dir, g) {
+mxSvgCanvas2D.prototype.updateTextNodes = function (x, y, w, h, align, valign, wrap, overflow, clip, rotation, dir, g, format) {
   var s = this.state.scale
 
   var vertical = dir != null && dir.substring(0, 9) == 'vertical-'
@@ -1556,6 +1556,11 @@ mxSvgCanvas2D.prototype.updateTextNodes = function (x, y, w, h, align, valign, w
       var div = fo.firstChild
       var box = div.firstChild
       var text = box.firstChild
+      if (format == 'md') {
+        text.setAttribute('class', 'markdown-body')
+        block = `${block}; max-height:${h}px;max-width:${w}px;`
+      }
+
       var r = (this.rotateHtml ? this.state.rotation : 0) + (rotation != null ? rotation : 0)
       var t = (this.foOffset != 0 ? 'translate(' + this.foOffset + ' ' + this.foOffset + ')' : '') + (s != 1 ? 'scale(' + s + ')' : '')
 
@@ -1775,10 +1780,8 @@ mxSvgCanvas2D.prototype.getTextCss = function () {
 mxSvgCanvas2D.prototype.text = function (x, y, w, h, str, align, valign, wrap, format, overflow, clip, rotation, dir) {
   if (this.textEnabled && str != null) {
     rotation = rotation != null ? rotation : 0
-
-    if (this.foEnabled && format == 'html') {
+    if (this.foEnabled && (format == 'html' || format == 'md')) {
       var div = this.createDiv(str)
-
       // Ignores invalid XHTML labels
       if (div != null) {
         if (dir != null && dir.substring(0, 9) != 'vertical-') {
