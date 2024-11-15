@@ -288,11 +288,7 @@ mxCellEditor.prototype.setAlign = function (align) {
   var state = this.graph.getView().getState(this.editingCell)
 
   if (this.textarea != null && state != null) {
-    var dir = mxUtils.getValue(
-      state.style,
-      mxConstants.STYLE_TEXT_DIRECTION,
-      mxConstants.DEFAULT_TEXT_DIRECTION
-    )
+    var dir = mxUtils.getValue(state.style, mxConstants.STYLE_TEXT_DIRECTION, mxConstants.DEFAULT_TEXT_DIRECTION)
 
     if (dir == null || dir.substring(0, 9) != 'vertical-') {
       this.textarea.style.textAlign = align
@@ -333,12 +329,7 @@ mxCellEditor.prototype.getCurrentValue = function (state) {
  * are not pressed.
  */
 mxCellEditor.prototype.isCancelEditingKeyEvent = function (evt) {
-  return (
-    this.escapeCancelsEditing ||
-    mxEvent.isShiftDown(evt) ||
-    mxEvent.isControlDown(evt) ||
-    mxEvent.isMetaDown(evt)
-  )
+  return this.escapeCancelsEditing || mxEvent.isShiftDown(evt) || mxEvent.isControlDown(evt) || mxEvent.isMetaDown(evt)
 }
 
 /**
@@ -425,10 +416,7 @@ mxCellEditor.prototype.installListeners = function (elt) {
       // when the first keystroke appears. This makes it easier to see
       // that a label is being edited even if the label is empty.
       // In Safari and FF, an empty text is represented by <BR> which isn't enough to force a valid size
-      if (
-        (this.textarea.innerHTML.length == 0 || this.textarea.innerHTML == '<br>') &&
-        this.textarea.innerHTML != this.getEmptyLabelText()
-      ) {
+      if ((this.textarea.innerHTML.length == 0 || this.textarea.innerHTML == '<br>') && this.textarea.innerHTML != this.getEmptyLabelText()) {
         this.textarea.innerHTML = this.getEmptyLabelText()
         this.clearOnChange = this.textarea.innerHTML.length > 0
       } else {
@@ -478,10 +466,7 @@ mxCellEditor.prototype.installListeners = function (elt) {
 mxCellEditor.prototype.isStopEditingEvent = function (evt) {
   return (
     evt.keyCode == 113 /* F2 */ ||
-    (this.graph.isEnterStopsCellEditing() &&
-      evt.keyCode == 13 /* Enter */ &&
-      !mxEvent.isControlDown(evt) &&
-      !mxEvent.isShiftDown(evt))
+    (this.graph.isEnterStopsCellEditing() && evt.keyCode == 13 /* Enter */ && !mxEvent.isControlDown(evt) && !mxEvent.isShiftDown(evt))
   )
 }
 
@@ -505,10 +490,7 @@ mxCellEditor.prototype.resize = function () {
   if (state == null) {
     this.stopEditing(true)
   } else if (this.textarea != null) {
-    var m = mxUtils.getAlignmentAsPoint(
-      this.align != null ? this.align : this.textShape.align,
-      this.textShape.valign
-    )
+    var m = mxUtils.getAlignmentAsPoint(this.align != null ? this.align : this.textShape.align, this.textShape.valign)
     this.bounds = this.graph.cellRenderer.getLabelBounds(state, this.textShape, m, !this.rotateText)
     var deg = this.rotateText ? this.textShape.getTextRotation() : 0
     var scale = this.graph.getView().scale
@@ -547,33 +529,20 @@ mxCellEditor.prototype.resize = function () {
       // Needed for word wrap inside text blocks with oversize lines to match the final result where
       // the width of the longest line is used as the reference for text alignment in the cell
       // TODO: Fix word wrapping preview for edge labels in helloworld.html
-      if (
-        this.graph.isWrapping(state.cell) &&
-        (this.bounds.width >= 2 || this.bounds.height >= 2)
-      ) {
-        var dir = mxUtils.getValue(
-          state.style,
-          mxConstants.STYLE_TEXT_DIRECTION,
-          mxConstants.DEFAULT_TEXT_DIRECTION
-        )
+      if (this.graph.isWrapping(state.cell) && (this.bounds.width >= 2 || this.bounds.height >= 2)) {
+        var dir = mxUtils.getValue(state.style, mxConstants.STYLE_TEXT_DIRECTION, mxConstants.DEFAULT_TEXT_DIRECTION)
         var vertical = dir != null && dir.substring(0, 9) == 'vertical-'
         this.textarea.style.wordWrap = mxConstants.WORD_WRAP
         this.textarea.style.whiteSpace = 'normal'
 
-        if (
-          state.style[mxConstants.STYLE_OVERFLOW] == 'block' ||
-          state.style[mxConstants.STYLE_OVERFLOW] == 'width'
-        ) {
+        if (state.style[mxConstants.STYLE_OVERFLOW] == 'block' || state.style[mxConstants.STYLE_OVERFLOW] == 'width') {
           this.bounds.width -= 2 * scale
         } else if (state.view.graph.isHtmlLabel(state.cell)) {
           this.bounds.width += mxSvgCanvas2D.prototype.foreignObjectPadding * scale
         }
 
         if (this.textarea.innerHTML != this.getEmptyLabelText()) {
-          if (
-            state.style[mxConstants.STYLE_OVERFLOW] == 'block' ||
-            state.style[mxConstants.STYLE_OVERFLOW] == 'width'
-          ) {
+          if (state.style[mxConstants.STYLE_OVERFLOW] == 'block' || state.style[mxConstants.STYLE_OVERFLOW] == 'width') {
             if (m.y == -0.5 || state.style[mxConstants.STYLE_OVERFLOW] == 'width') {
               this.textarea.style.maxHeight = Math.round(this.bounds.height / scale) + 'px'
             }
@@ -598,17 +567,7 @@ mxCellEditor.prototype.resize = function () {
     mxUtils.setPrefixedStyle(
       this.textarea.style,
       'transform',
-      (deg != 0 ? 'rotate(' + deg + 'deg) ' : '') +
-        'scale(' +
-        scale +
-        ',' +
-        scale +
-        ')' +
-        ' translate(' +
-        m.x * 100 +
-        '%,' +
-        m.y * 100 +
-        '%)'
+      (deg != 0 ? 'rotate(' + deg + 'deg) ' : '') + 'scale(' + scale + ',' + scale + ')' + ' translate(' + m.x * 100 + '%,' + m.y * 100 + '%)'
     )
   }
 }
@@ -653,38 +612,21 @@ mxCellEditor.prototype.getBorderColor = function (state) {
  */
 mxCellEditor.prototype.updateTextAreaStyle = function (state) {
   var size = mxUtils.getValue(state.style, mxConstants.STYLE_FONTSIZE, mxConstants.DEFAULT_FONTSIZE)
-  var family = mxUtils.getValue(
-    state.style,
-    mxConstants.STYLE_FONTFAMILY,
-    mxConstants.DEFAULT_FONTFAMILY
-  )
+  var family = mxUtils.getValue(state.style, mxConstants.STYLE_FONTFAMILY, mxConstants.DEFAULT_FONTFAMILY)
   var color = mxUtils.getValue(state.style, mxConstants.STYLE_FONTCOLOR, 'black')
-  var bold =
-    (mxUtils.getValue(state.style, mxConstants.STYLE_FONTSTYLE, 0) & mxConstants.FONT_BOLD) ==
-    mxConstants.FONT_BOLD
-  var italic =
-    (mxUtils.getValue(state.style, mxConstants.STYLE_FONTSTYLE, 0) & mxConstants.FONT_ITALIC) ==
-    mxConstants.FONT_ITALIC
+  var bold = (mxUtils.getValue(state.style, mxConstants.STYLE_FONTSTYLE, 0) & mxConstants.FONT_BOLD) == mxConstants.FONT_BOLD
+  var italic = (mxUtils.getValue(state.style, mxConstants.STYLE_FONTSTYLE, 0) & mxConstants.FONT_ITALIC) == mxConstants.FONT_ITALIC
   var txtDecor = []
 
-  if (
-    (mxUtils.getValue(state.style, mxConstants.STYLE_FONTSTYLE, 0) & mxConstants.FONT_UNDERLINE) ==
-    mxConstants.FONT_UNDERLINE
-  ) {
+  if ((mxUtils.getValue(state.style, mxConstants.STYLE_FONTSTYLE, 0) & mxConstants.FONT_UNDERLINE) == mxConstants.FONT_UNDERLINE) {
     txtDecor.push('underline')
   }
 
-  if (
-    (mxUtils.getValue(state.style, mxConstants.STYLE_FONTSTYLE, 0) &
-      mxConstants.FONT_STRIKETHROUGH) ==
-    mxConstants.FONT_STRIKETHROUGH
-  ) {
+  if ((mxUtils.getValue(state.style, mxConstants.STYLE_FONTSTYLE, 0) & mxConstants.FONT_STRIKETHROUGH) == mxConstants.FONT_STRIKETHROUGH) {
     txtDecor.push('line-through')
   }
 
-  this.textarea.style.lineHeight = mxConstants.ABSOLUTE_LINE_HEIGHT
-    ? Math.round(size * mxConstants.LINE_HEIGHT) + 'px'
-    : mxConstants.LINE_HEIGHT
+  this.textarea.style.lineHeight = mxConstants.ABSOLUTE_LINE_HEIGHT ? Math.round(size * mxConstants.LINE_HEIGHT) + 'px' : mxConstants.LINE_HEIGHT
   this.textarea.style.backgroundColor = this.getBackgroundColor(state)
   this.textarea.style.textDecoration = txtDecor.join(' ')
   this.textarea.style.fontWeight = bold ? 'bold' : 'normal'
@@ -704,42 +646,21 @@ mxCellEditor.prototype.updateTextAreaStyle = function (state) {
     this.textarea.style.border = '1px solid transparent'
   }
 
-  var dir = mxUtils.getValue(
-    state.style,
-    mxConstants.STYLE_TEXT_DIRECTION,
-    mxConstants.DEFAULT_TEXT_DIRECTION
-  )
+  var dir = mxUtils.getValue(state.style, mxConstants.STYLE_TEXT_DIRECTION, mxConstants.DEFAULT_TEXT_DIRECTION)
   var align = mxUtils.getValue(state.style, mxConstants.STYLE_ALIGN, mxConstants.ALIGN_LEFT)
   this.textarea.removeAttribute('dir')
 
   if (dir == mxConstants.TEXT_DIRECTION_AUTO) {
-    if (
-      state != null &&
-      state.text != null &&
-      state.text.dialect != mxConstants.DIALECT_STRICTHTML &&
-      !mxUtils.isNode(state.text.value)
-    ) {
+    if (state != null && state.text != null && state.text.dialect != mxConstants.DIALECT_STRICTHTML && !mxUtils.isNode(state.text.value)) {
       dir = state.text.getAutoDirection()
     }
   }
 
   if (dir == mxConstants.TEXT_DIRECTION_LTR || dir == mxConstants.TEXT_DIRECTION_RTL) {
     this.textarea.setAttribute('dir', dir)
-  } else if (
-    dir == mxConstants.TEXT_DIRECTION_VERTICAL_LR ||
-    dir == mxConstants.TEXT_DIRECTION_VERTICAL_RL
-  ) {
-    var valign = mxUtils.getValue(
-      state.style,
-      mxConstants.STYLE_VERTICAL_ALIGN,
-      mxConstants.ALIGN_MIDDLE
-    )
-    align =
-      valign == mxConstants.ALIGN_TOP
-        ? 'left'
-        : valign == mxConstants.ALIGN_BOTTOM
-          ? 'right'
-          : 'center'
+  } else if (dir == mxConstants.TEXT_DIRECTION_VERTICAL_LR || dir == mxConstants.TEXT_DIRECTION_VERTICAL_RL) {
+    var valign = mxUtils.getValue(state.style, mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_MIDDLE)
+    align = valign == mxConstants.ALIGN_TOP ? 'left' : valign == mxConstants.ALIGN_BOTTOM ? 'right' : 'center'
     this.textarea.style.writingMode = dir
   }
 
@@ -810,10 +731,7 @@ mxCellEditor.prototype.startEditing = function (cell, trigger, initialText) {
 
         // Moves shape to upper third of screen for possible on-screen keyboard
         if (mxClient.IS_IOS) {
-          this.graph.container.scrollTop = Math.max(
-            this.graph.container.scrollTop,
-            state.y + state.height - this.graph.container.clientHeight / 3
-          )
+          this.graph.container.scrollTop = Math.max(this.graph.container.scrollTop, state.y + state.height - this.graph.container.clientHeight / 3)
         }
 
         this.textarea.scrollIntoView({ block: 'nearest', inline: 'nearest' })
@@ -969,12 +887,7 @@ mxCellEditor.prototype.isHideLabel = function (state) {
 mxCellEditor.prototype.getMinimumSize = function (state) {
   var scale = this.graph.getView().scale
 
-  return new mxRectangle(
-    0,
-    0,
-    state.text == null ? 30 : state.text.size * scale + 20,
-    this.textarea.style.textAlign == 'left' ? 120 : 40
-  )
+  return new mxRectangle(0, 0, state.text == null ? 30 : state.text.size * scale + 20, this.textarea.style.textAlign == 'left' ? 120 : 40)
 }
 
 /**

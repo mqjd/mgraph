@@ -386,12 +386,7 @@ mxSwimlaneLayout.prototype.findRoots = function (parent, vertices) {
     for (var i in vertices) {
       var cell = vertices[i]
 
-      if (
-        cell != null &&
-        model.isVertex(cell) &&
-        this.graph.isCellVisible(cell) &&
-        model.isAncestor(parent, cell)
-      ) {
+      if (cell != null && model.isVertex(cell) && this.graph.isCellVisible(cell) && model.isAncestor(parent, cell)) {
         var conns = this.getEdges(cell)
         var fanOut = 0
         var fanIn = 0
@@ -473,12 +468,8 @@ mxSwimlaneLayout.prototype.getEdges = function (cell) {
     if (
       source == target ||
       (source != target &&
-        ((target == cell &&
-          (this.parent == null ||
-            this.graph.isValidAncestor(source, this.parent, this.traverseAncestors))) ||
-          (source == cell &&
-            (this.parent == null ||
-              this.graph.isValidAncestor(target, this.parent, this.traverseAncestors)))))
+        ((target == cell && (this.parent == null || this.graph.isValidAncestor(source, this.parent, this.traverseAncestors))) ||
+          (source == cell && (this.parent == null || this.graph.isValidAncestor(target, this.parent, this.traverseAncestors)))))
     ) {
       result.push(edges[i])
     }
@@ -514,16 +505,10 @@ mxSwimlaneLayout.prototype.getVisibleTerminal = function (edge, source) {
 
   var state = this.graph.view.getState(edge)
 
-  var terminal =
-    state != null
-      ? state.getVisibleTerminal(source)
-      : this.graph.view.getVisibleTerminal(edge, source)
+  var terminal = state != null ? state.getVisibleTerminal(source) : this.graph.view.getVisibleTerminal(edge, source)
 
   if (terminal == null) {
-    terminal =
-      state != null
-        ? state.getVisibleTerminal(source)
-        : this.graph.view.getVisibleTerminal(edge, source)
+    terminal = state != null ? state.getVisibleTerminal(source) : this.graph.view.getVisibleTerminal(edge, source)
   }
 
   if (terminal != null) {
@@ -586,16 +571,7 @@ mxSwimlaneLayout.prototype.run = function (parent) {
         var vertexSet = Object()
         hierarchyVertices.push(vertexSet)
 
-        this.traverse(
-          candidateRoots[i],
-          true,
-          null,
-          allVertexSet,
-          vertexSet,
-          hierarchyVertices,
-          filledVertexSet,
-          laneCounter
-        )
+        this.traverse(candidateRoots[i], true, null, allVertexSet, vertexSet, hierarchyVertices, filledVertexSet, laneCounter)
       }
 
       for (var i = 0; i < candidateRoots.length; i++) {
@@ -646,12 +622,7 @@ mxSwimlaneLayout.prototype.run = function (parent) {
 mxSwimlaneLayout.prototype.filterDescendants = function (cell, result) {
   var model = this.graph.model
 
-  if (
-    model.isVertex(cell) &&
-    cell != this.parent &&
-    model.getParent(cell) != this.parent &&
-    this.graph.isCellVisible(cell)
-  ) {
+  if (model.isVertex(cell) && cell != this.parent && model.getParent(cell) != this.parent && this.graph.isCellVisible(cell)) {
     result[mxObjectIdentity.get(cell)] = cell
   }
 
@@ -736,26 +707,14 @@ mxSwimlaneLayout.prototype.getEdgesBetween = function (source, target, directed)
  * allVertices - Array of cell paths for the visited cells.
  * swimlaneIndex - the laid out order index of the swimlane vertex is contained in
  */
-mxSwimlaneLayout.prototype.traverse = function (
-  vertex,
-  directed,
-  edge,
-  allVertices,
-  currentComp,
-  hierarchyVertices,
-  filledVertexSet,
-  swimlaneIndex
-) {
+mxSwimlaneLayout.prototype.traverse = function (vertex, directed, edge, allVertices, currentComp, hierarchyVertices, filledVertexSet, swimlaneIndex) {
   if (vertex != null && allVertices != null) {
     // Has this vertex been seen before in any traversal
     // And if the filled vertex set is populated, only
     // process vertices in that it contains
     var vertexID = mxObjectIdentity.get(vertex)
 
-    if (
-      allVertices[vertexID] == null &&
-      (filledVertexSet == null ? true : filledVertexSet[vertexID] != null)
-    ) {
+    if (allVertices[vertexID] == null && (filledVertexSet == null ? true : filledVertexSet[vertexID] != null)) {
       if (currentComp[vertexID] == null) {
         currentComp[vertexID] = vertex
       }
@@ -780,10 +739,7 @@ mxSwimlaneLayout.prototype.traverse = function (
 
         var otherIndex = 0
         // Get the swimlane index of the other terminal
-        while (
-          otherIndex < this.swimlanes.length &&
-          !model.isAncestor(this.swimlanes[otherIndex], otherVertex)
-        ) {
+        while (otherIndex < this.swimlanes.length && !model.isAncestor(this.swimlanes[otherIndex], otherVertex)) {
           otherIndex++
         }
 
@@ -794,20 +750,8 @@ mxSwimlaneLayout.prototype.traverse = function (
         // Traverse if the other vertex is within the same swimlane as
         // as the current vertex, or if the swimlane index of the other
         // vertex is greater than that of this vertex
-        if (
-          otherIndex > swimlaneIndex ||
-          ((!directed || isSource) && otherIndex == swimlaneIndex)
-        ) {
-          currentComp = this.traverse(
-            otherVertex,
-            directed,
-            edges[i],
-            allVertices,
-            currentComp,
-            hierarchyVertices,
-            filledVertexSet,
-            otherIndex
-          )
+        if (otherIndex > swimlaneIndex || ((!directed || isSource) && otherIndex == swimlaneIndex)) {
+          currentComp = this.traverse(otherVertex, directed, edges[i], allVertices, currentComp, hierarchyVertices, filledVertexSet, otherIndex)
         }
       }
     } else {

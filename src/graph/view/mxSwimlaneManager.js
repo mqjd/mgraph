@@ -318,15 +318,12 @@ mxSwimlaneManager.prototype.cellsResized = function (cells) {
             while (current != null) {
               top = current
               current = model.getParent(current)
-              var tmp = this.graph.isSwimlane(current)
-                ? this.graph.getStartSize(current)
-                : new mxRectangle()
+              var tmp = this.graph.isSwimlane(current) ? this.graph.getStartSize(current) : new mxRectangle()
               size.width += tmp.width
               size.height += tmp.height
             }
 
-            var parentHorizontal =
-              current != null ? this.isCellHorizontal(current) : this.horizontal
+            var parentHorizontal = current != null ? this.isCellHorizontal(current) : this.horizontal
             this.resizeSwimlane(top, size.width, size.height, parentHorizontal)
           }
         }
@@ -373,9 +370,7 @@ mxSwimlaneManager.prototype.resizeSwimlane = function (swimlane, w, h, parentHor
       }
     }
 
-    var tmp = this.graph.isSwimlane(swimlane)
-      ? this.graph.getStartSize(swimlane)
-      : new mxRectangle()
+    var tmp = this.graph.isSwimlane(swimlane) ? this.graph.getStartSize(swimlane) : new mxRectangle()
     w -= tmp.width
     h -= tmp.height
 

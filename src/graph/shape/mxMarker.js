@@ -35,9 +35,7 @@ var mxMarker = {
   createMarker: function (canvas, shape, type, pe, unitX, unitY, size, source, sw, filled) {
     var funct = mxMarker.markers[type]
 
-    return funct != null
-      ? funct(canvas, shape, type, pe, unitX, unitY, size, source, sw, filled)
-      : null
+    return funct != null ? funct(canvas, shape, type, pe, unitX, unitY, size, source, sw, filled) : null
   }
 }
 
@@ -62,8 +60,7 @@ var mxMarker = {
       pt.x -= endOffsetX
       pt.y -= endOffsetY
 
-      var f =
-        type != mxConstants.ARROW_CLASSIC && type != mxConstants.ARROW_CLASSIC_THIN ? 1 : 3 / 4
+      var f = type != mxConstants.ARROW_CLASSIC && type != mxConstants.ARROW_CLASSIC_THIN ? 1 : 3 / 4
       pe.x += -unitX * f - endOffsetX
       pe.y += -unitY * f - endOffsetY
 
@@ -126,81 +123,71 @@ var mxMarker = {
   mxMarker.addMarker('open', createOpenArrow(2))
   mxMarker.addMarker('openThin', createOpenArrow(3))
 
-  mxMarker.addMarker(
-    'oval',
-    function (canvas, shape, type, pe, unitX, unitY, size, source, sw, filled) {
-      var a = size / 2
+  mxMarker.addMarker('oval', function (canvas, shape, type, pe, unitX, unitY, size, source, sw, filled) {
+    var a = size / 2
 
-      var pt = pe.clone()
-      pe.x -= unitX * a
-      pe.y -= unitY * a
+    var pt = pe.clone()
+    pe.x -= unitX * a
+    pe.y -= unitY * a
 
-      return function () {
-        canvas.ellipse(pt.x - a, pt.y - a, size, size)
+    return function () {
+      canvas.ellipse(pt.x - a, pt.y - a, size, size)
 
-        if (filled) {
-          canvas.fillAndStroke()
-        } else {
-          canvas.stroke()
-        }
-      }
-    }
-  )
-
-  mxMarker.addMarker(
-    'baseDash',
-    function (canvas, shape, type, pe, unitX, unitY, size, source, sw, filled) {
-      var nx = unitX * (size + sw + 1)
-      var ny = unitY * (size + sw + 1)
-
-      return function () {
-        canvas.begin()
-        canvas.moveTo(pe.x - ny / 2, pe.y + nx / 2)
-        canvas.lineTo(pe.x + ny / 2, pe.y - nx / 2)
+      if (filled) {
+        canvas.fillAndStroke()
+      } else {
         canvas.stroke()
       }
     }
-  )
+  })
 
-  mxMarker.addMarker(
-    'doubleBlock',
-    function (canvas, shape, type, pe, unitX, unitY, size, source, sw, filled) {
-      var widthFactor = 2
+  mxMarker.addMarker('baseDash', function (canvas, shape, type, pe, unitX, unitY, size, source, sw, filled) {
+    var nx = unitX * (size + sw + 1)
+    var ny = unitY * (size + sw + 1)
 
-      var endOffsetX = unitX * sw * 1.118
-      var endOffsetY = unitY * sw * 1.118
+    return function () {
+      canvas.begin()
+      canvas.moveTo(pe.x - ny / 2, pe.y + nx / 2)
+      canvas.lineTo(pe.x + ny / 2, pe.y - nx / 2)
+      canvas.stroke()
+    }
+  })
 
-      unitX = unitX * (size + sw)
-      unitY = unitY * (size + sw)
+  mxMarker.addMarker('doubleBlock', function (canvas, shape, type, pe, unitX, unitY, size, source, sw, filled) {
+    var widthFactor = 2
 
-      var pt = pe.clone()
-      pt.x -= endOffsetX
-      pt.y -= endOffsetY
+    var endOffsetX = unitX * sw * 1.118
+    var endOffsetY = unitY * sw * 1.118
 
-      var f =
-        type != mxConstants.ARROW_CLASSIC && type != mxConstants.ARROW_CLASSIC_THIN ? 1 : 3 / 4
-      pe.x += -unitX * f * 2 - endOffsetX
-      pe.y += -unitY * f * 2 - endOffsetY
+    unitX = unitX * (size + sw)
+    unitY = unitY * (size + sw)
 
-      return function () {
-        canvas.begin()
-        canvas.moveTo(pt.x, pt.y)
-        canvas.lineTo(pt.x - unitX - unitY / widthFactor, pt.y - unitY + unitX / widthFactor)
-        canvas.lineTo(pt.x + unitY / widthFactor - unitX, pt.y - unitY - unitX / widthFactor)
-        canvas.close()
-        canvas.moveTo(pt.x - unitX, pt.y - unitY)
-        canvas.lineTo(pt.x - 2 * unitX - 0.5 * unitY, pt.y + 0.5 * unitX - 2 * unitY)
-        canvas.lineTo(pt.x - 2 * unitX + 0.5 * unitY, pt.y - 0.5 * unitX - 2 * unitY)
-        canvas.close()
+    var pt = pe.clone()
+    pt.x -= endOffsetX
+    pt.y -= endOffsetY
 
-        if (filled) {
-          canvas.fillAndStroke()
-        } else {
-          canvas.stroke()
-        }
+    var f = type != mxConstants.ARROW_CLASSIC && type != mxConstants.ARROW_CLASSIC_THIN ? 1 : 3 / 4
+    pe.x += -unitX * f * 2 - endOffsetX
+    pe.y += -unitY * f * 2 - endOffsetY
+
+    return function () {
+      canvas.begin()
+      canvas.moveTo(pt.x, pt.y)
+      canvas.lineTo(pt.x - unitX - unitY / widthFactor, pt.y - unitY + unitX / widthFactor)
+      canvas.lineTo(pt.x + unitY / widthFactor - unitX, pt.y - unitY - unitX / widthFactor)
+      canvas.close()
+      canvas.moveTo(pt.x - unitX, pt.y - unitY)
+      canvas.lineTo(pt.x - 2 * unitX - 0.5 * unitY, pt.y + 0.5 * unitX - 2 * unitY)
+      canvas.lineTo(pt.x - 2 * unitX + 0.5 * unitY, pt.y - 0.5 * unitX - 2 * unitY)
+      canvas.close()
+
+      if (filled) {
+        canvas.fillAndStroke()
+      } else {
+        canvas.stroke()
       }
     }
-  )
+  })
 
   function diamond(canvas, shape, type, pe, unitX, unitY, size, source, sw, filled) {
     // The angle of the forward facing arrow sides against the x axis is
@@ -244,35 +231,32 @@ var mxMarker = {
   mxMarker.addMarker('diamond', diamond)
   mxMarker.addMarker('diamondThin', diamond)
 
-  mxMarker.addMarker(
-    'manyOptional',
-    function (c, shape, type, pe, unitX, unitY, size, source, sw, filled) {
-      var nx = unitX * (size + sw + 1)
-      var ny = unitY * (size + sw + 1)
-      var a = size / 2
-      var px = pe.x
-      var py = pe.y
+  mxMarker.addMarker('manyOptional', function (c, shape, type, pe, unitX, unitY, size, source, sw, filled) {
+    var nx = unitX * (size + sw + 1)
+    var ny = unitY * (size + sw + 1)
+    var a = size / 2
+    var px = pe.x
+    var py = pe.y
 
-      pe.x -= 2 * nx - (unitX * sw) / 2
-      pe.y -= 2 * ny - (unitY * sw) / 2
+    pe.x -= 2 * nx - (unitX * sw) / 2
+    pe.y -= 2 * ny - (unitY * sw) / 2
 
-      return function () {
-        c.begin()
-        c.ellipse(px - 1.5 * nx - a, py - 1.5 * ny - a, 2 * a, 2 * a)
-        filled ? c.fillAndStroke() : c.stroke()
+    return function () {
+      c.begin()
+      c.ellipse(px - 1.5 * nx - a, py - 1.5 * ny - a, 2 * a, 2 * a)
+      filled ? c.fillAndStroke() : c.stroke()
 
-        c.begin()
-        c.moveTo(px, py)
-        c.lineTo(px - nx, py - ny)
+      c.begin()
+      c.moveTo(px, py)
+      c.lineTo(px - nx, py - ny)
 
-        c.moveTo(px + ny / 2, py - nx / 2)
-        c.lineTo(px - nx, py - ny)
-        c.lineTo(px - ny / 2, py + nx / 2)
+      c.moveTo(px + ny / 2, py - nx / 2)
+      c.lineTo(px - nx, py - ny)
+      c.lineTo(px - ny / 2, py + nx / 2)
 
-        c.stroke()
-      }
+      c.stroke()
     }
-  )
+  })
 })()
 
 export default mxMarker

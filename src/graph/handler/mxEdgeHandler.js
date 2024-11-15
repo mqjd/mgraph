@@ -17,7 +17,6 @@ import mxImageShape from '../shape/mxImageShape'
 import mxConnectionConstraint from '../view/mxConnectionConstraint'
 import mxEdgeStyle from '../view/mxEdgeStyle'
 
-
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder
@@ -268,10 +267,7 @@ mxEdgeHandler.prototype.init = function () {
   // for the initial configuration and preview
   this.abspoints = this.getSelectionPoints(this.state)
   this.shape = this.createSelectionShape(this.abspoints)
-  this.shape.dialect =
-    this.graph.dialect != mxConstants.DIALECT_SVG
-      ? mxConstants.DIALECT_MIXEDHTML
-      : mxConstants.DIALECT_SVG
+  this.shape.dialect = this.graph.dialect != mxConstants.DIALECT_SVG ? mxConstants.DIALECT_MIXEDHTML : mxConstants.DIALECT_SVG
   this.shape.init(this.graph.getView().getOverlayPane())
   this.shape.svgStrokeTolerance = 0
   this.shape.pointerEvents = false
@@ -282,16 +278,14 @@ mxEdgeHandler.prototype.init = function () {
   }
 
   // Updates preferHtml
-  this.preferHtml =
-    this.state.text != null && this.state.text.node.parentNode == this.graph.container
+  this.preferHtml = this.state.text != null && this.state.text.node.parentNode == this.graph.container
 
   if (!this.preferHtml) {
     // Checks source terminal
     var sourceState = this.state.getVisibleTerminalState(true)
 
     if (sourceState != null) {
-      this.preferHtml =
-        sourceState.text != null && sourceState.text.node.parentNode == this.graph.container
+      this.preferHtml = sourceState.text != null && sourceState.text.node.parentNode == this.graph.container
     }
 
     if (!this.preferHtml) {
@@ -299,8 +293,7 @@ mxEdgeHandler.prototype.init = function () {
       var targetState = this.state.getVisibleTerminalState(false)
 
       if (targetState != null) {
-        this.preferHtml =
-          targetState.text != null && targetState.text.node.parentNode == this.graph.container
+        this.preferHtml = targetState.text != null && targetState.text.node.parentNode == this.graph.container
       }
     }
   }
@@ -351,8 +344,7 @@ mxEdgeHandler.prototype.createConstraintHandler = function () {
  * Returns true if the parent highlight should be visible. This implementation
  * always returns true.
  */
-mxEdgeHandler.prototype.isParentHighlightVisible =
-  mxVertexHandler.prototype.isParentHighlightVisible
+mxEdgeHandler.prototype.isParentHighlightVisible = mxVertexHandler.prototype.isParentHighlightVisible
 
 /**
  * Function: destroyParentHighlight
@@ -439,11 +431,7 @@ mxEdgeHandler.prototype.getSelectionPoints = function (state) {
  * Creates the shape used to draw the selection border.
  */
 mxEdgeHandler.prototype.createParentHighlightShape = function (bounds) {
-  var shape = new mxRectangleShape(
-    mxRectangle.fromRectangle(bounds),
-    null,
-    this.getSelectionColor()
-  )
+  var shape = new mxRectangleShape(mxRectangle.fromRectangle(bounds), null, this.getSelectionColor())
   shape.strokewidth = this.getSelectionStrokeWidth()
   shape.isDashed = this.isSelectionDashed()
 
@@ -473,9 +461,7 @@ mxEdgeHandler.prototype.createSelectionShape = function (points) {
  * Returns <mxConstants.EDGE_SELECTION_COLOR>.
  */
 mxEdgeHandler.prototype.getSelectionColor = function () {
-  return this.graph.isCellEditable(this.state.cell)
-    ? mxConstants.EDGE_SELECTION_COLOR
-    : mxConstants.LOCKED_HANDLE_FILLCOLOR
+  return this.graph.isCellEditable(this.state.cell) ? mxConstants.EDGE_SELECTION_COLOR : mxConstants.LOCKED_HANDLE_FILLCOLOR
 }
 
 /**
@@ -546,9 +532,7 @@ mxEdgeHandler.prototype.createMarker = function () {
     var model = self.graph.getModel()
 
     if (
-      (this.graph.isSwimlane(cell) &&
-        self.currentPoint != null &&
-        this.graph.hitsSwimlaneContent(cell, self.currentPoint.x, self.currentPoint.y)) ||
+      (this.graph.isSwimlane(cell) && self.currentPoint != null && this.graph.hitsSwimlaneContent(cell, self.currentPoint.x, self.currentPoint.y)) ||
       !self.isConnectableCell(cell) ||
       cell == self.state.cell ||
       (cell != null && !self.graph.connectableEdges && model.isEdge(cell)) ||
@@ -567,11 +551,7 @@ mxEdgeHandler.prototype.createMarker = function () {
   // Sets the highlight color according to validateConnection
   marker.isValidState = function (state) {
     var model = self.graph.getModel()
-    var other = self.graph.view.getTerminalPort(
-      state,
-      self.graph.view.getState(model.getTerminal(self.state.cell, !self.isSource)),
-      !self.isSource
-    )
+    var other = self.graph.view.getTerminalPort(state, self.graph.view.getState(model.getTerminal(self.state.cell, !self.isSource)), !self.isSource)
     var otherCell = other != null ? other.cell : null
     var source = self.isSource ? state.cell : otherCell
     var target = self.isSource ? otherCell : state.cell
@@ -634,9 +614,7 @@ mxEdgeHandler.prototype.createBends = function () {
             )
 
             if (this.isHandleEnabled(i)) {
-              bend.setCursor(
-                terminal ? mxConstants.CURSOR_TERMINAL_HANDLE : mxConstants.CURSOR_BEND_HANDLE
-              )
+              bend.setCursor(terminal ? mxConstants.CURSOR_TERMINAL_HANDLE : mxConstants.CURSOR_BEND_HANDLE)
             }
 
             bends.push(bend)
@@ -663,11 +641,7 @@ mxEdgeHandler.prototype.createBends = function () {
 mxEdgeHandler.prototype.createVirtualBends = function () {
   var bends = []
 
-  if (
-    this.abspoints != null &&
-    this.abspoints.length > 0 &&
-    this.graph.isCellBendable(this.state.cell)
-  ) {
+  if (this.abspoints != null && this.abspoints.length > 0 && this.graph.isCellBendable(this.state.cell)) {
     for (var i = 1; i < this.abspoints.length; i++) {
       mxUtils.bind(this, function (bend) {
         this.initBend(bend)
@@ -698,8 +672,7 @@ mxEdgeHandler.prototype.isHandleVisible = function (index) {
   var source = this.state.getVisibleTerminalState(true)
   var target = this.state.getVisibleTerminalState(false)
   var geo = this.graph.getCellGeometry(this.state.cell)
-  var edgeStyle =
-    geo != null ? this.graph.view.getEdgeStyle(this.state, geo.points, source, target) : null
+  var edgeStyle = geo != null ? this.graph.view.getEdgeStyle(this.state, geo.points, source, target) : null
 
   return edgeStyle != mxEdgeStyle.EntityRelation || index == 0 || index == this.abspoints.length - 1
 }
@@ -715,10 +688,7 @@ mxEdgeHandler.prototype.isHandleVisible = function (index) {
  */
 mxEdgeHandler.prototype.createHandleShape = function (index) {
   if (this.handleImage != null) {
-    var shape = new mxImageShape(
-      new mxRectangle(0, 0, this.handleImage.width, this.handleImage.height),
-      this.handleImage.src
-    )
+    var shape = new mxImageShape(new mxRectangle(0, 0, this.handleImage.width, this.handleImage.height), this.handleImage.src)
 
     // Allows HTML rendering of the images
     shape.preserveImageAspect = false
@@ -731,11 +701,7 @@ mxEdgeHandler.prototype.createHandleShape = function (index) {
       s -= 1
     }
 
-    return new mxRectangleShape(
-      new mxRectangle(0, 0, s, s),
-      mxConstants.HANDLE_FILLCOLOR,
-      mxConstants.HANDLE_STROKECOLOR
-    )
+    return new mxRectangleShape(new mxRectangle(0, 0, s, s), mxConstants.HANDLE_FILLCOLOR, mxConstants.HANDLE_STROKECOLOR)
   }
 }
 
@@ -746,10 +712,7 @@ mxEdgeHandler.prototype.createHandleShape = function (index) {
  */
 mxEdgeHandler.prototype.createLabelHandleShape = function () {
   if (this.labelHandleImage != null) {
-    var shape = new mxImageShape(
-      new mxRectangle(0, 0, this.labelHandleImage.width, this.labelHandleImage.height),
-      this.labelHandleImage.src
-    )
+    var shape = new mxImageShape(new mxRectangle(0, 0, this.labelHandleImage.width, this.labelHandleImage.height), this.labelHandleImage.src)
 
     // Allows HTML rendering of the images
     shape.preserveImageAspect = false
@@ -757,11 +720,7 @@ mxEdgeHandler.prototype.createLabelHandleShape = function () {
     return shape
   } else {
     var s = mxConstants.LABEL_HANDLE_SIZE
-    return new mxRectangleShape(
-      new mxRectangle(0, 0, s, s),
-      mxConstants.LABEL_HANDLE_FILLCOLOR,
-      mxConstants.HANDLE_STROKECOLOR
-    )
+    return new mxRectangleShape(new mxRectangle(0, 0, s, s), mxConstants.LABEL_HANDLE_FILLCOLOR, mxConstants.HANDLE_STROKECOLOR)
   }
 }
 
@@ -779,10 +738,7 @@ mxEdgeHandler.prototype.initBend = function (bend, dblClick) {
     bend.dialect = mxConstants.DIALECT_STRICTHTML
     bend.init(this.graph.container)
   } else {
-    bend.dialect =
-      this.graph.dialect != mxConstants.DIALECT_SVG
-        ? mxConstants.DIALECT_MIXEDHTML
-        : mxConstants.DIALECT_SVG
+    bend.dialect = this.graph.dialect != mxConstants.DIALECT_SVG ? mxConstants.DIALECT_MIXEDHTML : mxConstants.DIALECT_SVG
     bend.init(this.graph.getView().getOverlayPane())
   }
 
@@ -804,9 +760,7 @@ mxEdgeHandler.prototype.getHandleForEvent = function (me) {
   if (this.state != null) {
     // Connection highlight may consume events before they reach sizer handle
     var tol = !mxEvent.isMouseEvent(me.getEvent()) ? 2 * this.tolerance : 0
-    var hit = !this.allowHandleBoundsCheck
-      ? null
-      : new mxRectangle(me.getGraphX() - tol, me.getGraphY() - tol, tol, tol)
+    var hit = !this.allowHandleBoundsCheck ? null : new mxRectangle(me.getGraphX() - tol, me.getGraphY() - tol, tol, tol)
     var minDistSq = null
 
     function checkShape(shape) {
@@ -1017,10 +971,7 @@ mxEdgeHandler.prototype.isSnapToTerminalsEvent = function (me) {
 mxEdgeHandler.prototype.getPointForEvent = function (me) {
   var view = this.graph.getView()
   var scale = view.scale
-  var point = new mxPoint(
-    this.roundLength(me.getGraphX() / scale) * scale,
-    this.roundLength(me.getGraphY() / scale) * scale
-  )
+  var point = new mxPoint(this.roundLength(me.getGraphX() / scale) * scale, this.roundLength(me.getGraphY() / scale) * scale)
 
   var tt = this.getSnapToTerminalTolerance()
   var overrideX = false
@@ -1047,10 +998,7 @@ mxEdgeHandler.prototype.getPointForEvent = function (me) {
 
     function snapToTerminal(terminal) {
       if (terminal != null) {
-        snapToPoint.call(
-          this,
-          new mxPoint(view.getRoutingCenterX(terminal), view.getRoutingCenterY(terminal))
-        )
+        snapToPoint.call(this, new mxPoint(view.getRoutingCenterX(terminal), view.getRoutingCenterY(terminal)))
       }
     }
 
@@ -1060,10 +1008,7 @@ mxEdgeHandler.prototype.getPointForEvent = function (me) {
 
     if (pts != null) {
       for (var i = 0; i < pts.length; i++) {
-        if (
-          (i > 0 || !this.state.isFloatingTerminalPoint(true)) &&
-          (i < pts.length - 1 || !this.state.isFloatingTerminalPoint(false))
-        ) {
+        if ((i > 0 || !this.state.isFloatingTerminalPoint(true)) && (i < pts.length - 1 || !this.state.isFloatingTerminalPoint(false))) {
           snapToPoint.call(this, this.state.absolutePoints[i])
         }
       }
@@ -1092,12 +1037,7 @@ mxEdgeHandler.prototype.getPointForEvent = function (me) {
  */
 mxEdgeHandler.prototype.getPreviewTerminalState = function (me) {
   var constraintHandler = this.getConstraintHandler()
-  constraintHandler.update(
-    me,
-    this.isSource,
-    true,
-    me.isSource(this.marker.highlight.shape) ? null : this.currentPoint
-  )
+  constraintHandler.update(me, this.isSource, true, me.isSource(this.marker.highlight.shape) ? null : this.currentPoint)
 
   if (constraintHandler.currentFocus != null && constraintHandler.currentConstraint != null) {
     // Handles special case where grid is large and connection point is at actual point in which
@@ -1202,11 +1142,7 @@ mxEdgeHandler.prototype.getPreviewPoints = function (pt, me) {
         }
 
         // Removes point if user tries to straighten a segment
-        if (
-          result == null &&
-          this.straightRemoveEnabled &&
-          (me == null || !mxEvent.isAltDown(me.getEvent()))
-        ) {
+        if (result == null && this.straightRemoveEnabled && (me == null || !mxEvent.isAltDown(me.getEvent()))) {
           var tol = this.graph.tolerance * this.graph.tolerance
           var abs = this.state.absolutePoints.slice()
           abs[this.index] = pt
@@ -1230,10 +1166,7 @@ mxEdgeHandler.prototype.getPreviewPoints = function (pt, me) {
 
             // Checks if point is not fixed
             if (c == null || this.graph.getConnectionPoint(trg, c) == null) {
-              abs[abs.length - 1] = new mxPoint(
-                trg.view.getRoutingCenterX(trg),
-                trg.view.getRoutingCenterY(trg)
-              )
+              abs[abs.length - 1] = new mxPoint(trg.view.getRoutingCenterX(trg), trg.view.getRoutingCenterY(trg))
             }
           }
 
@@ -1241,14 +1174,7 @@ mxEdgeHandler.prototype.getPreviewPoints = function (pt, me) {
             if (
               idx > 0 &&
               idx < abs.length - 1 &&
-              mxUtils.ptSegDistSq(
-                abs[idx - 1].x,
-                abs[idx - 1].y,
-                abs[idx + 1].x,
-                abs[idx + 1].y,
-                tmp.x,
-                tmp.y
-              ) < tol
+              mxUtils.ptSegDistSq(abs[idx - 1].x, abs[idx - 1].y, abs[idx + 1].x, abs[idx + 1].y, tmp.x, tmp.y) < tol
             ) {
               points.splice(idx - 1, 1)
               result = points
@@ -1299,13 +1225,9 @@ mxEdgeHandler.prototype.isOutlineConnectEvent = function (me) {
       this.outlineConnect &&
       ((mxEvent.isShiftDown(me.getEvent()) && !mxEvent.isAltDown(me.getEvent())) ||
         me.isSource(this.marker.highlight.shape) ||
-        (!mxEvent.isShiftDown(me.getEvent()) &&
-          mxEvent.isAltDown(me.getEvent()) &&
-          me.getState() != null) ||
+        (!mxEvent.isShiftDown(me.getEvent()) && mxEvent.isAltDown(me.getEvent()) && me.getState() != null) ||
         this.marker.highlight.isHighlightAt(clientX, clientY) ||
-        ((gridX != clientX || gridY != clientY) &&
-          me.getState() == null &&
-          this.marker.highlight.isHighlightAt(gridX, gridY)))
+        ((gridX != clientX || gridY != clientY) && me.getState() == null && this.marker.highlight.isHighlightAt(gridX, gridY)))
     )
   }
 }
@@ -1347,16 +1269,12 @@ mxEdgeHandler.prototype.updatePreviewState = function (edge, point, terminalStat
     var s = this.graph.view.scale
 
     if (constraintHandler.currentConstraint != null && constraintHandler.currentFocus != null) {
-      this.marker.highlight.shape.stroke = outline
-        ? mxConstants.OUTLINE_HIGHLIGHT_COLOR
-        : 'transparent'
+      this.marker.highlight.shape.stroke = outline ? mxConstants.OUTLINE_HIGHLIGHT_COLOR : 'transparent'
       this.marker.highlight.shape.strokewidth = mxConstants.OUTLINE_HIGHLIGHT_STROKEWIDTH / s / s
       this.marker.highlight.repaint()
     } else if (this.marker.hasValidState()) {
       this.marker.highlight.shape.stroke =
-        this.graph.isCellConnectable(me.getCell()) && this.marker.getValidState() != me.getState()
-          ? 'transparent'
-          : mxConstants.DEFAULT_VALID_COLOR
+        this.graph.isCellConnectable(me.getCell()) && this.marker.getValidState() != me.getState() ? 'transparent' : mxConstants.DEFAULT_VALID_COLOR
       this.marker.highlight.shape.strokewidth = mxConstants.HIGHLIGHT_STROKEWIDTH / s / s
       this.marker.highlight.repaint()
     }
@@ -1370,10 +1288,8 @@ mxEdgeHandler.prototype.updatePreviewState = function (edge, point, terminalStat
 
   if (this.isSource || this.isTarget) {
     if (constraint != null && constraint.point != null) {
-      edge.style[this.isSource ? mxConstants.STYLE_EXIT_X : mxConstants.STYLE_ENTRY_X] =
-        constraint.point.x
-      edge.style[this.isSource ? mxConstants.STYLE_EXIT_Y : mxConstants.STYLE_ENTRY_Y] =
-        constraint.point.y
+      edge.style[this.isSource ? mxConstants.STYLE_EXIT_X : mxConstants.STYLE_ENTRY_X] = constraint.point.x
+      edge.style[this.isSource ? mxConstants.STYLE_EXIT_Y : mxConstants.STYLE_ENTRY_Y] = constraint.point.y
     } else {
       delete edge.style[this.isSource ? mxConstants.STYLE_EXIT_X : mxConstants.STYLE_ENTRY_X]
       delete edge.style[this.isSource ? mxConstants.STYLE_EXIT_Y : mxConstants.STYLE_ENTRY_Y]
@@ -1422,10 +1338,7 @@ mxEdgeHandler.prototype.mouseMove = function (sender, me) {
       constraintHandler.currentFocus == null &&
       constraintHandler.currentFocus != this.state
     ) {
-      if (
-        Math.abs(this.snapPoint.x - this.currentPoint.x) <
-        Math.abs(this.snapPoint.y - this.currentPoint.y)
-      ) {
+      if (Math.abs(this.snapPoint.x - this.currentPoint.x) < Math.abs(this.snapPoint.y - this.currentPoint.y)) {
         this.currentPoint.x = this.snapPoint.x
       } else {
         this.currentPoint.y = this.snapPoint.y
@@ -1448,11 +1361,7 @@ mxEdgeHandler.prototype.mouseMove = function (sender, me) {
       this.points = this.getPreviewPoints(this.currentPoint, me)
       var terminalState = this.isSource || this.isTarget ? this.getPreviewTerminalState(me) : null
 
-      if (
-        constraintHandler.currentConstraint != null &&
-        constraintHandler.currentFocus != null &&
-        constraintHandler.currentPoint != null
-      ) {
+      if (constraintHandler.currentConstraint != null && constraintHandler.currentFocus != null && constraintHandler.currentPoint != null) {
         this.currentPoint = constraintHandler.currentPoint.clone()
       } else if (this.outlineConnect) {
         // Need to check outline before cloning terminal state
@@ -1477,10 +1386,7 @@ mxEdgeHandler.prototype.mouseMove = function (sender, me) {
         this.marker.reset()
       }
 
-      var clone = this.clonePreviewState(
-        this.currentPoint,
-        terminalState != null ? terminalState.cell : null
-      )
+      var clone = this.clonePreviewState(this.currentPoint, terminalState != null ? terminalState.cell : null)
       this.updatePreviewState(clone, this.currentPoint, terminalState, me, outline)
 
       // Sets the color of the preview to valid or invalid, updates the
@@ -1498,18 +1404,10 @@ mxEdgeHandler.prototype.mouseMove = function (sender, me) {
     this.drawPreview()
     mxEvent.consume(me.getEvent())
     me.consume()
-  } else if (
-    !mxEvent.isShiftDown(me.getEvent()) &&
-    this.handle != null &&
-    this.mouseDownX != null &&
-    this.mouseDownY != null
-  ) {
+  } else if (!mxEvent.isShiftDown(me.getEvent()) && this.handle != null && this.mouseDownX != null && this.mouseDownY != null) {
     var tol = this.graph.tolerance
 
-    if (
-      Math.abs(this.mouseDownX - me.getX()) > tol ||
-      Math.abs(this.mouseDownY - me.getY()) > tol
-    ) {
+    if (Math.abs(this.mouseDownX - me.getX()) > tol || Math.abs(this.mouseDownY - me.getY()) > tol) {
       this.start(this.mouseDownX, this.mouseDownY, this.handle)
     }
   }
@@ -1567,11 +1465,7 @@ mxEdgeHandler.prototype.mouseUp = function (sender, me) {
       } else if (this.isSource || this.isTarget) {
         var terminal = null
 
-        if (
-          this.constraintHandler != null &&
-          this.constraintHandler.currentConstraint != null &&
-          this.constraintHandler.currentFocus != null
-        ) {
+        if (this.constraintHandler != null && this.constraintHandler.currentConstraint != null && this.constraintHandler.currentFocus != null) {
           terminal = this.constraintHandler.currentFocus.cell
         }
 
@@ -1838,8 +1732,7 @@ mxEdgeHandler.prototype.connect = function (edge, terminal, isSource, isClone, m
 
   model.beginUpdate()
   try {
-    var constraint =
-      this.constraintHandler != null ? this.constraintHandler.currentConstraint : null
+    var constraint = this.constraintHandler != null ? this.constraintHandler.currentConstraint : null
 
     if (constraint == null) {
       constraint = new mxConnectionConstraint()
@@ -1926,11 +1819,7 @@ mxEdgeHandler.prototype.changePoints = function (edge, points, clone) {
  * Adds a control point for the given state and event.
  */
 mxEdgeHandler.prototype.addPoint = function (state, evt) {
-  var pt = mxUtils.convertPoint(
-    this.graph.container,
-    mxEvent.getClientX(evt),
-    mxEvent.getClientY(evt)
-  )
+  var pt = mxUtils.convertPoint(this.graph.container, mxEvent.getClientX(evt), mxEvent.getClientY(evt))
   var gridEnabled = this.graph.isGridEnabledEvent(evt)
   this.convertPoint(pt, gridEnabled)
   this.addPointAt(state, pt.x, pt.y)
@@ -2072,21 +1961,12 @@ mxEdgeHandler.prototype.redrawHandles = function () {
   if (this.labelShape != null) {
     var b = this.labelShape.bounds
     this.label = new mxPoint(this.state.absoluteOffset.x, this.state.absoluteOffset.y)
-    this.labelShape.bounds = new mxRectangle(
-      Math.round(this.label.x - b.width / 2),
-      Math.round(this.label.y - b.height / 2),
-      b.width,
-      b.height
-    )
+    this.labelShape.bounds = new mxRectangle(Math.round(this.label.x - b.width / 2), Math.round(this.label.y - b.height / 2), b.width, b.height)
 
     // Shows or hides the label handle depending on the label
     var lab = this.graph.getLabel(cell)
     this.labelShape.visible =
-      lab != null &&
-      lab.length > 0 &&
-      this.graph.isCellEditable(this.state.cell) &&
-      this.graph.isLabelMovable(cell) &&
-      this.isHandlesVisible()
+      lab != null && lab.length > 0 && this.graph.isCellEditable(this.state.cell) && this.graph.isLabelMovable(cell) && this.isHandlesVisible()
   }
 
   if (this.bends != null && this.bends.length > 0) {
@@ -2097,12 +1977,7 @@ mxEdgeHandler.prototype.redrawHandles = function () {
     var y0 = p0.y
 
     b = this.bends[0].bounds
-    this.bends[0].bounds = new mxRectangle(
-      Math.floor(x0 - b.width / 2),
-      Math.floor(y0 - b.height / 2),
-      b.width,
-      b.height
-    )
+    this.bends[0].bounds = new mxRectangle(Math.floor(x0 - b.width / 2), Math.floor(y0 - b.height / 2), b.width, b.height)
     this.bends[0].fill = this.getHandleFillColor(0)
     this.bends[0].redraw()
 
@@ -2110,8 +1985,7 @@ mxEdgeHandler.prototype.redrawHandles = function () {
       this.checkLabelHandle(this.bends[0].bounds)
     }
 
-    this.bends[0].node.style.visibility =
-      !this.isHandlesVisible() || !this.isTerminalHandleVisible(true) ? 'hidden' : ''
+    this.bends[0].node.style.visibility = !this.isHandlesVisible() || !this.isTerminalHandleVisible(true) ? 'hidden' : ''
 
     var pe = this.abspoints[n]
     var xn = pe.x
@@ -2119,12 +1993,7 @@ mxEdgeHandler.prototype.redrawHandles = function () {
 
     var bn = this.bends.length - 1
     b = this.bends[bn].bounds
-    this.bends[bn].bounds = new mxRectangle(
-      Math.floor(xn - b.width / 2),
-      Math.floor(yn - b.height / 2),
-      b.width,
-      b.height
-    )
+    this.bends[bn].bounds = new mxRectangle(Math.floor(xn - b.width / 2), Math.floor(yn - b.height / 2), b.width, b.height)
     this.bends[bn].fill = this.getHandleFillColor(bn)
     this.bends[bn].redraw()
 
@@ -2132,8 +2001,7 @@ mxEdgeHandler.prototype.redrawHandles = function () {
       this.checkLabelHandle(this.bends[bn].bounds)
     }
 
-    this.bends[bn].node.style.visibility =
-      !this.isHandlesVisible() || !this.isTerminalHandleVisible(false) ? 'hidden' : ''
+    this.bends[bn].node.style.visibility = !this.isHandlesVisible() || !this.isTerminalHandleVisible(false) ? 'hidden' : ''
     this.redrawInnerBends(p0, pe)
   }
 
@@ -2146,12 +2014,7 @@ mxEdgeHandler.prototype.redrawHandles = function () {
         var b = this.virtualBends[i]
         var x = last.x + (pt.x - last.x) / 2
         var y = last.y + (pt.y - last.y) / 2
-        b.bounds = new mxRectangle(
-          Math.floor(x - b.bounds.width / 2),
-          Math.floor(y - b.bounds.height / 2),
-          b.bounds.width,
-          b.bounds.height
-        )
+        b.bounds = new mxRectangle(Math.floor(x - b.bounds.width / 2), Math.floor(y - b.bounds.height / 2), b.bounds.width, b.bounds.height)
         b.redraw()
         mxUtils.setOpacity(b.node, this.virtualBendOpacity)
         last = pt
@@ -2177,11 +2040,7 @@ mxEdgeHandler.prototype.redrawHandles = function () {
 
       // Hides custom handles during text editing
       this.customHandles[i].shape.node.style.visibility =
-        this.graph.isEditing() ||
-        !this.isHandlesVisible() ||
-        !this.isCustomHandleVisible(this.customHandles[i])
-          ? 'hidden'
-          : ''
+        this.graph.isEditing() || !this.isHandlesVisible() || !this.isCustomHandleVisible(this.customHandles[i]) ? 'hidden' : ''
     }
   }
 }
@@ -2246,20 +2105,11 @@ mxEdgeHandler.prototype.redrawInnerBends = function (p0, pe) {
         var y = this.abspoints[i].y
 
         var b = this.bends[i].bounds
-        this.bends[i].bounds = new mxRectangle(
-          Math.round(x - b.width / 2),
-          Math.round(y - b.height / 2),
-          b.width,
-          b.height
-        )
+        this.bends[i].bounds = new mxRectangle(Math.round(x - b.width / 2), Math.round(y - b.height / 2), b.width, b.height)
 
         if (this.manageLabelHandle) {
           this.checkLabelHandle(this.bends[i].bounds)
-        } else if (
-          this.handleImage == null &&
-          this.labelShape.visible &&
-          mxUtils.intersects(this.bends[i].bounds, this.labelShape.bounds)
-        ) {
+        } else if (this.handleImage == null && this.labelShape.visible && mxUtils.intersects(this.bends[i].bounds, this.labelShape.bounds)) {
           w = mxConstants.HANDLE_SIZE + 3
           h = mxConstants.HANDLE_SIZE + 3
           this.bends[i].bounds = new mxRectangle(Math.round(x - w / 2), Math.round(y - h / 2), w, h)
@@ -2304,12 +2154,7 @@ mxEdgeHandler.prototype.drawPreview = function () {
   try {
     if (this.isLabel) {
       var b = this.labelShape.bounds
-      var bounds = new mxRectangle(
-        Math.round(this.label.x - b.width / 2),
-        Math.round(this.label.y - b.height / 2),
-        b.width,
-        b.height
-      )
+      var bounds = new mxRectangle(Math.round(this.label.x - b.width / 2), Math.round(this.label.y - b.height / 2), b.width, b.height)
 
       if (!this.labelShape.bounds.equals(bounds)) {
         this.labelShape.bounds = bounds
@@ -2342,8 +2187,7 @@ mxEdgeHandler.prototype.drawPreview = function () {
 mxEdgeHandler.prototype.isHandlesVisible = function () {
   return (
     !this.graph.isCellLocked(this.state.cell) &&
-    (mxGraphHandler.prototype.maxCells <= 0 ||
-      this.graph.getSelectionCount() <= mxGraphHandler.prototype.maxCells)
+    (mxGraphHandler.prototype.maxCells <= 0 || this.graph.getSelectionCount() <= mxGraphHandler.prototype.maxCells)
   )
 }
 
@@ -2400,11 +2244,7 @@ mxEdgeHandler.prototype.refresh = function () {
       this.labelShape = this.createLabelShape()
 
       // Puts label node on top of bends
-      if (
-        this.labelShape != null &&
-        this.labelShape.node != null &&
-        this.labelShape.node.parentNode != null
-      ) {
+      if (this.labelShape != null && this.labelShape.node != null && this.labelShape.node.parentNode != null) {
         this.labelShape.node.parentNode.appendChild(this.labelShape.node)
       }
     }

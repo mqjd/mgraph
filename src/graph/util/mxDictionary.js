@@ -1,4 +1,4 @@
-import mxObjectIdentity from "./mxObjectIdentity"
+import mxObjectIdentity from './mxObjectIdentity'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder

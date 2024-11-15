@@ -169,9 +169,7 @@ mxPopupMenu.prototype.setEnabled = function (enabled) {
  * me - <mxMouseEvent> that represents the mouse event.
  */
 mxPopupMenu.prototype.isPopupTrigger = function (me) {
-  return (
-    me.isPopupTrigger() || (this.useLeftButtonForPopup && mxEvent.isLeftMouseButton(me.getEvent()))
-  )
+  return me.isPopupTrigger() || (this.useLeftButtonForPopup && mxEvent.isLeftMouseButton(me.getEvent()))
 }
 
 /**
@@ -195,16 +193,7 @@ mxPopupMenu.prototype.isPopupTrigger = function (me) {
  * Default is true.
  * noHover - Optional boolean to disable hover state.
  */
-mxPopupMenu.prototype.addItem = function (
-  title,
-  image,
-  funct,
-  parent,
-  iconCls,
-  enabled,
-  active,
-  noHover
-) {
+mxPopupMenu.prototype.addItem = function (title, image, funct, parent, iconCls, enabled, active, noHover) {
   parent = parent || this
   this.itemCount++
 

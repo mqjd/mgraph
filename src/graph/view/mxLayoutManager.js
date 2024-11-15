@@ -2,15 +2,7 @@ import mxUtils from '../util/mxUtils'
 import mxEventSource from '../util/mxEventSource'
 import mxEvent from '../util/mxEvent'
 
-import {
-  mxRootChange,
-  mxChildChange,
-  mxValueChange,
-  mxTerminalChange,
-  mxGeometryChange,
-  mxVisibleChange,
-  mxStyleChange
-} from '../model/mxGraphModel'
+import { mxRootChange, mxChildChange, mxValueChange, mxTerminalChange, mxGeometryChange, mxVisibleChange, mxStyleChange } from '../model/mxGraphModel'
 
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
@@ -65,11 +57,7 @@ function mxLayoutManager(graph) {
   // Notifies the layout of a move operation inside a parent
   this.resizeHandler = mxUtils.bind(this, function (sender, evt) {
     if (this.isEnabled()) {
-      this.cellsResized(
-        evt.getProperty('cells'),
-        evt.getProperty('bounds'),
-        evt.getProperty('previous')
-      )
+      this.cellsResized(evt.getProperty('cells'), evt.getProperty('bounds'), evt.getProperty('previous'))
     }
   })
 
@@ -255,11 +243,7 @@ mxLayoutManager.prototype.beforeUndo = function (undoableEdit) {
  */
 mxLayoutManager.prototype.cellsMoved = function (cells, evt) {
   if (cells != null && evt != null) {
-    var point = mxUtils.convertPoint(
-      this.getGraph().container,
-      mxEvent.getClientX(evt),
-      mxEvent.getClientY(evt)
-    )
+    var point = mxUtils.convertPoint(this.getGraph().container, mxEvent.getClientX(evt), mxEvent.getClientY(evt))
     var model = this.getGraph().getModel()
 
     for (var i = 0; i < cells.length; i++) {

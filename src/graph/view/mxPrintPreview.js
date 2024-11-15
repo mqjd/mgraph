@@ -118,17 +118,7 @@
  * pageSelector - Optional boolean that specifies if the page selector
  * should appear in the window with the print preview. Default is true.
  */
-function mxPrintPreview(
-  graph,
-  scale,
-  pageFormat,
-  border,
-  x0,
-  y0,
-  borderColor,
-  title,
-  pageSelector
-) {
+function mxPrintPreview(graph, scale, pageFormat, border, x0, y0, borderColor, title, pageSelector) {
   this.graph = graph
   this.scale = scale != null ? scale : 1 / graph.pageScale
   this.border = border != null ? border : 0
@@ -410,17 +400,7 @@ mxPrintPreview.prototype.getDoctype = function () {
  *
  * Adds the given graph to the existing print preview.
  */
-mxPrintPreview.prototype.appendGraph = function (
-  graph,
-  scale,
-  x0,
-  y0,
-  forcePageBreaks,
-  keepOpen,
-  id,
-  pageFormat,
-  cells
-) {
+mxPrintPreview.prototype.appendGraph = function (graph, scale, x0, y0, forcePageBreaks, keepOpen, id, pageFormat, cells) {
   this.graph = graph
   this.scale = scale != null ? scale : 1 / graph.pageScale
   this.x0 = x0
@@ -436,8 +416,7 @@ mxPrintPreview.prototype.appendGraph = function (
 mxPrintPreview.prototype.getPageClassCss = function (pageClass, pageFormat) {
   var pm = this.pageMargin
   var ppi = this.pixelsPerInch
-  var size =
-    (pageFormat.width / ppi).toFixed(2) + 'in ' + (pageFormat.height / ppi).toFixed(2) + 'in'
+  var size = (pageFormat.width / ppi).toFixed(2) + 'in ' + (pageFormat.height / ppi).toFixed(2) + 'in'
 
   var css =
     '@page ' +
@@ -464,14 +443,7 @@ mxPrintPreview.prototype.getPageClassCss = function (pageClass, pageFormat) {
     '}\n'
 
   if (!mxClient.IS_SF) {
-    css +=
-      '.' +
-      pageClass +
-      ' > svg {\n' +
-      '  margin: ' +
-      mxUtils.htmlEntities((pm / ppi).toFixed(2)) +
-      'in;\n' +
-      '}\n'
+    css += '.' + pageClass + ' > svg {\n' + '  margin: ' + mxUtils.htmlEntities((pm / ppi).toFixed(2)) + 'in;\n' + '}\n'
   }
 
   return css
@@ -489,15 +461,7 @@ mxPrintPreview.prototype.getPageClassCss = function (pageClass, pageFormat) {
  * targetWindow - Optional window that should be used for rendering. If
  * this is specified then no HEAD tag, CSS and BODY tag will be written.
  */
-mxPrintPreview.prototype.open = function (
-  css,
-  targetWindow,
-  forcePageBreaks,
-  keepOpen,
-  id,
-  pageFormat,
-  cells
-) {
+mxPrintPreview.prototype.open = function (css, targetWindow, forcePageBreaks, keepOpen, id, pageFormat, cells) {
   var div = null
 
   try {
@@ -555,9 +519,7 @@ mxPrintPreview.prototype.open = function (
     }
 
     // Computes the horizontal and vertical page count
-    var bounds = mxRectangle.fromRectangle(
-      cells != null ? this.graph.getBoundingBox(cells) : this.graph.getGraphBounds()
-    )
+    var bounds = mxRectangle.fromRectangle(cells != null ? this.graph.getBoundingBox(cells) : this.graph.getGraphBounds())
     var currentScale = this.graph.getView().getScale()
     var sc = currentScale / this.scale
     var tr = this.graph.getView().getTranslate()
@@ -598,10 +560,7 @@ mxPrintPreview.prototype.open = function (
       }
 
       pageClass = mxUtils.htmlEntities(
-        'gePageFormat-' +
-          String(pageFormat.width).replaceAll('.', '_') +
-          '-' +
-          String(pageFormat.height).replaceAll('.', '_')
+        'gePageFormat-' + String(pageFormat.width).replaceAll('.', '_') + '-' + String(pageFormat.height).replaceAll('.', '_')
       )
 
       if (this.pageFormatClass[pageClass] == null) {
@@ -645,22 +604,14 @@ mxPrintPreview.prototype.open = function (
     // Appends each page to the page output for printing, making
     // sure there will be a page break after each page (ie. div)
     for (var i = 0; i < vpages; i++) {
-      var dy =
-        (i * availableHeight) / this.scale -
-        this.y0 / this.scale +
-        (bounds.y - tr.y * currentScale) / currentScale -
-        i
+      var dy = (i * availableHeight) / this.scale - this.y0 / this.scale + (bounds.y - tr.y * currentScale) / currentScale - i
 
       for (var j = 0; j < hpages; j++) {
         if (this.wnd == null) {
           return null
         }
 
-        var dx =
-          (j * availableWidth) / this.scale -
-          this.x0 / this.scale +
-          (bounds.x - tr.x * currentScale) / currentScale -
-          j
+        var dx = (j * availableWidth) / this.scale - this.x0 / this.scale + (bounds.x - tr.x * currentScale) / currentScale - j
         var pageNum = i * hpages + j + 1
         div = doc.createElement('div')
         div.style.display = 'flex'
@@ -766,16 +717,10 @@ mxPrintPreview.prototype.writeHead = function (doc, css) {
 
   // Sets printer defaults
   if (this.addPageCss && pf != null) {
-    var size =
-      (pf.width / this.pixelsPerInch).toFixed(2) +
-      'in ' +
-      (pf.height / this.pixelsPerInch).toFixed(2) +
-      'in'
+    var size = (pf.width / this.pixelsPerInch).toFixed(2) + 'in ' + (pf.height / this.pixelsPerInch).toFixed(2) + 'in'
 
     doc.writeln('@page {')
-    doc.writeln(
-      '  margin: ' + mxUtils.htmlEntities((this.pageMargin / this.pixelsPerInch).toFixed(2)) + 'in;'
-    )
+    doc.writeln('  margin: ' + mxUtils.htmlEntities((this.pageMargin / this.pixelsPerInch).toFixed(2)) + 'in;')
     doc.writeln('  size: ' + mxUtils.htmlEntities(size) + ';')
     doc.writeln('}')
   }
@@ -876,10 +821,7 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
     if (this.useCssTransforms()) {
       var g = view.getDrawPane().parentNode
       g.setAttribute('transformOrigin', '0 0')
-      g.setAttribute(
-        'transform',
-        'scale(' + scale + ',' + scale + ')' + 'translate(' + dx + ',' + dy + ')'
-      )
+      g.setAttribute('transform', 'scale(' + scale + ',' + scale + ')' + 'translate(' + dx + ',' + dy + ')')
 
       scale = 1
       dx = 0
@@ -916,12 +858,7 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
     var bg = this.getBackgroundImage()
 
     if (bg != null) {
-      var bounds = new mxRectangle(
-        Math.round(dx * s + bg.x),
-        Math.round(dy * s + bg.y),
-        bg.width - 1,
-        bg.height - 1
-      )
+      var bounds = new mxRectangle(Math.round(dx * s + bg.x), Math.round(dy * s + bg.y), bg.width - 1, bg.height - 1)
 
       var bgImg = new mxImageShape(bounds, bg.src)
       bgImg.dialect = this.graph.dialect
@@ -950,12 +887,7 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
 
           // Stops rendering if outside clip for speedup but ignores
           // edge labels where width and height is set to 0
-          if (
-            bbox != null &&
-            bbox.width > 0 &&
-            bbox.height > 0 &&
-            !mxUtils.intersects(tempClip, bbox)
-          ) {
+          if (bbox != null && bbox.width > 0 && bbox.height > 0 && !mxUtils.intersects(tempClip, bbox)) {
             return
           }
         }
@@ -1020,13 +952,7 @@ mxPrintPreview.prototype.addGraphFragment = function (dx, dy, scale, pageNumber,
         tmp.style.maxHeight = '100%'
         tmp.style.overflow = mxClient.IS_SF ? 'hidden' : 'clip'
         tmp.style.overflowClipMargin = this.overflowClipMargin
-        tmp.setAttribute(
-          'viewBox',
-          '0 0 ' +
-            (mxClient.IS_SF
-              ? clip.width + 1 + ' ' + (clip.height + 1)
-              : clip.width - 1 + ' ' + (clip.height - 1))
-        )
+        tmp.setAttribute('viewBox', '0 0 ' + (mxClient.IS_SF ? clip.width + 1 + ' ' + (clip.height + 1) : clip.width - 1 + ' ' + (clip.height - 1)))
 
         this.addGrid(tmp, clip)
 
@@ -1091,10 +1017,7 @@ mxPrintPreview.prototype.addGrid = function (svg, clip) {
 mxPrintPreview.prototype.createSvgGrid = function (svg, clip) {
   var size = this.gridSize
   var svgDoc = svg.ownerDocument
-  var group =
-    svgDoc.createElementNS != null
-      ? svgDoc.createElementNS(mxConstants.NS_SVG, 'g')
-      : svgDoc.createElement('g')
+  var group = svgDoc.createElementNS != null ? svgDoc.createElementNS(mxConstants.NS_SVG, 'g') : svgDoc.createElement('g')
 
   var xp = mxUtils.mod(Math.ceil(Math.round(clip.x) / size), this.gridSteps)
   var x = mxUtils.mod(size - mxUtils.mod(Math.round(clip.x), size), size)
@@ -1109,10 +1032,7 @@ mxPrintPreview.prototype.createSvgGrid = function (svg, clip) {
   var hlines = Math.ceil(clip.height / size)
 
   for (var i = 0; i < hlines; i++) {
-    var line =
-      svgDoc.createElementNS != null
-        ? svgDoc.createElementNS(mxConstants.NS_SVG, 'line')
-        : svgDoc.createElement('line')
+    var line = svgDoc.createElementNS != null ? svgDoc.createElementNS(mxConstants.NS_SVG, 'line') : svgDoc.createElement('line')
     line.setAttribute('x1', 0)
     line.setAttribute('y1', i * size + y)
     line.setAttribute('x2', clip.width)
@@ -1126,10 +1046,7 @@ mxPrintPreview.prototype.createSvgGrid = function (svg, clip) {
   var vlines = Math.ceil(clip.width / size)
 
   for (var i = 0; i < vlines; i++) {
-    var line =
-      svgDoc.createElementNS != null
-        ? svgDoc.createElementNS(mxConstants.NS_SVG, 'line')
-        : svgDoc.createElement('line')
+    var line = svgDoc.createElementNS != null ? svgDoc.createElementNS(mxConstants.NS_SVG, 'line') : svgDoc.createElement('line')
     line.setAttribute('x1', i * size + x)
     line.setAttribute('y1', 0)
     line.setAttribute('x2', i * size + x)

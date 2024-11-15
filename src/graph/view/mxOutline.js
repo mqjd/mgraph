@@ -268,10 +268,7 @@ mxOutline.prototype.addGestureListeners = function (svg) {
         this.source.container.scrollLeft = x0 + (mxEvent.getClientX(evt) - p0.x) * s
         this.source.container.scrollTop = y0 + (mxEvent.getClientY(evt) - p0.y) * s
       } else {
-        this.source.panGraph(
-          (p0.x - mxEvent.getClientX(evt)) * s,
-          (p0.y - mxEvent.getClientY(evt)) * s
-        )
+        this.source.panGraph((p0.x - mxEvent.getClientX(evt)) * s, (p0.y - mxEvent.getClientY(evt)) * s)
       }
 
       mxEvent.consume(evt)
@@ -319,10 +316,7 @@ mxOutline.prototype.updateSvg = function () {
   }
 
   var b = this.getViewBox()
-  this.svg.setAttribute(
-    'viewBox',
-    Math.round(b.x) + ' ' + Math.round(b.y) + ' ' + Math.round(b.width) + ' ' + Math.round(b.height)
-  )
+  this.svg.setAttribute('viewBox', Math.round(b.x) + ' ' + Math.round(b.y) + ' ' + Math.round(b.width) + ' ' + Math.round(b.height))
 
   var bg = this.source.background
   this.svg.style.backgroundColor = bg == mxConstants.NONE ? '' : bg

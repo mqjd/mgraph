@@ -7,14 +7,7 @@
  *
  * Creates a temporary set of cell states.
  */
-function mxTemporaryCellStates(
-  view,
-  scale,
-  cells,
-  isCellVisibleFn,
-  getLinkForCellState,
-  getLinkTargetForCellState
-) {
+function mxTemporaryCellStates(view, scale, cells, isCellVisibleFn, getLinkForCellState, getLinkTargetForCellState) {
   scale = scale != null ? scale : 1
   this.view = view
 
@@ -36,10 +29,7 @@ function mxTemporaryCellStates(
         var link = getLinkForCellState(state)
 
         if (link != null) {
-          c.setLink(
-            link,
-            getLinkTargetForCellState != null ? getLinkTargetForCellState(state) : null
-          )
+          c.setLink(link, getLinkTargetForCellState != null ? getLinkTargetForCellState(state) : null)
         }
 
         oldPaint.apply(this, arguments)

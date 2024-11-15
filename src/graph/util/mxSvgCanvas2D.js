@@ -146,8 +146,7 @@ mxUtils.extend(mxSvgCanvas2D, mxAbstractCanvas2D)
  * Capability check for DOM parser and checks if base tag is used.
  */
 ;(function () {
-  mxSvgCanvas2D.prototype.useDomParser =
-    !mxClient.IS_IE && typeof DOMParser === 'function' && typeof XMLSerializer === 'function'
+  mxSvgCanvas2D.prototype.useDomParser = !mxClient.IS_IE && typeof DOMParser === 'function' && typeof XMLSerializer === 'function'
 
   if (mxSvgCanvas2D.prototype.useDomParser) {
     // Checks using a generic test text if the parsing actually works. This is a workaround
@@ -162,11 +161,7 @@ mxUtils.extend(mxSvgCanvas2D, mxAbstractCanvas2D)
 
   // Activates workaround for gradient ID resolution if base tag is used.
   mxSvgCanvas2D.prototype.useAbsoluteIds =
-    !mxClient.IS_CHROMEAPP &&
-    !mxClient.IS_IE &&
-    !mxClient.IS_IE11 &&
-    !mxClient.IS_EDGE &&
-    document.getElementsByTagName('base').length > 0
+    !mxClient.IS_CHROMEAPP && !mxClient.IS_IE && !mxClient.IS_IE11 && !mxClient.IS_EDGE && document.getElementsByTagName('base').length > 0
 })()
 
 /**
@@ -350,11 +345,7 @@ mxSvgCanvas2D.prototype.createStyle = function (x) {
   style.setAttribute('type', 'text/css')
   mxUtils.write(
     style,
-    'svg{font-family:' +
-      mxConstants.DEFAULT_FONTFAMILY +
-      ';font-size:' +
-      mxConstants.DEFAULT_FONTSIZE +
-      ';fill:none;stroke-miterlimit:10}'
+    'svg{font-family:' + mxConstants.DEFAULT_FONTFAMILY + ';font-size:' + mxConstants.DEFAULT_FONTSIZE + ';fill:none;stroke-miterlimit:10}'
   )
 
   return style
@@ -384,21 +375,7 @@ mxSvgCanvas2D.prototype.createElement = function (tagName, namespace) {
  *
  * Returns the alternate text string for the given foreignObject.
  */
-mxSvgCanvas2D.prototype.getAlternateText = function (
-  fo,
-  x,
-  y,
-  w,
-  h,
-  str,
-  align,
-  valign,
-  wrap,
-  format,
-  overflow,
-  clip,
-  rotation
-) {
+mxSvgCanvas2D.prototype.getAlternateText = function (fo, x, y, w, h, str, align, valign, wrap, format, overflow, clip, rotation) {
   return str != null ? this.foAltText : null
 }
 
@@ -407,46 +384,13 @@ mxSvgCanvas2D.prototype.getAlternateText = function (
  *
  * Returns the alternate content for the given foreignObject.
  */
-mxSvgCanvas2D.prototype.createAlternateContent = function (
-  fo,
-  x,
-  y,
-  w,
-  h,
-  str,
-  align,
-  valign,
-  wrap,
-  format,
-  overflow,
-  clip,
-  rotation
-) {
-  var text = this.getAlternateText(
-    fo,
-    x,
-    y,
-    w,
-    h,
-    str,
-    align,
-    valign,
-    wrap,
-    format,
-    overflow,
-    clip,
-    rotation
-  )
+mxSvgCanvas2D.prototype.createAlternateContent = function (fo, x, y, w, h, str, align, valign, wrap, format, overflow, clip, rotation) {
+  var text = this.getAlternateText(fo, x, y, w, h, str, align, valign, wrap, format, overflow, clip, rotation)
   var s = this.state
 
   if (text != null && s.fontSize > 0) {
     var dy = valign == mxConstants.ALIGN_TOP ? 1 : valign == mxConstants.ALIGN_BOTTOM ? 0 : 0.3
-    var anchor =
-      align == mxConstants.ALIGN_RIGHT
-        ? 'end'
-        : align == mxConstants.ALIGN_LEFT
-          ? 'start'
-          : 'middle'
+    var anchor = align == mxConstants.ALIGN_RIGHT ? 'end' : align == mxConstants.ALIGN_LEFT ? 'start' : 'middle'
 
     var alt = this.createElement('text')
     alt.setAttribute('x', Math.round(x + s.dx))
@@ -588,9 +532,7 @@ mxSvgCanvas2D.prototype.getSvgGradient = function (start, end, alpha1, alpha2, d
  * Creates the given SVG gradient.
  */
 mxSvgCanvas2D.prototype.createSvgGradient = function (start, end, alpha1, alpha2, direction) {
-  var gradient = this.createElement(
-    direction == mxConstants.DIRECTION_RADIAL ? 'radialGradient' : 'linearGradient'
-  )
+  var gradient = this.createElement(direction == mxConstants.DIRECTION_RADIAL ? 'radialGradient' : 'linearGradient')
   gradient.setAttribute('x1', '0%')
   gradient.setAttribute('y1', '0%')
   gradient.setAttribute('x2', '0%')
@@ -764,10 +706,7 @@ mxSvgCanvas2D.prototype.createZigZagLinePattern = function (strokeSize, color, s
   var path = this.createElement('path')
   var s1_4 = size / 4,
     s3_4 = (3 * size) / 4
-  path.setAttribute(
-    'd',
-    'M ' + s1_4 + ' 0 L ' + s3_4 + ' 0 L ' + s1_4 + ' ' + size + ' L ' + s3_4 + ' ' + size
-  )
+  path.setAttribute('d', 'M ' + s1_4 + ' 0 L ' + s3_4 + ' 0 L ' + s1_4 + ' ' + size + ' L ' + s3_4 + ' ' + size)
   path.setAttribute('stroke', color) //TODO Is Gradient Color possible?
   path.setAttribute('stroke-width', sw)
   path.setAttribute('fill', 'none')
@@ -892,9 +831,7 @@ mxSvgCanvas2D.prototype.addNode = function (filled, stroked) {
     // Adds stroke tolerance
     if (
       this.strokeTolerance > 0 &&
-      (!filled ||
-        s.fillColor == null ||
-        (!mxShape.forceFilledPointerEvents && !this.pointerEvents && this.originalRoot == null))
+      (!filled || s.fillColor == null || (!mxShape.forceFilledPointerEvents && !this.pointerEvents && this.originalRoot == null))
     ) {
       this.addTolerance(node)
     }
@@ -935,16 +872,7 @@ mxSvgCanvas2D.prototype.getShadowFilter = function () {
         }
 
         tmp =
-          tok[0] +
-          '(' +
-          arg(0) +
-          ' ' +
-          arg(1) +
-          ' ' +
-          arg(2) +
-          ' ' +
-          args.slice(3).join(' ') +
-          (tok.length > 2 ? '(' + tok.slice(2).join('(') : '')
+          tok[0] + '(' + arg(0) + ' ' + arg(1) + ' ' + arg(2) + ' ' + args.slice(3).join(' ') + (tok.length > 2 ? '(' + tok.slice(2).join('(') : '')
       }
     }
   }
@@ -979,13 +907,7 @@ mxSvgCanvas2D.prototype.updateFill = function () {
   if (s.fillColor != null) {
     if (s.gradientColor != null && s.gradientColor != mxConstants.NONE) {
       isGradient = true
-      var id = this.getSvgGradient(
-        String(s.fillColor),
-        String(s.gradientColor),
-        s.gradientFillAlpha,
-        s.gradientAlpha,
-        s.gradientDirection
-      )
+      var id = this.getSvgGradient(String(s.fillColor), String(s.gradientColor), s.gradientFillAlpha, s.gradientAlpha, s.gradientDirection)
 
       if (this.root.ownerDocument == document && this.useAbsoluteIds) {
         // Workaround for no fill with base tag in page (escape brackets)
@@ -1021,10 +943,7 @@ mxSvgCanvas2D.prototype.updateFill = function () {
  * Returns the current stroke width (>= 1), ie. max(1, this.format(this.state.strokeWidth * this.state.scale)).
  */
 mxSvgCanvas2D.prototype.getCurrentStrokeWidth = function () {
-  return Math.max(
-    this.minStrokeWidth,
-    Math.max(0.01, this.format(this.state.strokeWidth * this.state.scale))
-  )
+  return Math.max(this.minStrokeWidth, Math.max(0.01, this.format(this.state.strokeWidth * this.state.scale)))
 }
 
 /**
@@ -1052,10 +971,7 @@ mxSvgCanvas2D.prototype.updateStroke = function () {
   }
 
   if (s.dashed) {
-    this.node.setAttribute(
-      'stroke-dasharray',
-      this.createDashPattern((s.fixDash ? 1 : s.strokeWidth) * s.scale)
-    )
+    this.node.setAttribute('stroke-dasharray', this.createDashPattern((s.fixDash ? 1 : s.strokeWidth) * s.scale))
   }
 }
 
@@ -1146,10 +1062,7 @@ mxSvgCanvas2D.prototype.createShadow = function (node) {
   var s = this.state
 
   // Firefox uses transparent for no fill in ellipses
-  if (
-    shadow.getAttribute('fill') != 'none' &&
-    (!mxClient.IS_FF || shadow.getAttribute('fill') != 'transparent')
-  ) {
+  if (shadow.getAttribute('fill') != 'none' && (!mxClient.IS_FF || shadow.getAttribute('fill') != 'transparent')) {
     shadow.setAttribute('fill', s.shadowColor)
   }
 
@@ -1159,12 +1072,7 @@ mxSvgCanvas2D.prototype.createShadow = function (node) {
 
   shadow.setAttribute(
     'transform',
-    'translate(' +
-      this.format(s.shadowDx * s.scale) +
-      ',' +
-      this.format(s.shadowDy * s.scale) +
-      ')' +
-      (s.transform || '')
+    'translate(' + this.format(s.shadowDx * s.scale) + ',' + this.format(s.shadowDy * s.scale) + ')' + (s.transform || '')
   )
   shadow.setAttribute('opacity', s.shadowAlpha)
 
@@ -1195,10 +1103,7 @@ mxSvgCanvas2D.prototype.setLink = function (link, target) {
 
     // Workaround for implicit namespace handling in HTML5 export, IE adds NS1 namespace so use code below
     // in all IE versions except quirks mode. KNOWN: Adds xlink namespace to each image tag in output.
-    if (
-      node.setAttributeNS == null ||
-      (this.root.ownerDocument != document && document.documentMode == null)
-    ) {
+    if (node.setAttributeNS == null || (this.root.ownerDocument != document && document.documentMode == null)) {
       node.setAttribute('xlink:href', link)
     } else {
       node.setAttributeNS(mxConstants.NS_XLINK, 'xlink:href', link)
@@ -1263,8 +1168,7 @@ mxSvgCanvas2D.prototype.rotate = function (theta, flipH, flipV, cx, cy) {
     }
 
     if (theta != 0) {
-      s.transform +=
-        'rotate(' + this.format(theta) + ',' + this.format(cx) + ',' + this.format(cy) + ')'
+      s.transform += 'rotate(' + this.format(theta) + ',' + this.format(cx) + ',' + this.format(cy) + ')'
     }
 
     s.rotation = s.rotation + theta
@@ -1421,14 +1325,8 @@ mxSvgCanvas2D.prototype.processClipPath = function (node, clipPath, bounds) {
 
     if (bbox != null) {
       var s = this.state
-      node.setAttribute(
-        'x',
-        bounds.x * s.scale - (bounds.width * s.scale * bbox.x) / bbox.width + this.imageOffset
-      )
-      node.setAttribute(
-        'y',
-        bounds.y * s.scale - (bounds.height * s.scale * bbox.y) / bbox.height + this.imageOffset
-      )
+      node.setAttribute('x', bounds.x * s.scale - (bounds.width * s.scale * bbox.x) / bbox.width + this.imageOffset)
+      node.setAttribute('y', bounds.y * s.scale - (bounds.height * s.scale * bbox.y) / bbox.height + this.imageOffset)
       node.setAttribute('width', (bounds.width * s.scale) / bbox.width)
       node.setAttribute('height', (bounds.height * s.scale) / bbox.height)
     }
@@ -1552,35 +1450,9 @@ mxSvgCanvas2D.prototype.createDiv = function (str) {
 /**
  * Updates existing DOM nodes for text rendering. LATER: Merge common parts with text function below.
  */
-mxSvgCanvas2D.prototype.updateText = function (
-  x,
-  y,
-  w,
-  h,
-  align,
-  valign,
-  wrap,
-  overflow,
-  clip,
-  rotation,
-  dir,
-  node
-) {
+mxSvgCanvas2D.prototype.updateText = function (x, y, w, h, align, valign, wrap, overflow, clip, rotation, dir, node) {
   if (node != null && node.firstChild != null && node.firstChild.firstChild != null) {
-    this.updateTextNodes(
-      x,
-      y,
-      w,
-      h,
-      align,
-      valign,
-      wrap,
-      overflow,
-      clip,
-      rotation,
-      dir,
-      node.firstChild
-    )
+    this.updateTextNodes(x, y, w, h, align, valign, wrap, overflow, clip, rotation, dir, node.firstChild)
   }
 }
 
@@ -1589,23 +1461,7 @@ mxSvgCanvas2D.prototype.updateText = function (
  *
  * Creates a foreignObject for the given string and adds it to the given root.
  */
-mxSvgCanvas2D.prototype.addForeignObject = function (
-  x,
-  y,
-  w,
-  h,
-  str,
-  align,
-  valign,
-  wrap,
-  format,
-  overflow,
-  clip,
-  rotation,
-  dir,
-  div,
-  root
-) {
+mxSvgCanvas2D.prototype.addForeignObject = function (x, y, w, h, str, align, valign, wrap, format, overflow, clip, rotation, dir, div, root) {
   var group = this.addTitle(this.createElement('g'))
   var fo = this.createElement('foreignObject')
 
@@ -1624,21 +1480,7 @@ mxSvgCanvas2D.prototype.addForeignObject = function (
 
   // Alternate content if foreignObject not supported
   if (this.root.ownerDocument != document) {
-    var alt = this.createAlternateContent(
-      fo,
-      x,
-      y,
-      w,
-      h,
-      str,
-      align,
-      valign,
-      wrap,
-      format,
-      overflow,
-      clip,
-      rotation
-    )
+    var alt = this.createAlternateContent(fo, x, y, w, h, str, align, valign, wrap, format, overflow, clip, rotation)
 
     if (alt != null) {
       fo.setAttribute('requiredFeatures', 'http://www.w3.org/TR/SVG11/feature#Extensibility')
@@ -1655,20 +1497,7 @@ mxSvgCanvas2D.prototype.addForeignObject = function (
 /**
  * Updates existing DOM nodes for text rendering.
  */
-mxSvgCanvas2D.prototype.updateTextNodes = function (
-  x,
-  y,
-  w,
-  h,
-  align,
-  valign,
-  wrap,
-  overflow,
-  clip,
-  rotation,
-  dir,
-  g
-) {
+mxSvgCanvas2D.prototype.updateTextNodes = function (x, y, w, h, align, valign, wrap, overflow, clip, rotation, dir, g) {
   var s = this.state.scale
 
   var vertical = dir != null && dir.substring(0, 9) == 'vertical-'
@@ -1688,25 +1517,10 @@ mxSvgCanvas2D.prototype.updateTextNodes = function (
             ? 'flex-start'
             : 'flex-end'
           : 'center'
-    justifyContent =
-      valign == mxConstants.ALIGN_TOP
-        ? 'flex-start'
-        : valign == mxConstants.ALIGN_BOTTOM
-          ? 'flex-end'
-          : 'center'
+    justifyContent = valign == mxConstants.ALIGN_TOP ? 'flex-start' : valign == mxConstants.ALIGN_BOTTOM ? 'flex-end' : 'center'
   } else {
-    alignItems =
-      valign == mxConstants.ALIGN_TOP
-        ? 'flex-start'
-        : valign == mxConstants.ALIGN_BOTTOM
-          ? 'flex-end'
-          : 'center'
-    justifyContent =
-      align == mxConstants.ALIGN_LEFT
-        ? 'flex-start'
-        : align == mxConstants.ALIGN_RIGHT
-          ? 'flex-end'
-          : 'center'
+    alignItems = valign == mxConstants.ALIGN_TOP ? 'flex-start' : valign == mxConstants.ALIGN_BOTTOM ? 'flex-end' : 'center'
+    justifyContent = align == mxConstants.ALIGN_LEFT ? 'flex-start' : align == mxConstants.ALIGN_RIGHT ? 'flex-end' : 'center'
   }
 
   mxSvgCanvas2D.createCss(
@@ -1743,9 +1557,7 @@ mxSvgCanvas2D.prototype.updateTextNodes = function (
       var box = div.firstChild
       var text = box.firstChild
       var r = (this.rotateHtml ? this.state.rotation : 0) + (rotation != null ? rotation : 0)
-      var t =
-        (this.foOffset != 0 ? 'translate(' + this.foOffset + ' ' + this.foOffset + ')' : '') +
-        (s != 1 ? 'scale(' + s + ')' : '')
+      var t = (this.foOffset != 0 ? 'translate(' + this.foOffset + ' ' + this.foOffset + ')' : '') + (s != 1 ? 'scale(' + s + ')' : '')
 
       this.setCssText(text, block)
       this.setCssText(box, item)
@@ -1756,12 +1568,8 @@ mxSvgCanvas2D.prototype.updateTextNodes = function (
         'color: ' +
           this.state.fontColor +
           '; ' +
-          (this.state.fontBackgroundColor == null
-            ? ''
-            : 'background-color: ' + this.state.fontBackgroundColor + '; ') +
-          (this.state.fontBorderColor == null
-            ? ''
-            : 'border-color: ' + this.state.fontBorderColor + '; ')
+          (this.state.fontBackgroundColor == null ? '' : 'background-color: ' + this.state.fontBackgroundColor + '; ') +
+          (this.state.fontBorderColor == null ? '' : 'border-color: ' + this.state.fontBorderColor + '; ')
       )
 
       // Workaround for clipping in Webkit with scrolling and zoom
@@ -1808,43 +1616,14 @@ mxSvgCanvas2D.prototype.updateTextNodes = function (
 /**
  * Updates existing DOM nodes for text rendering.
  */
-mxSvgCanvas2D.createCss = function (
-  w,
-  h,
-  align,
-  valign,
-  wrap,
-  overflow,
-  clip,
-  dir,
-  bg,
-  border,
-  flex,
-  block,
-  s,
-  callback
-) {
+mxSvgCanvas2D.createCss = function (w, h, align, valign, wrap, overflow, clip, dir, bg, border, flex, block, s, callback) {
   var vertical = dir != null && dir.substring(0, 9) == 'vertical-'
   var item = 'box-sizing: border-box; font-size: 0; '
 
   if (vertical) {
-    item +=
-      'text-align: ' +
-      (valign == mxConstants.ALIGN_TOP
-        ? 'left'
-        : valign == mxConstants.ALIGN_BOTTOM
-          ? 'right'
-          : 'center') +
-      '; '
+    item += 'text-align: ' + (valign == mxConstants.ALIGN_TOP ? 'left' : valign == mxConstants.ALIGN_BOTTOM ? 'right' : 'center') + '; '
   } else {
-    item +=
-      'text-align: ' +
-      (align == mxConstants.ALIGN_LEFT
-        ? 'left'
-        : align == mxConstants.ALIGN_RIGHT
-          ? 'right'
-          : 'center') +
-      '; '
+    item += 'text-align: ' + (align == mxConstants.ALIGN_LEFT ? 'left' : align == mxConstants.ALIGN_RIGHT ? 'right' : 'center') + '; '
   }
 
   var pt = mxUtils.getAlignmentAsPoint(align, valign)
@@ -1944,9 +1723,7 @@ mxSvgCanvas2D.createCss = function (
  */
 mxSvgCanvas2D.prototype.getTextCss = function () {
   var s = this.state
-  var lh = mxConstants.ABSOLUTE_LINE_HEIGHT
-    ? s.fontSize * mxConstants.LINE_HEIGHT + 'px'
-    : mxConstants.LINE_HEIGHT * this.lineHeightCorrection
+  var lh = mxConstants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * mxConstants.LINE_HEIGHT + 'px' : mxConstants.LINE_HEIGHT * this.lineHeightCorrection
 
   var css =
     'display: inline-block; font-size: ' +
@@ -1995,21 +1772,7 @@ mxSvgCanvas2D.prototype.getTextCss = function () {
  * foreignObject is supported and <foEnabled> is true. (This means IE9 and later
  * does currently not support HTML text as part of shapes.)
  */
-mxSvgCanvas2D.prototype.text = function (
-  x,
-  y,
-  w,
-  h,
-  str,
-  align,
-  valign,
-  wrap,
-  format,
-  overflow,
-  clip,
-  rotation,
-  dir
-) {
+mxSvgCanvas2D.prototype.text = function (x, y, w, h, str, align, valign, wrap, format, overflow, clip, rotation, dir) {
   if (this.textEnabled && str != null) {
     rotation = rotation != null ? rotation : 0
 
@@ -2022,39 +1785,10 @@ mxSvgCanvas2D.prototype.text = function (
           div.setAttribute('dir', dir)
         }
 
-        this.addForeignObject(
-          x,
-          y,
-          w,
-          h,
-          str,
-          align,
-          valign,
-          wrap,
-          format,
-          overflow,
-          clip,
-          rotation,
-          dir,
-          div,
-          this.root
-        )
+        this.addForeignObject(x, y, w, h, str, align, valign, wrap, format, overflow, clip, rotation, dir, div, this.root)
       }
     } else {
-      this.plainText(
-        x + this.state.dx,
-        y + this.state.dy,
-        w,
-        h,
-        str,
-        align,
-        valign,
-        wrap,
-        overflow,
-        clip,
-        rotation,
-        dir
-      )
+      this.plainText(x + this.state.dx, y + this.state.dy, w, h, str, align, valign, wrap, overflow, clip, rotation, dir)
     }
   }
 }
@@ -2294,13 +2028,7 @@ mxSvgCanvas2D.prototype.setClip = function (node, c) {
     this.root.appendChild(c)
   }
 
-  if (
-    !mxClient.IS_CHROMEAPP &&
-    !mxClient.IS_IE &&
-    !mxClient.IS_IE11 &&
-    !mxClient.IS_EDGE &&
-    this.root.ownerDocument == document
-  ) {
+  if (!mxClient.IS_CHROMEAPP && !mxClient.IS_IE && !mxClient.IS_IE11 && !mxClient.IS_EDGE && this.root.ownerDocument == document) {
     // Workaround for potential base tag
     var base = this.getBaseUrl().replace(/([\(\)])/g, '\\$1')
     node.setAttribute('clip-path', 'url(' + base + '#' + c.getAttribute('id') + ')')
@@ -2315,20 +2043,7 @@ mxSvgCanvas2D.prototype.setClip = function (node, c) {
  * Paints the given text. Possible values for format are empty string for
  * plain text and html for HTML markup.
  */
-mxSvgCanvas2D.prototype.plainText = function (
-  x,
-  y,
-  w,
-  h,
-  str,
-  align,
-  valign,
-  wrap,
-  overflow,
-  clip,
-  rotation,
-  dir
-) {
+mxSvgCanvas2D.prototype.plainText = function (x, y, w, h, str, align, valign, wrap, overflow, clip, rotation, dir) {
   rotation = rotation != null ? rotation : 0
 
   var s = this.state
@@ -2345,8 +2060,7 @@ mxSvgCanvas2D.prototype.plainText = function (
 
   // Non-rotated text
   if (rotation != 0) {
-    tr +=
-      'rotate(' + rotation + ',' + this.format(x * s.scale) + ',' + this.format(y * s.scale) + ')'
+    tr += 'rotate(' + rotation + ',' + this.format(x * s.scale) + ',' + this.format(y * s.scale) + ')'
   }
 
   if (dir != null && dir.substring(0, 9) != 'vertical-') {
@@ -2372,19 +2086,11 @@ mxSvgCanvas2D.prototype.plainText = function (
     }
 
     // LATER: Remove spacing from clip rectangle
-    this.setClip(
-      node,
-      this.createClip(cx * s.scale - 2, cy * s.scale - 2, w * s.scale + 4, h * s.scale + 4)
-    )
+    this.setClip(node, this.createClip(cx * s.scale - 2, cy * s.scale - 2, w * s.scale + 4, h * s.scale + 4))
   }
 
   // Default is left
-  var anchor =
-    align == mxConstants.ALIGN_RIGHT
-      ? 'end'
-      : align == mxConstants.ALIGN_CENTER
-        ? 'middle'
-        : 'start'
+  var anchor = align == mxConstants.ALIGN_RIGHT ? 'end' : align == mxConstants.ALIGN_CENTER ? 'middle' : 'start'
 
   // Text-anchor start is default in SVG
   if (anchor != 'start') {
@@ -2441,17 +2147,7 @@ mxSvgCanvas2D.prototype.plainText = function (
   }
 
   this.root.appendChild(node)
-  this.addTextBackground(
-    node,
-    str,
-    x,
-    y,
-    w,
-    overflow == 'fill' ? h : textHeight,
-    align,
-    valign,
-    overflow
-  )
+  this.addTextBackground(node, str, x, y, w, overflow == 'fill' ? h : textHeight, align, valign, overflow)
 }
 
 /**
@@ -2497,17 +2193,7 @@ mxSvgCanvas2D.prototype.updateFont = function (node) {
  *
  * Background color and border
  */
-mxSvgCanvas2D.prototype.addTextBackground = function (
-  node,
-  str,
-  x,
-  y,
-  w,
-  h,
-  align,
-  valign,
-  overflow
-) {
+mxSvgCanvas2D.prototype.addTextBackground = function (node, str, x, y, w, h, align, valign, overflow) {
   var s = this.state
 
   if (document.body != null && (s.fontBackgroundColor != null || s.fontBorderColor != null)) {
@@ -2532,12 +2218,7 @@ mxSvgCanvas2D.prototype.addTextBackground = function (
       try {
         bbox = node.getBBox()
         var ie = mxClient.IS_IE && mxClient.IS_SVG
-        bbox = new mxRectangle(
-          bbox.x,
-          bbox.y + (ie ? 0 : 1),
-          bbox.width,
-          bbox.height + (ie ? 1 : 0)
-        )
+        bbox = new mxRectangle(bbox.x, bbox.y + (ie ? 0 : 1), bbox.width, bbox.height + (ie ? 1 : 0))
       } catch (e) {
         // Ignores NS_ERROR_FAILURE in FF if container display is none.
       }
@@ -2548,9 +2229,7 @@ mxSvgCanvas2D.prototype.addTextBackground = function (
       var div = document.createElement('div')
 
       // Wrapping and clipping can be ignored here
-      div.style.lineHeight = mxConstants.ABSOLUTE_LINE_HEIGHT
-        ? s.fontSize * mxConstants.LINE_HEIGHT + 'px'
-        : mxConstants.LINE_HEIGHT
+      div.style.lineHeight = mxConstants.ABSOLUTE_LINE_HEIGHT ? s.fontSize * mxConstants.LINE_HEIGHT + 'px' : mxConstants.LINE_HEIGHT
       div.style.fontSize = s.fontSize + 'px'
       div.style.fontFamily = mxUtils.parseCssFontFamily(s.fontFamily)
       div.style.whiteSpace = 'nowrap'

@@ -1,60 +1,4 @@
-import {
-  mxUtils,
-  mxRubberband,
-  mxGraphLayout,
-  mxConnectionHandler,
-  mxConstraintHandler,
-  mxSelectionCellsHandler,
-  mxElbowEdgeHandler,
-  mxPanningHandler,
-  mxCellEditor,
-  mxOutline,
-  mxCell,
-  mxGeometry,
-  mxDragSource,
-  mxPolyline,
-  mxPopupMenu,
-  mxGuide,
-  mxEdgeStyle,
-  mxGraph,
-  mxConstants,
-  mxCodec,
-  mxText,
-  mxGraphModel,
-  mxGraphView,
-  mxClient,
-  mxShape,
-  mxEvent,
-  mxWindow,
-  mxGraphHandler,
-  mxVertexHandler,
-  mxEdgeHandler,
-  mxResources,
-  mxLayoutManager,
-  mxCellHighlight,
-  mxStencilRegistry,
-  mxStencil,
-  mxDictionary,
-  mxConnector,
-  mxCellRenderer,
-  mxStackLayout,
-  mxImage,
-  mxEventSource,
-  mxRectangle,
-  mxPoint,
-  mxObjectCodec,
-  mxCodecRegistry,
-  mxKeyHandler,
-  mxClipboard,
-  mxCompositeLayout,
-  mxEventObject,
-  mxFastOrganicLayout,
-  mxParallelEdgeLayout,
-  mxPartitionLayout,
-  mxRadialTreeLayout,
-  mxGeometryChange,
-  mxValueChange
-} from '../graph'
+import { mxUtils, mxPopupMenu, mxConstants, mxClient, mxEvent, mxResources, mxEventObject } from '../graph'
 
 /**
  * Copyright (c) 2006-2012, JGraph Ltd
@@ -70,10 +14,7 @@ function Toolbar(editorUi, container) {
 
   // Global handler to hide the current menu
   this.gestureHandler = mxUtils.bind(this, function (evt) {
-    if (
-      this.editorUi.currentMenu != null &&
-      mxEvent.getSource(evt) != this.editorUi.currentMenu.div
-    ) {
+    if (this.editorUi.currentMenu != null && mxEvent.getSource(evt) != this.editorUi.currentMenu.div) {
       this.hideMenu()
     }
   })
@@ -113,26 +54,12 @@ Toolbar.prototype.init = function () {
   sw -= screen.height > 740 ? 56 : 0
 
   if (sw >= 700) {
-    var formatMenu = this.addMenu(
-      '',
-      mxResources.get('view') + ' (' + mxResources.get('panTooltip') + ')',
-      true,
-      'viewPanels',
-      null,
-      true
-    )
+    var formatMenu = this.addMenu('', mxResources.get('view') + ' (' + mxResources.get('panTooltip') + ')', true, 'viewPanels', null, true)
     this.addDropDownArrow(formatMenu, 'geSprite-formatpanel', 38, 50, -4, -3, 36, -8)
     this.addSeparator()
   }
 
-  var viewMenu = this.addMenu(
-    '',
-    mxResources.get('zoom') + ' (Alt+Mousewheel)',
-    true,
-    'viewZoom',
-    null,
-    true
-  )
+  var viewMenu = this.addMenu('', mxResources.get('zoom') + ' (Alt+Mousewheel)', true, 'viewZoom', null, true)
   viewMenu.showDisabled = true
   viewMenu.style.whiteSpace = 'nowrap'
   viewMenu.style.position = 'relative'
@@ -147,14 +74,8 @@ Toolbar.prototype.init = function () {
   if (sw >= 420) {
     this.addSeparator()
     var elts = this.addItems(['zoomIn', 'zoomOut'])
-    elts[0].setAttribute(
-      'title',
-      mxResources.get('zoomIn') + ' (' + this.editorUi.actions.get('zoomIn').shortcut + ')'
-    )
-    elts[1].setAttribute(
-      'title',
-      mxResources.get('zoomOut') + ' (' + this.editorUi.actions.get('zoomOut').shortcut + ')'
-    )
+    elts[0].setAttribute('title', mxResources.get('zoomIn') + ' (' + this.editorUi.actions.get('zoomIn').shortcut + ')')
+    elts[1].setAttribute('title', mxResources.get('zoomOut') + ' (' + this.editorUi.actions.get('zoomOut').shortcut + ')')
   }
 
   // Updates the label if the scale changes
@@ -181,21 +102,12 @@ Toolbar.prototype.init = function () {
   )
 
   var elts = this.addItems(['-', 'undo', 'redo'])
-  elts[1].setAttribute(
-    'title',
-    mxResources.get('undo') + ' (' + this.editorUi.actions.get('undo').shortcut + ')'
-  )
-  elts[2].setAttribute(
-    'title',
-    mxResources.get('redo') + ' (' + this.editorUi.actions.get('redo').shortcut + ')'
-  )
+  elts[1].setAttribute('title', mxResources.get('undo') + ' (' + this.editorUi.actions.get('undo').shortcut + ')')
+  elts[2].setAttribute('title', mxResources.get('redo') + ' (' + this.editorUi.actions.get('redo').shortcut + ')')
 
   if (sw >= 320) {
     var elts = this.addItems(['-', 'delete'])
-    elts[1].setAttribute(
-      'title',
-      mxResources.get('delete') + ' (' + this.editorUi.actions.get('delete').shortcut + ')'
-    )
+    elts[1].setAttribute('title', mxResources.get('delete') + ' (' + this.editorUi.actions.get('delete').shortcut + ')')
   }
 
   if (sw >= 550) {
@@ -224,48 +136,16 @@ Toolbar.prototype.init = function () {
         false,
         mxUtils.bind(this, function (menu) {
           this.editorUi.menus
-            .edgeStyleChange(
-              menu,
-              '',
-              [mxConstants.STYLE_SHAPE, 'width'],
-              [null, null],
-              'geIcon geSprite geSprite-connection',
-              null,
-              true
-            )
+            .edgeStyleChange(menu, '', [mxConstants.STYLE_SHAPE, 'width'], [null, null], 'geIcon geSprite geSprite-connection', null, true)
             .setAttribute('title', mxResources.get('line'))
           this.editorUi.menus
-            .edgeStyleChange(
-              menu,
-              '',
-              [mxConstants.STYLE_SHAPE, 'width'],
-              ['link', null],
-              'geIcon geSprite geSprite-linkedge',
-              null,
-              true
-            )
+            .edgeStyleChange(menu, '', [mxConstants.STYLE_SHAPE, 'width'], ['link', null], 'geIcon geSprite geSprite-linkedge', null, true)
             .setAttribute('title', mxResources.get('link'))
           this.editorUi.menus
-            .edgeStyleChange(
-              menu,
-              '',
-              [mxConstants.STYLE_SHAPE, 'width'],
-              ['flexArrow', null],
-              'geIcon geSprite geSprite-arrow',
-              null,
-              true
-            )
+            .edgeStyleChange(menu, '', [mxConstants.STYLE_SHAPE, 'width'], ['flexArrow', null], 'geIcon geSprite geSprite-arrow', null, true)
             .setAttribute('title', mxResources.get('arrow'))
           this.editorUi.menus
-            .edgeStyleChange(
-              menu,
-              '',
-              [mxConstants.STYLE_SHAPE, 'width'],
-              ['arrow', null],
-              'geIcon geSprite geSprite-simplearrow',
-              null,
-              true
-            )
+            .edgeStyleChange(menu, '', [mxConstants.STYLE_SHAPE, 'width'], ['arrow', null], 'geIcon geSprite geSprite-simplearrow', null, true)
             .setAttribute('title', mxResources.get('simpleArrow'))
         })
       )
@@ -304,12 +184,7 @@ Toolbar.prototype.init = function () {
           .edgeStyleChange(
             menu,
             '',
-            [
-              mxConstants.STYLE_EDGE,
-              mxConstants.STYLE_ELBOW,
-              mxConstants.STYLE_CURVED,
-              mxConstants.STYLE_NOEDGESTYLE
-            ],
+            [mxConstants.STYLE_EDGE, mxConstants.STYLE_ELBOW, mxConstants.STYLE_CURVED, mxConstants.STYLE_NOEDGESTYLE],
             ['elbowEdgeStyle', null, null, null],
             'geIcon geSprite geSprite-horizontalelbow',
             null,
@@ -320,12 +195,7 @@ Toolbar.prototype.init = function () {
           .edgeStyleChange(
             menu,
             '',
-            [
-              mxConstants.STYLE_EDGE,
-              mxConstants.STYLE_ELBOW,
-              mxConstants.STYLE_CURVED,
-              mxConstants.STYLE_NOEDGESTYLE
-            ],
+            [mxConstants.STYLE_EDGE, mxConstants.STYLE_ELBOW, mxConstants.STYLE_CURVED, mxConstants.STYLE_NOEDGESTYLE],
             ['elbowEdgeStyle', 'vertical', null, null],
             'geIcon geSprite geSprite-verticalelbow',
             null,
@@ -336,12 +206,7 @@ Toolbar.prototype.init = function () {
           .edgeStyleChange(
             menu,
             '',
-            [
-              mxConstants.STYLE_EDGE,
-              mxConstants.STYLE_ELBOW,
-              mxConstants.STYLE_CURVED,
-              mxConstants.STYLE_NOEDGESTYLE
-            ],
+            [mxConstants.STYLE_EDGE, mxConstants.STYLE_ELBOW, mxConstants.STYLE_CURVED, mxConstants.STYLE_NOEDGESTYLE],
             ['isometricEdgeStyle', null, null, null],
             'geIcon geSprite geSprite-horizontalisometric',
             null,
@@ -352,12 +217,7 @@ Toolbar.prototype.init = function () {
           .edgeStyleChange(
             menu,
             '',
-            [
-              mxConstants.STYLE_EDGE,
-              mxConstants.STYLE_ELBOW,
-              mxConstants.STYLE_CURVED,
-              mxConstants.STYLE_NOEDGESTYLE
-            ],
+            [mxConstants.STYLE_EDGE, mxConstants.STYLE_ELBOW, mxConstants.STYLE_CURVED, mxConstants.STYLE_NOEDGESTYLE],
             ['isometricEdgeStyle', 'vertical', null, null],
             'geIcon geSprite geSprite-verticalisometric',
             null,
@@ -393,14 +253,7 @@ Toolbar.prototype.init = function () {
   }
 
   this.addSeparator()
-  var insertMenu = this.addMenu(
-    '',
-    mxResources.get('insert') + ' (' + mxResources.get('doubleClickTooltip') + ')',
-    true,
-    'insert',
-    null,
-    true
-  )
+  var insertMenu = this.addMenu('', mxResources.get('insert') + ' (' + mxResources.get('doubleClickTooltip') + ')', true, 'insert', null, true)
   this.addDropDownArrow(insertMenu, 'geSprite-plus', 38, 48, -4, -3, 36, -8)
   this.addSeparator()
   this.addTableDropDown()
@@ -471,16 +324,7 @@ Toolbar.prototype.addTableDropDown = function () {
 /**
  * Adds the toolbar elements.
  */
-Toolbar.prototype.addDropDownArrow = function (
-  menu,
-  sprite,
-  width,
-  atlasWidth,
-  left,
-  top,
-  atlasDelta,
-  atlasLeft
-) {
+Toolbar.prototype.addDropDownArrow = function (menu, sprite, width, atlasWidth, left, top, atlasDelta, atlasLeft) {
   atlasDelta = atlasDelta != null ? atlasDelta : 32
   left = EditorUi.compactUi ? left : atlasLeft
 
@@ -578,12 +422,7 @@ Toolbar.prototype.createTextToolbar = function () {
 
   this.addSeparator()
 
-  this.sizeMenu = this.addMenu(
-    Menus.prototype.defaultFontSize,
-    mxResources.get('fontSize'),
-    true,
-    'fontSize'
-  )
+  this.sizeMenu = this.addMenu(Menus.prototype.defaultFontSize, mxResources.get('fontSize'), true, 'fontSize')
   this.sizeMenu.style.position = 'relative'
   this.sizeMenu.style.whiteSpace = 'nowrap'
   this.sizeMenu.style.overflow = 'hidden'
@@ -598,26 +437,11 @@ Toolbar.prototype.createTextToolbar = function () {
   }
 
   var elts = this.addItems(['-', 'undo', 'redo', '-', 'bold', 'italic', 'underline'])
-  elts[1].setAttribute(
-    'title',
-    mxResources.get('undo') + ' (' + ui.actions.get('undo').shortcut + ')'
-  )
-  elts[2].setAttribute(
-    'title',
-    mxResources.get('redo') + ' (' + ui.actions.get('redo').shortcut + ')'
-  )
-  elts[4].setAttribute(
-    'title',
-    mxResources.get('bold') + ' (' + ui.actions.get('bold').shortcut + ')'
-  )
-  elts[5].setAttribute(
-    'title',
-    mxResources.get('italic') + ' (' + ui.actions.get('italic').shortcut + ')'
-  )
-  elts[6].setAttribute(
-    'title',
-    mxResources.get('underline') + ' (' + ui.actions.get('underline').shortcut + ')'
-  )
+  elts[1].setAttribute('title', mxResources.get('undo') + ' (' + ui.actions.get('undo').shortcut + ')')
+  elts[2].setAttribute('title', mxResources.get('redo') + ' (' + ui.actions.get('redo').shortcut + ')')
+  elts[4].setAttribute('title', mxResources.get('bold') + ' (' + ui.actions.get('bold').shortcut + ')')
+  elts[5].setAttribute('title', mxResources.get('italic') + ' (' + ui.actions.get('italic').shortcut + ')')
+  elts[6].setAttribute('title', mxResources.get('underline') + ' (' + ui.actions.get('underline').shortcut + ')')
 
   // KNOWN: Lost focus after click on submenu with text (not icon) in quirks and IE8. This is because the TD seems
   // to catch the focus on click in these browsers. NOTE: Workaround in mxPopupMenu for icon items (without text).
@@ -632,15 +456,9 @@ Toolbar.prototype.createTextToolbar = function () {
         mxUtils.bind(this, function (evt) {
           graph.cellEditor.alignText(mxConstants.ALIGN_LEFT, evt)
           ui.fireEvent(
-            new mxEventObject(
-              'styleChanged',
-              'keys',
-              [mxConstants.STYLE_ALIGN],
-              'values',
-              [mxConstants.ALIGN_LEFT],
-              'cells',
-              [graph.cellEditor.getEditingCell()]
-            )
+            new mxEventObject('styleChanged', 'keys', [mxConstants.STYLE_ALIGN], 'values', [mxConstants.ALIGN_LEFT], 'cells', [
+              graph.cellEditor.getEditingCell()
+            ])
           )
         }),
         null,
@@ -654,15 +472,9 @@ Toolbar.prototype.createTextToolbar = function () {
         mxUtils.bind(this, function (evt) {
           graph.cellEditor.alignText(mxConstants.ALIGN_CENTER, evt)
           ui.fireEvent(
-            new mxEventObject(
-              'styleChanged',
-              'keys',
-              [mxConstants.STYLE_ALIGN],
-              'values',
-              [mxConstants.ALIGN_CENTER],
-              'cells',
-              [graph.cellEditor.getEditingCell()]
-            )
+            new mxEventObject('styleChanged', 'keys', [mxConstants.STYLE_ALIGN], 'values', [mxConstants.ALIGN_CENTER], 'cells', [
+              graph.cellEditor.getEditingCell()
+            ])
           )
         }),
         null,
@@ -676,15 +488,9 @@ Toolbar.prototype.createTextToolbar = function () {
         mxUtils.bind(this, function (evt) {
           graph.cellEditor.alignText(mxConstants.ALIGN_RIGHT, evt)
           ui.fireEvent(
-            new mxEventObject(
-              'styleChanged',
-              'keys',
-              [mxConstants.STYLE_ALIGN],
-              'values',
-              [mxConstants.ALIGN_RIGHT],
-              'cells',
-              [graph.cellEditor.getEditingCell()]
-            )
+            new mxEventObject('styleChanged', 'keys', [mxConstants.STYLE_ALIGN], 'values', [mxConstants.ALIGN_RIGHT], 'cells', [
+              graph.cellEditor.getEditingCell()
+            ])
           )
         }),
         null,
@@ -772,41 +578,17 @@ Toolbar.prototype.createTextToolbar = function () {
     mxResources.get('format'),
     false,
     mxUtils.bind(this, function (menu) {
-      elt = menu.addItem(
-        '',
-        null,
-        this.editorUi.actions.get('subscript').funct,
-        null,
-        'geIcon geSprite geSprite-subscript'
-      )
+      elt = menu.addItem('', null, this.editorUi.actions.get('subscript').funct, null, 'geIcon geSprite geSprite-subscript')
       elt.setAttribute('title', mxResources.get('subscript') + ' (' + Editor.ctrlKey + '+,)')
 
-      elt = menu.addItem(
-        '',
-        null,
-        this.editorUi.actions.get('superscript').funct,
-        null,
-        'geIcon geSprite geSprite-superscript'
-      )
+      elt = menu.addItem('', null, this.editorUi.actions.get('superscript').funct, null, 'geIcon geSprite geSprite-superscript')
       elt.setAttribute('title', mxResources.get('superscript') + ' (' + Editor.ctrlKey + '+.)')
 
       // KNOWN: IE+FF don't return keyboard focus after color dialog (calling focus doesn't help)
-      elt = menu.addItem(
-        '',
-        null,
-        this.editorUi.actions.get('fontColor').funct,
-        null,
-        'geIcon geSprite geSprite-fontcolor'
-      )
+      elt = menu.addItem('', null, this.editorUi.actions.get('fontColor').funct, null, 'geIcon geSprite geSprite-fontcolor')
       elt.setAttribute('title', mxResources.get('fontColor'))
 
-      elt = menu.addItem(
-        '',
-        null,
-        this.editorUi.actions.get('backgroundColor').funct,
-        null,
-        'geIcon geSprite geSprite-fontbackground'
-      )
+      elt = menu.addItem('', null, this.editorUi.actions.get('backgroundColor').funct, null, 'geIcon geSprite geSprite-fontbackground')
       elt.setAttribute('title', mxResources.get('backgroundColor'))
 
       elt = menu.addItem(
@@ -845,10 +627,7 @@ Toolbar.prototype.createTextToolbar = function () {
   this.addButton('geIcon geSprite geSprite-code', mxResources.get('html'), function () {
     graph.cellEditor.toggleViewMode()
 
-    if (
-      graph.cellEditor.textarea.innerHTML.length > 0 &&
-      (graph.cellEditor.textarea.innerHTML != '&nbsp;' || !graph.cellEditor.clearOnChange)
-    ) {
+    if (graph.cellEditor.textarea.innerHTML.length > 0 && (graph.cellEditor.textarea.innerHTML != '&nbsp;' || !graph.cellEditor.clearOnChange)) {
       window.setTimeout(function () {
         document.execCommand('selectAll', false, null)
       })
@@ -1043,17 +822,14 @@ Toolbar.prototype.createTextToolbar = function () {
           null,
           mxUtils.bind(this, function () {
             // Converts rgb(r,g,b) values
-            var color = table.style.borderColor.replace(
-              /\brgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/g,
-              function ($0, $1, $2, $3) {
-                return (
-                  '#' +
-                  ('0' + Number($1).toString(16)).substr(-2) +
-                  ('0' + Number($2).toString(16)).substr(-2) +
-                  ('0' + Number($3).toString(16)).substr(-2)
-                )
-              }
-            )
+            var color = table.style.borderColor.replace(/\brgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/g, function ($0, $1, $2, $3) {
+              return (
+                '#' +
+                ('0' + Number($1).toString(16)).substr(-2) +
+                ('0' + Number($2).toString(16)).substr(-2) +
+                ('0' + Number($3).toString(16)).substr(-2)
+              )
+            })
             this.editorUi.pickColor(color, function (newColor) {
               if (newColor == null || newColor == mxConstants.NONE) {
                 table.removeAttribute('border')
@@ -1076,17 +852,14 @@ Toolbar.prototype.createTextToolbar = function () {
           null,
           mxUtils.bind(this, function () {
             // Converts rgb(r,g,b) values
-            var color = table.style.backgroundColor.replace(
-              /\brgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/g,
-              function ($0, $1, $2, $3) {
-                return (
-                  '#' +
-                  ('0' + Number($1).toString(16)).substr(-2) +
-                  ('0' + Number($2).toString(16)).substr(-2) +
-                  ('0' + Number($3).toString(16)).substr(-2)
-                )
-              }
-            )
+            var color = table.style.backgroundColor.replace(/\brgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/g, function ($0, $1, $2, $3) {
+              return (
+                '#' +
+                ('0' + Number($1).toString(16)).substr(-2) +
+                ('0' + Number($2).toString(16)).substr(-2) +
+                ('0' + Number($3).toString(16)).substr(-2)
+              )
+            })
             this.editorUi.pickColor(color, function (newColor) {
               if (newColor == null || newColor == mxConstants.NONE) {
                 table.style.backgroundColor = ''
@@ -1221,27 +994,13 @@ Toolbar.prototype.addMenu = function (label, tooltip, showLabels, name, c, showA
  * Adds a label to the toolbar.
  */
 Toolbar.prototype.addMenuFunction = function (label, tooltip, showLabels, funct, c, showAll) {
-  return this.addMenuFunctionInContainer(
-    c != null ? c : this.container,
-    label,
-    tooltip,
-    showLabels,
-    funct,
-    showAll
-  )
+  return this.addMenuFunctionInContainer(c != null ? c : this.container, label, tooltip, showLabels, funct, showAll)
 }
 
 /**
  * Adds a label to the toolbar.
  */
-Toolbar.prototype.addMenuFunctionInContainer = function (
-  container,
-  label,
-  tooltip,
-  showLabels,
-  funct,
-  showAll
-) {
+Toolbar.prototype.addMenuFunctionInContainer = function (container, label, tooltip, showLabels, funct, showAll) {
   var elt = showLabels ? this.createLabel(label) : this.createButton(label)
   this.initElement(elt, tooltip)
   this.addMenuHandler(elt, showLabels, funct, showAll)

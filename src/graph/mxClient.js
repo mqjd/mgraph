@@ -82,9 +82,7 @@ var mxClient = {
    *
    * True if the current browser is Opera.
    */
-  IS_OP:
-    navigator.userAgent != null &&
-    (navigator.userAgent.indexOf('Opera/') >= 0 || navigator.userAgent.indexOf('OPR/') >= 0),
+  IS_OP: navigator.userAgent != null && (navigator.userAgent.indexOf('Opera/') >= 0 || navigator.userAgent.indexOf('OPR/') >= 0),
 
   /**
    * Variable: IS_OT
@@ -121,9 +119,7 @@ var mxClient = {
    *
    * Returns true if the user agent is an iPad, iPhone or iPod.
    */
-  IS_IOS:
-    /iP(hone|od|ad)/.test(navigator.platform) ||
-    (navigator.userAgent.match(/Mac/) && navigator.maxTouchPoints && navigator.maxTouchPoints > 2),
+  IS_IOS: /iP(hone|od|ad)/.test(navigator.platform) || (navigator.userAgent.match(/Mac/) && navigator.maxTouchPoints && navigator.maxTouchPoints > 2),
 
   /**
    * Variable: IS_WEBVIEW
@@ -167,8 +163,7 @@ var mxClient = {
     (navigator.userAgent.indexOf('Iceweasel/') >= 0 &&
       navigator.userAgent.indexOf('Iceweasel/1.') < 0 &&
       navigator.userAgent.indexOf('Iceweasel/2.') < 0) ||
-    (navigator.userAgent.indexOf('SeaMonkey/') >= 0 &&
-      navigator.userAgent.indexOf('SeaMonkey/1.') < 0) ||
+    (navigator.userAgent.indexOf('SeaMonkey/') >= 0 && navigator.userAgent.indexOf('SeaMonkey/1.') < 0) ||
     (navigator.userAgent.indexOf('Iceape/') >= 0 && navigator.userAgent.indexOf('Iceape/1.') < 0),
 
   /**
@@ -186,8 +181,7 @@ var mxClient = {
    */
   NO_FO:
     !document.createElementNS ||
-    document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject').toString() !==
-      '[object SVGForeignObjectElement]' ||
+    document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject').toString() !== '[object SVGForeignObjectElement]' ||
     navigator.userAgent.indexOf('Opera/') >= 0,
 
   /**
@@ -238,8 +232,7 @@ var mxClient = {
    *
    * True if the documents location does not start with http:// or https://.
    */
-  IS_LOCAL:
-    document.location.href.indexOf('http://') < 0 && document.location.href.indexOf('https://') < 0,
+  IS_LOCAL: document.location.href.indexOf('http://') < 0 && document.location.href.indexOf('https://') < 0,
 
   /**
    * Variable: defaultBundles

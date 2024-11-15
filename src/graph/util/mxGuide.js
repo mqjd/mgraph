@@ -135,12 +135,7 @@ mxGuide.prototype.isStateIgnored = function (state) {
  * Moves the <bounds> by the given <mxPoint> and returnt the snapped point.
  */
 mxGuide.prototype.move = function (bounds, delta, gridEnabled, clone) {
-  if (
-    this.states != null &&
-    (this.horizontal || this.vertical) &&
-    bounds != null &&
-    delta != null
-  ) {
+  if (this.states != null && (this.horizontal || this.vertical) && bounds != null && delta != null) {
     var scale = this.graph.getView().scale
     var tt = this.getGuideTolerance(gridEnabled) * scale
     var b = bounds.clone()
@@ -284,19 +279,13 @@ mxGuide.prototype.move = function (bounds, delta, gridEnabled, clone) {
 
       if (stateX != null && bounds != null) {
         minY = Math.min(bounds.y + delta.y - this.graph.panDy, stateX.y)
-        maxY = Math.max(
-          bounds.y + bounds.height + delta.y - this.graph.panDy,
-          stateX.y + stateX.height
-        )
+        maxY = Math.max(bounds.y + bounds.height + delta.y - this.graph.panDy, stateX.y + stateX.height)
       }
 
       if (minY != null && maxY != null) {
         this.guideX.points = [new mxPoint(valueX, minY), new mxPoint(valueX, maxY)]
       } else {
-        this.guideX.points = [
-          new mxPoint(valueX, -this.graph.panDy),
-          new mxPoint(valueX, c.scrollHeight - 3 - this.graph.panDy)
-        ]
+        this.guideX.points = [new mxPoint(valueX, -this.graph.panDy), new mxPoint(valueX, c.scrollHeight - 3 - this.graph.panDy)]
       }
 
       this.guideX.stroke = this.getGuideColor(stateX, true)
@@ -312,19 +301,13 @@ mxGuide.prototype.move = function (bounds, delta, gridEnabled, clone) {
 
       if (stateY != null && bounds != null) {
         minX = Math.min(bounds.x + delta.x - this.graph.panDx, stateY.x)
-        maxX = Math.max(
-          bounds.x + bounds.width + delta.x - this.graph.panDx,
-          stateY.x + stateY.width
-        )
+        maxX = Math.max(bounds.x + bounds.width + delta.x - this.graph.panDx, stateY.x + stateY.width)
       }
 
       if (minX != null && maxX != null) {
         this.guideY.points = [new mxPoint(minX, valueY), new mxPoint(maxX, valueY)]
       } else {
-        this.guideY.points = [
-          new mxPoint(-this.graph.panDx, valueY),
-          new mxPoint(c.scrollWidth - 3 - this.graph.panDx, valueY)
-        ]
+        this.guideY.points = [new mxPoint(-this.graph.panDx, valueY), new mxPoint(c.scrollWidth - 3 - this.graph.panDx, valueY)]
       }
 
       this.guideY.stroke = this.getGuideColor(stateY, false)

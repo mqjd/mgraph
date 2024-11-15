@@ -292,11 +292,7 @@ mxKeyHandler.prototype.isGraphEvent = function (evt) {
 
   // Accepts events from the target object or
   // in-place editing inside graph
-  if (
-    source == this.target ||
-    source.parentNode == this.target ||
-    (this.graph.cellEditor != null && this.graph.cellEditor.isEventSource(evt))
-  ) {
+  if (source == this.target || source.parentNode == this.target || (this.graph.cellEditor != null && this.graph.cellEditor.isEventSource(evt))) {
     return true
   }
 
@@ -349,9 +345,7 @@ mxKeyHandler.prototype.keyDown = function (evt) {
  * evt - Key event that represents the keystroke.
  */
 mxKeyHandler.prototype.isEnabledForEvent = function (evt) {
-  return (
-    this.graph.isEnabled() && !mxEvent.isConsumed(evt) && this.isGraphEvent(evt) && this.isEnabled()
-  )
+  return this.graph.isEnabled() && !mxEvent.isConsumed(evt) && this.isGraphEvent(evt) && this.isEnabled()
 }
 
 /**

@@ -111,11 +111,7 @@ mxCellStatePreview.prototype.translateState = function (state, dx, dy) {
       // Moves selection cells and non-relative vertices in
       // the first phase so that edge terminal points will
       // be updated in the second phase
-      if (
-        (dx != 0 || dy != 0) &&
-        geo != null &&
-        (!geo.relative || this.deltas.get(state.cell) != null)
-      ) {
+      if ((dx != 0 || dy != 0) && geo != null && (!geo.relative || this.deltas.get(state.cell) != null)) {
         state.x += dx
         state.y += dy
       }
@@ -167,12 +163,7 @@ mxCellStatePreview.prototype.revalidateState = function (state, dx, dy, visitor)
     var childCount = model.getChildCount(state.cell)
 
     for (var i = 0; i < childCount; i++) {
-      this.revalidateState(
-        this.graph.view.getState(model.getChildAt(state.cell, i)),
-        dx,
-        dy,
-        visitor
-      )
+      this.revalidateState(this.graph.view.getState(model.getChildAt(state.cell, i)), dx, dy, visitor)
     }
   }
 }

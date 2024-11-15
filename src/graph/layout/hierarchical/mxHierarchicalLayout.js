@@ -389,10 +389,8 @@ mxHierarchicalLayout.prototype.getEdges = function (cell) {
     if (
       source == target ||
       (source != target &&
-        ((target == cell &&
-          (this.parent == null || this.isAncestor(this.parent, source, this.traverseAncestors))) ||
-          (source == cell &&
-            (this.parent == null || this.isAncestor(this.parent, target, this.traverseAncestors)))))
+        ((target == cell && (this.parent == null || this.isAncestor(this.parent, source, this.traverseAncestors))) ||
+          (source == cell && (this.parent == null || this.isAncestor(this.parent, target, this.traverseAncestors)))))
     ) {
       result.push(edges[i])
     }
@@ -428,16 +426,10 @@ mxHierarchicalLayout.prototype.getVisibleTerminal = function (edge, source) {
 
   var state = this.graph.view.getState(edge)
 
-  var terminal =
-    state != null
-      ? state.getVisibleTerminal(source)
-      : this.graph.view.getVisibleTerminal(edge, source)
+  var terminal = state != null ? state.getVisibleTerminal(source) : this.graph.view.getVisibleTerminal(edge, source)
 
   if (terminal == null) {
-    terminal =
-      state != null
-        ? state.getVisibleTerminal(source)
-        : this.graph.view.getVisibleTerminal(edge, source)
+    terminal = state != null ? state.getVisibleTerminal(source) : this.graph.view.getVisibleTerminal(edge, source)
   }
 
   if (terminal != null) {
@@ -490,15 +482,7 @@ mxHierarchicalLayout.prototype.run = function (parent) {
         var vertexSet = Object()
         hierarchyVertices.push(vertexSet)
 
-        this.traverse(
-          candidateRoots[i],
-          true,
-          null,
-          allVertexSet,
-          vertexSet,
-          hierarchyVertices,
-          filledVertexSet
-        )
+        this.traverse(candidateRoots[i], true, null, allVertexSet, vertexSet, hierarchyVertices, filledVertexSet)
       }
 
       for (var i = 0; i < candidateRoots.length; i++) {
@@ -642,25 +626,14 @@ mxHierarchicalLayout.prototype.getEdgesBetween = function (source, target, direc
  * null for the first step of the traversal.
  * allVertices - Array of cell paths for the visited cells.
  */
-mxHierarchicalLayout.prototype.traverse = function (
-  vertex,
-  directed,
-  edge,
-  allVertices,
-  currentComp,
-  hierarchyVertices,
-  filledVertexSet
-) {
+mxHierarchicalLayout.prototype.traverse = function (vertex, directed, edge, allVertices, currentComp, hierarchyVertices, filledVertexSet) {
   if (vertex != null && allVertices != null) {
     // Has this vertex been seen before in any traversal
     // And if the filled vertex set is populated, only
     // process vertices in that it contains
     var vertexID = mxObjectIdentity.get(vertex)
 
-    if (
-      allVertices[vertexID] == null &&
-      (filledVertexSet == null ? true : filledVertexSet[vertexID] != null)
-    ) {
+    if (allVertices[vertexID] == null && (filledVertexSet == null ? true : filledVertexSet[vertexID] != null)) {
       if (currentComp[vertexID] == null) {
         currentComp[vertexID] = vertex
       }
@@ -708,15 +681,7 @@ mxHierarchicalLayout.prototype.traverse = function (
           }
 
           if (netCount >= 0) {
-            currentComp = this.traverse(
-              next,
-              directed,
-              edges[i],
-              allVertices,
-              currentComp,
-              hierarchyVertices,
-              filledVertexSet
-            )
+            currentComp = this.traverse(next, directed, edges[i], allVertices, currentComp, hierarchyVertices, filledVertexSet)
           }
         }
       }

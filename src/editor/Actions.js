@@ -1,59 +1,15 @@
 import {
   mxUtils,
-  mxRubberband,
-  mxGraphLayout,
-  mxConnectionHandler,
-  mxConstraintHandler,
-  mxSelectionCellsHandler,
-  mxElbowEdgeHandler,
-  mxPanningHandler,
-  mxCellEditor,
-  mxOutline,
   mxCell,
   mxGeometry,
-  mxDragSource,
-  mxPolyline,
-  mxPopupMenu,
-  mxGuide,
-  mxEdgeStyle,
-  mxGraph,
   mxConstants,
-  mxCodec,
-  mxText,
-  mxGraphModel,
-  mxGraphView,
   mxClient,
-  mxShape,
   mxEvent,
-  mxWindow,
-  mxGraphHandler,
-  mxVertexHandler,
   mxEdgeHandler,
   mxResources,
-  mxLayoutManager,
-  mxCellHighlight,
-  mxStencilRegistry,
-  mxStencil,
-  mxDictionary,
-  mxConnector,
-  mxCellRenderer,
-  mxStackLayout,
-  mxImage,
   mxEventSource,
   mxRectangle,
-  mxEventObject,
-  mxObjectCodec,
-  mxCodecRegistry,
-  mxCircleLayout,
-  mxCompactTreeLayout,
-  mxCompositeLayout,
-  mxEdgeLabelLayout,
-  mxFastOrganicLayout,
-  mxParallelEdgeLayout,
-  mxPartitionLayout,
-  mxRadialTreeLayout,
-  mxGeometryChange,
-  mxValueChange
+  mxEventObject
 } from '../graph'
 
 import Editor from './Editor'
@@ -557,10 +513,7 @@ Actions.prototype.init = function () {
       if (evt != null && mxEvent.isShiftDown(evt)) {
         deleteLabels()
       } else {
-        deleteCells(
-          evt != null &&
-            (mxEvent.isControlDown(evt) || mxEvent.isMetaDown(evt) || mxEvent.isAltDown(evt))
-        )
+        deleteCells(evt != null && (mxEvent.isControlDown(evt) || mxEvent.isMetaDown(evt) || mxEvent.isAltDown(evt)))
       }
     },
     null,
@@ -633,10 +586,7 @@ Actions.prototype.init = function () {
         // Context menu click uses trigger, toolbar menu click uses evt
         var evt = trigger != null ? trigger : evt
 
-        graph.turnShapes(
-          graph.getResizableCells(graph.getSelectionCells()),
-          evt != null ? mxEvent.isShiftDown(evt) : false
-        )
+        graph.turnShapes(graph.getResizableCells(graph.getSelectionCells()), evt != null ? mxEvent.isShiftDown(evt) : false)
       },
       null,
       null,
@@ -916,11 +866,7 @@ Actions.prototype.init = function () {
         if (mxUtils.isNode(cell.value)) {
           var tmp = null
 
-          if (
-            Graph.translateDiagram &&
-            Graph.diagramLanguage != null &&
-            cell.value.hasAttribute('tooltip_' + Graph.diagramLanguage)
-          ) {
+          if (Graph.translateDiagram && Graph.diagramLanguage != null && cell.value.hasAttribute('tooltip_' + Graph.diagramLanguage)) {
             tmp = cell.value.getAttribute('tooltip_' + Graph.diagramLanguage)
           }
 
@@ -933,9 +879,7 @@ Actions.prototype.init = function () {
           }
         }
 
-        var dlg = new TextareaDialog(ui, mxResources.get('editTooltip') + ':', tooltip, function (
-          newValue
-        ) {
+        var dlg = new TextareaDialog(ui, mxResources.get('editTooltip') + ':', tooltip, function (newValue) {
           graph.setTooltipForCell(cell, newValue)
         })
         ui.showDialog(dlg.container, 320, 200, true, true)
@@ -1024,16 +968,11 @@ Actions.prototype.init = function () {
                   title,
                   new mxGeometry(0, 0, 100, 40),
                   'fontColor=#0000EE;fontStyle=4;rounded=1;overflow=hidden;' +
-                    (icon != null
-                      ? 'shape=label;imageWidth=16;imageHeight=16;spacingLeft=26;align=left;image=' +
-                        icon
-                      : 'spacing=10;')
+                    (icon != null ? 'shape=label;imageWidth=16;imageHeight=16;spacingLeft=26;align=left;image=' + icon : 'spacing=10;')
                 )
                 linkCell.vertex = true
 
-                var pt = graph.getCenterInsertPoint(
-                  graph.getBoundingBoxFromGeometry([linkCell], true)
-                )
+                var pt = graph.getCenterInsertPoint(graph.getBoundingBoxFromGeometry([linkCell], true))
                 linkCell.geometry.x = pt.x
                 linkCell.geometry.y = pt.y
 
@@ -1177,17 +1116,7 @@ Actions.prototype.init = function () {
         }
       }
 
-      ui.fireEvent(
-        new mxEventObject(
-          'styleChanged',
-          'keys',
-          ['html'],
-          'values',
-          [value != null ? value : '0'],
-          'cells',
-          cells
-        )
-      )
+      ui.fireEvent(new mxEventObject('styleChanged', 'keys', ['html'], 'values', [value != null ? value : '0'], 'cells', cells))
     } finally {
       graph.getModel().endUpdate()
     }
@@ -1592,58 +1521,22 @@ Actions.prototype.init = function () {
 
   // Color actions
   this.addAction('fontColor...', function () {
-    ui.menus.pickColor(
-      mxConstants.STYLE_FONTCOLOR,
-      'forecolor',
-      '000000',
-      'default',
-      graph.shapeForegroundColor
-    )
+    ui.menus.pickColor(mxConstants.STYLE_FONTCOLOR, 'forecolor', '000000', 'default', graph.shapeForegroundColor)
   })
   this.addAction('strokeColor...', function () {
-    ui.menus.pickColor(
-      mxConstants.STYLE_STROKECOLOR,
-      null,
-      null,
-      'default',
-      graph.shapeForegroundColor
-    )
+    ui.menus.pickColor(mxConstants.STYLE_STROKECOLOR, null, null, 'default', graph.shapeForegroundColor)
   })
   this.addAction('fillColor...', function () {
-    ui.menus.pickColor(
-      mxConstants.STYLE_FILLCOLOR,
-      null,
-      null,
-      'default',
-      graph.shapeBackgroundColor
-    )
+    ui.menus.pickColor(mxConstants.STYLE_FILLCOLOR, null, null, 'default', graph.shapeBackgroundColor)
   })
   this.addAction('gradientColor...', function () {
-    ui.menus.pickColor(
-      mxConstants.STYLE_GRADIENTCOLOR,
-      null,
-      null,
-      'default',
-      graph.shapeForegroundColor
-    )
+    ui.menus.pickColor(mxConstants.STYLE_GRADIENTCOLOR, null, null, 'default', graph.shapeForegroundColor)
   })
   this.addAction('backgroundColor...', function () {
-    ui.menus.pickColor(
-      mxConstants.STYLE_LABEL_BACKGROUNDCOLOR,
-      'backcolor',
-      null,
-      'default',
-      graph.shapeBackgroundColor
-    )
+    ui.menus.pickColor(mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, 'backcolor', null, 'default', graph.shapeBackgroundColor)
   })
   this.addAction('borderColor...', function () {
-    ui.menus.pickColor(
-      mxConstants.STYLE_LABEL_BORDERCOLOR,
-      null,
-      null,
-      'default',
-      graph.shapeForegroundColor
-    )
+    ui.menus.pickColor(mxConstants.STYLE_LABEL_BORDERCOLOR, null, null, 'default', graph.shapeForegroundColor)
   })
 
   // Format actions
@@ -1822,17 +1715,7 @@ Actions.prototype.init = function () {
     }
 
     graph.setCellStyles('collapsible', value)
-    ui.fireEvent(
-      new mxEventObject(
-        'styleChanged',
-        'keys',
-        ['collapsible'],
-        'values',
-        [value],
-        'cells',
-        graph.getSelectionCells()
-      )
-    )
+    ui.fireEvent(new mxEventObject('styleChanged', 'keys', ['collapsible'], 'values', [value], 'cells', graph.getSelectionCells()))
   })
   this.addAction(
     'editStyle...',
@@ -2011,11 +1894,7 @@ Actions.prototype.init = function () {
       if (!graph.isSelectionEmpty()) {
         var style = graph.getCurrentCellStyle(graph.getSelectionCell())
         var size = mxUtils.getValue(style, mxConstants.STYLE_FONTSIZE, mxConstants.DEFAULT_FONTSIZE)
-        graph.setCellStyles(
-          mxConstants.STYLE_FONTSIZE,
-          Math.max(1, size - 1),
-          graph.getSelectionCells()
-        )
+        graph.setCellStyles(mxConstants.STYLE_FONTSIZE, Math.max(1, size - 1), graph.getSelectionCells())
       }
     }),
     null,
@@ -2028,11 +1907,7 @@ Actions.prototype.init = function () {
       if (!graph.isSelectionEmpty()) {
         var style = graph.getCurrentCellStyle(graph.getSelectionCell())
         var size = mxUtils.getValue(style, mxConstants.STYLE_FONTSIZE, mxConstants.DEFAULT_FONTSIZE)
-        graph.setCellStyles(
-          mxConstants.STYLE_FONTSIZE,
-          Math.min(100, size + 1),
-          graph.getSelectionCells()
-        )
+        graph.setCellStyles(mxConstants.STYLE_FONTSIZE, Math.min(100, size + 1), graph.getSelectionCells())
       }
     }),
     null,
@@ -2122,19 +1997,12 @@ Actions.prototype.init = function () {
                   graph.fireEvent(new mxEventObject('cellsInserted', 'cells', select))
                 }
 
-                graph.setCellStyles(
-                  mxConstants.STYLE_IMAGE,
-                  newValue.length > 0 ? newValue : null,
-                  cells
-                )
+                graph.setCellStyles(mxConstants.STYLE_IMAGE, newValue.length > 0 ? newValue : null, cells)
 
                 // Sets shape only if not already shape with image (label or image)
                 var style = graph.getCurrentCellStyle(cells[0])
 
-                if (
-                  style[mxConstants.STYLE_SHAPE] != 'image' &&
-                  style[mxConstants.STYLE_SHAPE] != 'label'
-                ) {
+                if (style[mxConstants.STYLE_SHAPE] != 'image' && style[mxConstants.STYLE_SHAPE] != 'label') {
                   graph.setCellStyles(mxConstants.STYLE_SHAPE, 'image', cells)
                 } else if (newValue.length == 0) {
                   graph.setCellStyles(mxConstants.STYLE_SHAPE, null, cells)
@@ -2196,11 +2064,7 @@ Actions.prototype.init = function () {
         return //Can only process an existing image
       }
 
-      var dlg = new CropImageDialog(ui, value, style[mxConstants.STYLE_CLIP_PATH], function (
-        clipPath,
-        width,
-        height
-      ) {
+      var dlg = new CropImageDialog(ui, value, style[mxConstants.STYLE_CLIP_PATH], function (clipPath, width, height) {
         applyClipPath(cell, clipPath, width, height, graph)
       })
 
@@ -2293,12 +2157,7 @@ Actions.prototype.init = function () {
     function () {
       var cell = graph.getSelectionCell()
 
-      if (
-        graph.isEnabled() &&
-        !graph.isCellLocked(graph.getDefaultParent()) &&
-        cell != null &&
-        cell.geometry != null
-      ) {
+      if (graph.isEnabled() && !graph.isCellLocked(graph.getDefaultParent()) && cell != null && cell.geometry != null) {
         var dlg = new ConnectionPointsDialog(ui, cell)
         ui.showDialog(dlg.container, 350, 450, true, false, function () {
           dlg.destroy()

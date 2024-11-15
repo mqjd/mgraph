@@ -252,10 +252,7 @@ mxGraphLayout.prototype.isEdgeIgnored = function (edge) {
   var model = this.graph.getModel()
 
   return (
-    !model.isEdge(edge) ||
-    !this.graph.getModel().isVisible(edge) ||
-    model.getTerminal(edge, true) == null ||
-    model.getTerminal(edge, false) == null
+    !model.isEdge(edge) || !this.graph.getModel().isVisible(edge) || model.getTerminal(edge, true) == null || model.getTerminal(edge, false) == null
   )
 }
 
@@ -453,23 +450,8 @@ mxGraphLayout.prototype.getVertexBounds = function (cell) {
  *
  * Shortcut to <mxGraph.updateGroupBounds> with moveGroup set to true.
  */
-mxGraphLayout.prototype.arrangeGroups = function (
-  cells,
-  border,
-  topBorder,
-  rightBorder,
-  bottomBorder,
-  leftBorder
-) {
-  return this.graph.updateGroupBounds(
-    cells,
-    border,
-    true,
-    topBorder,
-    rightBorder,
-    bottomBorder,
-    leftBorder
-  )
+mxGraphLayout.prototype.arrangeGroups = function (cells, border, topBorder, rightBorder, bottomBorder, leftBorder) {
+  return this.graph.updateGroupBounds(cells, border, true, topBorder, rightBorder, bottomBorder, leftBorder)
 }
 
 /**

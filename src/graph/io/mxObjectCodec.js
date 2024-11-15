@@ -613,8 +613,7 @@ mxObjectCodec.prototype.convertAttributeFromXml = function (dec, attr, obj) {
 mxObjectCodec.prototype.isNumericAttribute = function (dec, attr, obj) {
   // Handles known numeric attributes for generic objects
   var result =
-    (obj.constructor == mxGeometry &&
-      (attr.name == 'x' || attr.name == 'y' || attr.name == 'width' || attr.name == 'height')) ||
+    (obj.constructor == mxGeometry && (attr.name == 'x' || attr.name == 'y' || attr.name == 'width' || attr.name == 'height')) ||
     (obj.constructor == mxPoint && (attr.name == 'x' || attr.name == 'y')) ||
     mxUtils.isNumeric(attr.value)
 
@@ -812,9 +811,7 @@ mxObjectCodec.prototype.decodeAttribute = function (dec, attr, obj) {
       var tmp = dec.getObject(value)
 
       if (tmp == null) {
-        mxLog.warn(
-          'mxObjectCodec.decode: No object for ' + this.getName() + '.' + name + '=' + value
-        )
+        mxLog.warn('mxObjectCodec.decode: No object for ' + this.getName() + '.' + name + '=' + value)
         return // exit
       }
 

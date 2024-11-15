@@ -106,11 +106,7 @@ mxLabel.prototype.redraw = function () {
  * no indicator shape.
  */
 mxLabel.prototype.isHtmlAllowed = function () {
-  return (
-    mxRectangleShape.prototype.isHtmlAllowed.apply(this, arguments) &&
-    this.indicatorColor == null &&
-    this.indicatorShape == null
-  )
+  return mxRectangleShape.prototype.isHtmlAllowed.apply(this, arguments) && this.indicatorColor == null && this.indicatorShape == null
 }
 
 /**
@@ -134,17 +130,7 @@ mxLabel.prototype.paintImage = function (c, x, y, w, h) {
   if (this.image != null) {
     var bounds = this.getImageBounds(x, y, w, h)
     var clipPath = mxUtils.getValue(this.style, mxConstants.STYLE_CLIP_PATH, null)
-    c.image(
-      bounds.x,
-      bounds.y,
-      bounds.width,
-      bounds.height,
-      this.image,
-      false,
-      false,
-      false,
-      clipPath
-    )
+    c.image(bounds.x, bounds.y, bounds.width, bounds.height, this.image, false, false, false, clipPath)
   }
 }
 
@@ -155,21 +141,9 @@ mxLabel.prototype.paintImage = function (c, x, y, w, h) {
  */
 mxLabel.prototype.getImageBounds = function (x, y, w, h) {
   var align = mxUtils.getValue(this.style, mxConstants.STYLE_IMAGE_ALIGN, mxConstants.ALIGN_LEFT)
-  var valign = mxUtils.getValue(
-    this.style,
-    mxConstants.STYLE_IMAGE_VERTICAL_ALIGN,
-    mxConstants.ALIGN_MIDDLE
-  )
-  var width = mxUtils.getNumber(
-    this.style,
-    mxConstants.STYLE_IMAGE_WIDTH,
-    mxConstants.DEFAULT_IMAGESIZE
-  )
-  var height = mxUtils.getNumber(
-    this.style,
-    mxConstants.STYLE_IMAGE_HEIGHT,
-    mxConstants.DEFAULT_IMAGESIZE
-  )
+  var valign = mxUtils.getValue(this.style, mxConstants.STYLE_IMAGE_VERTICAL_ALIGN, mxConstants.ALIGN_MIDDLE)
+  var width = mxUtils.getNumber(this.style, mxConstants.STYLE_IMAGE_WIDTH, mxConstants.DEFAULT_IMAGESIZE)
+  var height = mxUtils.getNumber(this.style, mxConstants.STYLE_IMAGE_HEIGHT, mxConstants.DEFAULT_IMAGESIZE)
   var spacing = mxUtils.getNumber(this.style, mxConstants.STYLE_SPACING, this.spacing) + 5
 
   if (align == mxConstants.ALIGN_CENTER) {
@@ -204,16 +178,7 @@ mxLabel.prototype.paintIndicator = function (c, x, y, w, h) {
     this.indicator.paint(c)
   } else if (this.indicatorImage != null) {
     var bounds = this.getIndicatorBounds(x, y, w, h)
-    c.image(
-      bounds.x,
-      bounds.y,
-      bounds.width,
-      bounds.height,
-      this.indicatorImage,
-      false,
-      false,
-      false
-    )
+    c.image(bounds.x, bounds.y, bounds.width, bounds.height, this.indicatorImage, false, false, false)
   }
 }
 
@@ -224,11 +189,7 @@ mxLabel.prototype.paintIndicator = function (c, x, y, w, h) {
  */
 mxLabel.prototype.getIndicatorBounds = function (x, y, w, h) {
   var align = mxUtils.getValue(this.style, mxConstants.STYLE_IMAGE_ALIGN, mxConstants.ALIGN_LEFT)
-  var valign = mxUtils.getValue(
-    this.style,
-    mxConstants.STYLE_IMAGE_VERTICAL_ALIGN,
-    mxConstants.ALIGN_MIDDLE
-  )
+  var valign = mxUtils.getValue(this.style, mxConstants.STYLE_IMAGE_VERTICAL_ALIGN, mxConstants.ALIGN_MIDDLE)
   var width = mxUtils.getNumber(this.style, mxConstants.STYLE_INDICATOR_WIDTH, this.indicatorSize)
   var height = mxUtils.getNumber(this.style, mxConstants.STYLE_INDICATOR_HEIGHT, this.indicatorSize)
   var spacing = this.spacing + 5
@@ -271,12 +232,7 @@ mxLabel.prototype.redrawHtmlShape = function () {
     node.style.position = 'relative'
     node.setAttribute('border', '0')
 
-    var bounds = this.getImageBounds(
-      this.bounds.x,
-      this.bounds.y,
-      this.bounds.width,
-      this.bounds.height
-    )
+    var bounds = this.getImageBounds(this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height)
     bounds.x -= this.bounds.x
     bounds.y -= this.bounds.y
 

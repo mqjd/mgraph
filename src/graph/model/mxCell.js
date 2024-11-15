@@ -607,11 +607,7 @@ mxCell.prototype.insertEdge = function (edge, isOutgoing) {
     edge.removeFromTerminal(isOutgoing)
     edge.setTerminal(this, isOutgoing)
 
-    if (
-      this.edges == null ||
-      edge.getTerminal(!isOutgoing) != this ||
-      mxUtils.indexOf(this.edges, edge) < 0
-    ) {
+    if (this.edges == null || edge.getTerminal(!isOutgoing) != this || mxUtils.indexOf(this.edges, edge) < 0) {
       if (this.edges == null) {
         this.edges = []
       }
@@ -681,9 +677,7 @@ mxCell.prototype.removeFromTerminal = function (isSource) {
 mxCell.prototype.hasAttribute = function (name) {
   var userObject = this.getValue()
 
-  return userObject != null &&
-    userObject.nodeType == mxConstants.NODETYPE_ELEMENT &&
-    userObject.hasAttribute
+  return userObject != null && userObject.nodeType == mxConstants.NODETYPE_ELEMENT && userObject.hasAttribute
     ? userObject.hasAttribute(name)
     : userObject.getAttribute(name) != null
 }
@@ -703,10 +697,7 @@ mxCell.prototype.hasAttribute = function (name) {
 mxCell.prototype.getAttribute = function (name, defaultValue) {
   var userObject = this.getValue()
 
-  var val =
-    userObject != null && userObject.nodeType == mxConstants.NODETYPE_ELEMENT
-      ? userObject.getAttribute(name)
-      : null
+  var val = userObject != null && userObject.nodeType == mxConstants.NODETYPE_ELEMENT ? userObject.getAttribute(name) : null
 
   return val != null ? val : defaultValue
 }

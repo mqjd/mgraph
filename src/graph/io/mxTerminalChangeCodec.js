@@ -26,11 +26,7 @@ mxCodecRegistry.register(
      * - cell
      * - terminal
      */
-    var codec = new mxObjectCodec(
-      new mxTerminalChange(),
-      ['model', 'previous'],
-      ['cell', 'terminal']
-    )
+    var codec = new mxObjectCodec(new mxTerminalChange(), ['model', 'previous'], ['cell', 'terminal'])
 
     /**
      * Function: afterDecode

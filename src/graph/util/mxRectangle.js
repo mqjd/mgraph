@@ -155,13 +155,7 @@ mxRectangle.prototype.rotate90 = function () {
  * Returns true if the given object equals this rectangle.
  */
 mxRectangle.prototype.equals = function (obj) {
-  return (
-    obj != null &&
-    obj.x == this.x &&
-    obj.y == this.y &&
-    obj.width == this.width &&
-    obj.height == this.height
-  )
+  return obj != null && obj.x == this.x && obj.y == this.y && obj.width == this.width && obj.height == this.height
 }
 
 /**

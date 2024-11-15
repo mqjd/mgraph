@@ -88,10 +88,7 @@ mxConnector.prototype.paintEdgeShape = function (c, pts) {
 mxConnector.prototype.createMarker = function (c, pts, source) {
   var result = null
   var n = pts.length
-  var type = mxUtils.getValue(
-    this.style,
-    source ? mxConstants.STYLE_STARTARROW : mxConstants.STYLE_ENDARROW
-  )
+  var type = mxUtils.getValue(this.style, source ? mxConstants.STYLE_STARTARROW : mxConstants.STYLE_ENDARROW)
   var p0 = source ? pts[1] : pts[n - 2]
   var pe = source ? pts[0] : pts[n - 1]
 
@@ -104,28 +101,13 @@ mxConnector.prototype.createMarker = function (c, pts, source) {
     var unitX = dx / dist
     var unitY = dy / dist
 
-    var size = mxUtils.getNumber(
-      this.style,
-      source ? mxConstants.STYLE_STARTSIZE : mxConstants.STYLE_ENDSIZE,
-      mxConstants.DEFAULT_MARKERSIZE
-    )
+    var size = mxUtils.getNumber(this.style, source ? mxConstants.STYLE_STARTSIZE : mxConstants.STYLE_ENDSIZE, mxConstants.DEFAULT_MARKERSIZE)
 
     // Allow for stroke width in the end point used and the
     // orthogonal vectors describing the direction of the marker
     var filled = this.style[source ? mxConstants.STYLE_STARTFILL : mxConstants.STYLE_ENDFILL] != 0
 
-    result = mxMarker.createMarker(
-      c,
-      this,
-      type,
-      pe,
-      unitX,
-      unitY,
-      size,
-      source,
-      this.strokewidth,
-      filled
-    )
+    result = mxMarker.createMarker(c, this, type, pe, unitX, unitY, size, source, this.strokewidth, filled)
   }
 
   return result
@@ -142,21 +124,12 @@ mxConnector.prototype.augmentBoundingBox = function (bbox) {
   // Adds marker sizes
   var size = 0
 
-  if (
-    mxUtils.getValue(this.style, mxConstants.STYLE_STARTARROW, mxConstants.NONE) != mxConstants.NONE
-  ) {
-    size =
-      mxUtils.getNumber(this.style, mxConstants.STYLE_STARTSIZE, mxConstants.DEFAULT_MARKERSIZE) + 1
+  if (mxUtils.getValue(this.style, mxConstants.STYLE_STARTARROW, mxConstants.NONE) != mxConstants.NONE) {
+    size = mxUtils.getNumber(this.style, mxConstants.STYLE_STARTSIZE, mxConstants.DEFAULT_MARKERSIZE) + 1
   }
 
-  if (
-    mxUtils.getValue(this.style, mxConstants.STYLE_ENDARROW, mxConstants.NONE) != mxConstants.NONE
-  ) {
-    size =
-      Math.max(
-        size,
-        mxUtils.getNumber(this.style, mxConstants.STYLE_ENDSIZE, mxConstants.DEFAULT_MARKERSIZE)
-      ) + 1
+  if (mxUtils.getValue(this.style, mxConstants.STYLE_ENDARROW, mxConstants.NONE) != mxConstants.NONE) {
+    size = Math.max(size, mxUtils.getNumber(this.style, mxConstants.STYLE_ENDSIZE, mxConstants.DEFAULT_MARKERSIZE)) + 1
   }
 
   bbox.grow(size * this.scale)

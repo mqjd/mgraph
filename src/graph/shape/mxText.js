@@ -293,20 +293,7 @@ mxText.prototype.paint = function (c, update) {
   var dir = this.getActualTextDirection()
 
   if (update) {
-    c.updateText(
-      x,
-      y,
-      w,
-      h,
-      this.align,
-      this.valign,
-      this.wrap,
-      this.overflow,
-      this.clipped,
-      this.getTextRotation(),
-      dir,
-      this.node
-    )
+    c.updateText(x, y, w, h, this.align, this.valign, this.wrap, this.overflow, this.clipped, this.getTextRotation(), dir, this.node)
   } else {
     // Checks if text contains HTML markup
     var realHtml = mxUtils.isNode(this.value) || this.dialect == mxConstants.DIALECT_STRICTHTML
@@ -324,26 +311,9 @@ mxText.prototype.paint = function (c, update) {
     }
 
     // Handles trailing newlines to make sure they are visible in rendering output
-    val =
-      !mxUtils.isNode(this.value) && this.replaceLinefeeds && fmt == 'html'
-        ? val.replace(/\n/g, '<br/>')
-        : val
+    val = !mxUtils.isNode(this.value) && this.replaceLinefeeds && fmt == 'html' ? val.replace(/\n/g, '<br/>') : val
 
-    c.text(
-      x,
-      y,
-      w,
-      h,
-      val,
-      this.align,
-      this.valign,
-      this.wrap,
-      fmt,
-      this.overflow,
-      this.clipped,
-      this.getTextRotation(),
-      dir
-    )
+    c.text(x, y, w, h, val, this.align, this.valign, this.wrap, fmt, this.overflow, this.clipped, this.getTextRotation(), dir)
   }
 }
 
@@ -444,33 +414,14 @@ mxText.prototype.apply = function (state) {
     this.align = mxUtils.getValue(this.style, mxConstants.STYLE_ALIGN, this.align)
     this.valign = mxUtils.getValue(this.style, mxConstants.STYLE_VERTICAL_ALIGN, this.valign)
     this.spacing = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING, this.spacing))
-    this.spacingTop =
-      parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_TOP, this.spacingTop - old)) +
-      this.spacing
-    this.spacingRight =
-      parseInt(
-        mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_RIGHT, this.spacingRight - old)
-      ) + this.spacing
-    this.spacingBottom =
-      parseInt(
-        mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_BOTTOM, this.spacingBottom - old)
-      ) + this.spacing
-    this.spacingLeft =
-      parseInt(
-        mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_LEFT, this.spacingLeft - old)
-      ) + this.spacing
+    this.spacingTop = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_TOP, this.spacingTop - old)) + this.spacing
+    this.spacingRight = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_RIGHT, this.spacingRight - old)) + this.spacing
+    this.spacingBottom = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_BOTTOM, this.spacingBottom - old)) + this.spacing
+    this.spacingLeft = parseInt(mxUtils.getValue(this.style, mxConstants.STYLE_SPACING_LEFT, this.spacingLeft - old)) + this.spacing
     this.horizontal = mxUtils.getValue(this.style, mxConstants.STYLE_HORIZONTAL, this.horizontal)
-    this.background = mxUtils.getValue(
-      this.style,
-      mxConstants.STYLE_LABEL_BACKGROUNDCOLOR,
-      this.background
-    )
+    this.background = mxUtils.getValue(this.style, mxConstants.STYLE_LABEL_BACKGROUNDCOLOR, this.background)
     this.border = mxUtils.getValue(this.style, mxConstants.STYLE_LABEL_BORDERCOLOR, this.border)
-    this.textDirection = mxUtils.getValue(
-      this.style,
-      mxConstants.STYLE_TEXT_DIRECTION,
-      mxConstants.DEFAULT_TEXT_DIRECTION
-    )
+    this.textDirection = mxUtils.getValue(this.style, mxConstants.STYLE_TEXT_DIRECTION, mxConstants.DEFAULT_TEXT_DIRECTION)
     this.opacity = mxUtils.getValue(this.style, mxConstants.STYLE_TEXT_OPACITY, 100)
     this.updateMargin()
   }
@@ -489,14 +440,10 @@ mxText.prototype.apply = function (state) {
  */
 mxText.prototype.getAutoDirection = function () {
   // Looks for strong (directional) characters
-  var tmp = /[A-Za-z\u05d0-\u065f\u066a-\u06ef\u06fa-\u07ff\ufb1d-\ufdff\ufe70-\ufefc]/.exec(
-    this.value
-  )
+  var tmp = /[A-Za-z\u05d0-\u065f\u066a-\u06ef\u06fa-\u07ff\ufb1d-\ufdff\ufe70-\ufefc]/.exec(this.value)
 
   // Returns the direction defined by the character
-  return tmp != null && tmp.length > 0 && tmp[0] > 'z'
-    ? mxConstants.TEXT_DIRECTION_RTL
-    : mxConstants.TEXT_DIRECTION_LTR
+  return tmp != null && tmp.length > 0 && tmp[0] > 'z' ? mxConstants.TEXT_DIRECTION_RTL : mxConstants.TEXT_DIRECTION_LTR
 }
 
 /**
@@ -530,27 +477,14 @@ mxText.prototype.updateBoundingBox = function () {
   this.boundingBox = this.bounds.clone()
   var rot = this.getTextRotation()
 
-  var h =
-    this.style != null
-      ? mxUtils.getValue(this.style, mxConstants.STYLE_LABEL_POSITION, mxConstants.ALIGN_CENTER)
-      : null
-  var v =
-    this.style != null
-      ? mxUtils.getValue(
-          this.style,
-          mxConstants.STYLE_VERTICAL_LABEL_POSITION,
-          mxConstants.ALIGN_MIDDLE
-        )
-      : null
+  var h = this.style != null ? mxUtils.getValue(this.style, mxConstants.STYLE_LABEL_POSITION, mxConstants.ALIGN_CENTER) : null
+  var v = this.style != null ? mxUtils.getValue(this.style, mxConstants.STYLE_VERTICAL_LABEL_POSITION, mxConstants.ALIGN_MIDDLE) : null
 
   if (
     !this.ignoreStringSize &&
     node != null &&
     this.overflow != 'fill' &&
-    (!this.clipped ||
-      !this.ignoreClippedStringSize ||
-      h != mxConstants.ALIGN_CENTER ||
-      v != mxConstants.ALIGN_MIDDLE)
+    (!this.clipped || !this.ignoreClippedStringSize || h != mxConstants.ALIGN_CENTER || v != mxConstants.ALIGN_MIDDLE)
   ) {
     var ow = null
     var oh = null
@@ -712,9 +646,7 @@ mxText.prototype.getTextRotation = function () {
  * horizontal style is false.
  */
 mxText.prototype.isPaintBoundsInverted = function () {
-  return (
-    !this.horizontal && this.state != null && this.state.view.graph.model.isVertex(this.state.cell)
-  )
+  return !this.horizontal && this.state != null && this.state.view.graph.model.isVertex(this.state.cell)
 }
 
 /**
@@ -739,9 +671,7 @@ mxText.prototype.configureCanvas = function (c, x, y, w, h) {
  * Removes all child nodes and resets all CSS.
  */
 mxText.prototype.isShadowEnabled = function () {
-  return this.style != null
-    ? mxUtils.getValue(this.style, mxConstants.STYLE_TEXT_SHADOW, false)
-    : false
+  return this.style != null ? mxUtils.getValue(this.style, mxConstants.STYLE_TEXT_SHADOW, false) : false
 }
 
 /**
@@ -769,9 +699,7 @@ mxText.prototype.getHtmlValue = function () {
  * Private helper function to create SVG elements
  */
 mxText.prototype.getTextCss = function () {
-  var lh = mxConstants.ABSOLUTE_LINE_HEIGHT
-    ? this.size * mxConstants.LINE_HEIGHT + 'px'
-    : mxConstants.LINE_HEIGHT
+  var lh = mxConstants.ABSOLUTE_LINE_HEIGHT ? this.size * mxConstants.LINE_HEIGHT + 'px' : mxConstants.LINE_HEIGHT
 
   var css =
     'display: inline-block; font-size: ' +
@@ -852,13 +780,7 @@ mxText.prototype.redrawHtmlShape = function () {
 mxText.prototype.redrawHtmlShapeWithCss3 = function () {
   var w = Math.max(0, Math.round(this.bounds.width / this.scale))
   var h = Math.max(0, Math.round(this.bounds.height / this.scale))
-  var flex =
-    'position: absolute; left: ' +
-    Math.round(this.bounds.x) +
-    'px; ' +
-    'top: ' +
-    Math.round(this.bounds.y) +
-    'px; pointer-events: none; '
+  var flex = 'position: absolute; left: ' + Math.round(this.bounds.x) + 'px; ' + 'top: ' + Math.round(this.bounds.y) + 'px; pointer-events: none; '
   var block = this.getTextCss()
   var dir = this.getActualTextDirection()
 
@@ -881,9 +803,7 @@ mxText.prototype.redrawHtmlShapeWithCss3 = function () {
       var tr =
         (this.scale != 1 ? 'scale(' + this.scale + ') ' : '') +
         (r != 0 ? 'rotate(' + r + 'deg) ' : '') +
-        (this.margin.x != 0 || this.margin.y != 0
-          ? 'translate(' + this.margin.x * 100 + '%,' + this.margin.y * 100 + '%)'
-          : '')
+        (this.margin.x != 0 || this.margin.y != 0 ? 'translate(' + this.margin.x * 100 + '%,' + this.margin.y * 100 + '%)' : '')
 
       if (tr != '') {
         tr = 'transform-origin: 0 0; transform: ' + tr + '; '
@@ -972,31 +892,14 @@ mxText.prototype.updateHtmlTransform = function () {
     mxUtils.setPrefixedStyle(
       style,
       'transform',
-      'translate(' +
-        dx * 100 +
-        '%' +
-        ',' +
-        dy * 100 +
-        '%) ' +
-        'scale(' +
-        this.scale +
-        ') rotate(' +
-        theta +
-        'deg)'
+      'translate(' + dx * 100 + '%' + ',' + dy * 100 + '%) ' + 'scale(' + this.scale + ') rotate(' + theta + 'deg)'
     )
   } else {
     mxUtils.setPrefixedStyle(style, 'transformOrigin', '0% 0%')
-    mxUtils.setPrefixedStyle(
-      style,
-      'transform',
-      'scale(' + this.scale + ') ' + 'translate(' + dx * 100 + '%' + ',' + dy * 100 + '%)'
-    )
+    mxUtils.setPrefixedStyle(style, 'transform', 'scale(' + this.scale + ') ' + 'translate(' + dx * 100 + '%' + ',' + dy * 100 + '%)')
   }
 
-  style.left =
-    Math.round(
-      this.bounds.x - Math.ceil(dx * (this.overflow != 'fill' && this.overflow != 'width' ? 3 : 1))
-    ) + 'px'
+  style.left = Math.round(this.bounds.x - Math.ceil(dx * (this.overflow != 'fill' && this.overflow != 'width' ? 3 : 1))) + 'px'
   style.top = Math.round(this.bounds.y - dy * (this.overflow != 'fill' ? 3 : 1)) + 'px'
 
   if (this.opacity < 100) {
@@ -1238,9 +1141,7 @@ mxText.prototype.updateValue = function () {
       // Wrapper DIV for background, zoom needed for inline in quirks
       // and to measure wrapped font sizes in all browsers
       // FIXME: Background size in quirks mode for wrapped text
-      var lh = mxConstants.ABSOLUTE_LINE_HEIGHT
-        ? this.size * mxConstants.LINE_HEIGHT + 'px'
-        : mxConstants.LINE_HEIGHT
+      var lh = mxConstants.ABSOLUTE_LINE_HEIGHT ? this.size * mxConstants.LINE_HEIGHT + 'px' : mxConstants.LINE_HEIGHT
       val =
         '<div style="zoom:1;' +
         css +
@@ -1261,10 +1162,7 @@ mxText.prototype.updateValue = function () {
       // LATER: Add vertical writing-mode support
       var dir = this.textDirection
 
-      if (
-        dir == mxConstants.TEXT_DIRECTION_AUTO &&
-        this.dialect != mxConstants.DIALECT_STRICTHTML
-      ) {
+      if (dir == mxConstants.TEXT_DIRECTION_AUTO && this.dialect != mxConstants.DIALECT_STRICTHTML) {
         dir = this.getAutoDirection()
       }
 
@@ -1285,9 +1183,7 @@ mxText.prototype.updateValue = function () {
 mxText.prototype.updateFont = function (node) {
   var style = node.style
 
-  style.lineHeight = mxConstants.ABSOLUTE_LINE_HEIGHT
-    ? this.size * mxConstants.LINE_HEIGHT + 'px'
-    : mxConstants.LINE_HEIGHT
+  style.lineHeight = mxConstants.ABSOLUTE_LINE_HEIGHT ? this.size * mxConstants.LINE_HEIGHT + 'px' : mxConstants.LINE_HEIGHT
   style.fontSize = this.size + 'px'
   style.fontFamily = this.family
   style.verticalAlign = 'top'
@@ -1413,15 +1309,9 @@ mxText.prototype.getSpacing = function (noBase, margin) {
   var dx = 0
   var dy = 0
 
-  if (
-    (margin != null && margin.x == -0.5) ||
-    (margin == null && this.align == mxConstants.ALIGN_CENTER)
-  ) {
+  if ((margin != null && margin.x == -0.5) || (margin == null && this.align == mxConstants.ALIGN_CENTER)) {
     dx = (this.spacingLeft - this.spacingRight) / 2
-  } else if (
-    (margin != null && margin.x == -1) ||
-    (margin == null && this.align == mxConstants.ALIGN_RIGHT)
-  ) {
+  } else if ((margin != null && margin.x == -1) || (margin == null && this.align == mxConstants.ALIGN_RIGHT)) {
     dx = -this.spacingRight - (noBase ? 0 : this.baseSpacingRight)
   } else {
     dx = this.spacingLeft + (noBase ? 0 : this.baseSpacingLeft)

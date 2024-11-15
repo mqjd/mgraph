@@ -26,11 +26,7 @@ mxCodecRegistry.register(
      *
      * - parent
      */
-    var codec = new mxObjectCodec(
-      new mxChildChange(),
-      ['model', 'child', 'previousIndex'],
-      ['parent', 'previous']
-    )
+    var codec = new mxObjectCodec(new mxChildChange(), ['model', 'child', 'previousIndex'], ['parent', 'previous'])
 
     /**
      * Function: isReference
@@ -56,10 +52,7 @@ mxCodecRegistry.register(
     codec.isExcluded = function (obj, attr, value, write) {
       return (
         mxObjectCodec.prototype.isExcluded.apply(this, arguments) ||
-        (write &&
-          value != null &&
-          (attr == 'previous' || attr == 'parent') &&
-          !obj.model.contains(value))
+        (write && value != null && (attr == 'previous' || attr == 'parent') && !obj.model.contains(value))
       )
     }
 

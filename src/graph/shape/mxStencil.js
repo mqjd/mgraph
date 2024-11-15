@@ -414,16 +414,11 @@ mxStencil.prototype.drawShape = function (canvas, shape, x, y, w, h) {
   var aspect = this.computeAspect(shape.style, x, y, w, h, direction)
   var minScale = Math.min(aspect.width, aspect.height)
   var sw =
-    this.strokewidth == 'inherit'
-      ? Number(mxUtils.getNumber(shape.style, mxConstants.STYLE_STROKEWIDTH, 1))
-      : Number(this.strokewidth) * minScale
+    this.strokewidth == 'inherit' ? Number(mxUtils.getNumber(shape.style, mxConstants.STYLE_STROKEWIDTH, 1)) : Number(this.strokewidth) * minScale
   canvas.setStrokeWidth(sw)
 
   // Draws a transparent rectangle for catching events
-  if (
-    shape.style != null &&
-    mxUtils.getValue(shape.style, mxConstants.STYLE_POINTER_EVENTS, '0') == '1'
-  ) {
+  if (shape.style != null && mxUtils.getValue(shape.style, mxConstants.STYLE_POINTER_EVENTS, '0') == '1') {
     canvas.setStrokeColor(mxConstants.NONE)
     canvas.rect(x, y, w, h)
     canvas.stroke()
@@ -441,9 +436,7 @@ mxStencil.prototype.drawShape = function (canvas, shape, x, y, w, h) {
     this.fgNode,
     aspect,
     true,
-    !shape.outline ||
-      shape.style == null ||
-      mxUtils.getValue(shape.style, mxConstants.STYLE_BACKGROUND_OUTLINE, 0) == 0
+    !shape.outline || shape.style == null || mxUtils.getValue(shape.style, mxConstants.STYLE_BACKGROUND_OUTLINE, 0) == 0
   )
 
   // Restores stack for unequal count of save/restore calls
@@ -457,18 +450,7 @@ mxStencil.prototype.drawShape = function (canvas, shape, x, y, w, h) {
  *
  * Draws this stencil inside the given bounds.
  */
-mxStencil.prototype.drawChildren = function (
-  canvas,
-  shape,
-  x,
-  y,
-  w,
-  h,
-  node,
-  aspect,
-  disableShadow,
-  paint
-) {
+mxStencil.prototype.drawChildren = function (canvas, shape, x, y, w, h, node, aspect, disableShadow, paint) {
   if (node != null && w > 0 && h > 0) {
     var tmp = node.firstChild
 
@@ -587,12 +569,7 @@ mxStencil.prototype.drawNode = function (canvas, shape, node, aspect, disableSha
                 segs.push([])
               }
 
-              segs[segs.length - 1].push(
-                new mxPoint(
-                  x0 + Number(childNode.getAttribute('x')) * sx,
-                  y0 + Number(childNode.getAttribute('y')) * sy
-                )
-              )
+              segs[segs.length - 1].push(new mxPoint(x0 + Number(childNode.getAttribute('x')) * sx, y0 + Number(childNode.getAttribute('y')) * sy))
               pointCount++
             } else {
               //We only support move and line for rounded corners
@@ -637,15 +614,9 @@ mxStencil.prototype.drawNode = function (canvas, shape, node, aspect, disableSha
     } else if (name == 'close') {
       canvas.close()
     } else if (name == 'move') {
-      canvas.moveTo(
-        x0 + Number(node.getAttribute('x')) * sx,
-        y0 + Number(node.getAttribute('y')) * sy
-      )
+      canvas.moveTo(x0 + Number(node.getAttribute('x')) * sx, y0 + Number(node.getAttribute('y')) * sy)
     } else if (name == 'line') {
-      canvas.lineTo(
-        x0 + Number(node.getAttribute('x')) * sx,
-        y0 + Number(node.getAttribute('y')) * sy
-      )
+      canvas.lineTo(x0 + Number(node.getAttribute('x')) * sx, y0 + Number(node.getAttribute('y')) * sy)
     } else if (name == 'quad') {
       canvas.quadTo(
         x0 + Number(node.getAttribute('x1')) * sx,
@@ -691,14 +662,7 @@ mxStencil.prototype.drawNode = function (canvas, shape, node, aspect, disableSha
       var factor = Number(arcsize) / 100
       var r = Math.min(w * factor, h * factor)
 
-      canvas.roundrect(
-        x0 + Number(node.getAttribute('x')) * sx,
-        y0 + Number(node.getAttribute('y')) * sy,
-        w,
-        h,
-        r,
-        r
-      )
+      canvas.roundrect(x0 + Number(node.getAttribute('x')) * sx, y0 + Number(node.getAttribute('y')) * sy, w, h, r, r)
     } else if (name == 'ellipse') {
       canvas.ellipse(
         x0 + Number(node.getAttribute('x')) * sx,

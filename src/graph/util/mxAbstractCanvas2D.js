@@ -213,12 +213,7 @@ mxAbstractCanvas2D.prototype.addOp = function () {
 mxAbstractCanvas2D.prototype.rotatePoint = function (x, y, theta, cx, cy) {
   var rad = theta * (Math.PI / 180)
 
-  return mxUtils.getRotatedPoint(
-    new mxPoint(x, y),
-    Math.cos(rad),
-    Math.sin(rad),
-    new mxPoint(cx, cy)
-  )
+  return mxUtils.getRotatedPoint(new mxPoint(x, y), Math.cos(rad), Math.sin(rad), new mxPoint(cx, cy))
 }
 
 /**
@@ -348,17 +343,7 @@ mxAbstractCanvas2D.prototype.setFillStyle = function (value) {
  *
  * Sets the current gradient.
  */
-mxAbstractCanvas2D.prototype.setGradient = function (
-  color1,
-  color2,
-  x,
-  y,
-  w,
-  h,
-  direction,
-  alpha1,
-  alpha2
-) {
+mxAbstractCanvas2D.prototype.setGradient = function (color1, color2, x, y, w, h, direction, alpha1, alpha2) {
   var s = this.state
   s.fillColor = color1
   s.gradientFillAlpha = alpha1 != null ? alpha1 : 1
@@ -603,28 +588,11 @@ mxAbstractCanvas2D.prototype.curveTo = function (x1, y1, x2, y2, x3, y3) {
  * is broken down into curves.
  */
 mxAbstractCanvas2D.prototype.arcTo = function (rx, ry, angle, largeArcFlag, sweepFlag, x, y) {
-  var curves = mxUtils.arcToCurves(
-    this.lastX,
-    this.lastY,
-    rx,
-    ry,
-    angle,
-    largeArcFlag,
-    sweepFlag,
-    x,
-    y
-  )
+  var curves = mxUtils.arcToCurves(this.lastX, this.lastY, rx, ry, angle, largeArcFlag, sweepFlag, x, y)
 
   if (curves != null) {
     for (var i = 0; i < curves.length; i += 6) {
-      this.curveTo(
-        curves[i],
-        curves[i + 1],
-        curves[i + 2],
-        curves[i + 3],
-        curves[i + 4],
-        curves[i + 5]
-      )
+      this.curveTo(curves[i], curves[i + 1], curves[i + 2], curves[i + 3], curves[i + 4], curves[i + 5])
     }
   }
 }

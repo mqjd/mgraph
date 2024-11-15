@@ -44,8 +44,7 @@ var ColorDialog = function (editorUi, color, apply, cancelFn, defaultColor, defa
     defaultColorValue = Editor.isDarkMode() && defaultColor == 'default' ? '#ffffff' : '#000000'
   }
 
-  var defaultColorLabel =
-    defaultColorValue.substring(1).toUpperCase() + ' (' + mxResources.get('automatic') + ')'
+  var defaultColorLabel = defaultColorValue.substring(1).toUpperCase() + ' (' + mxResources.get('automatic') + ')'
 
   function validateColorName(value, resolveDefault, defaultTextValue) {
     var color = value
@@ -54,10 +53,7 @@ var ColorDialog = function (editorUi, color, apply, cancelFn, defaultColor, defa
     // Resolves special names for default color value
     if (
       (defaultColor != null &&
-        (color == '' ||
-          lc == 'automatic' ||
-          lc == defaultColorLabel.toLowerCase() ||
-          lc == mxResources.get('default').toLowerCase())) ||
+        (color == '' || lc == 'automatic' || lc == defaultColorLabel.toLowerCase() || lc == mxResources.get('default').toLowerCase())) ||
       lc == mxResources.get('automatic').toLowerCase()
     ) {
       color = 'default'
@@ -143,12 +139,7 @@ var ColorDialog = function (editorUi, color, apply, cancelFn, defaultColor, defa
   var center = document.createElement('center')
 
   function createRecentColorTable() {
-    var table = addPresets(
-      ColorDialog.recentColors.length == 0 ? ['FFFFFF'] : ColorDialog.recentColors,
-      11,
-      'FFFFFF',
-      true
-    )
+    var table = addPresets(ColorDialog.recentColors.length == 0 ? ['FFFFFF'] : ColorDialog.recentColors, 11, 'FFFFFF', true)
     table.style.marginBottom = '8px'
 
     return table
@@ -589,17 +580,7 @@ ColorDialog.createApplyFunction = function (editorUi, colorKey) {
     graph.getModel().beginUpdate()
     try {
       graph.setCellStyles(colorKey, color)
-      editorUi.fireEvent(
-        new mxEventObject(
-          'styleChanged',
-          'keys',
-          [colorKey],
-          'values',
-          [color],
-          'cells',
-          graph.getSelectionCells()
-        )
-      )
+      editorUi.fireEvent(new mxEventObject('styleChanged', 'keys', [colorKey], 'values', [color], 'cells', graph.getSelectionCells()))
     } finally {
       graph.getModel().endUpdate()
     }
@@ -1281,21 +1262,13 @@ var ExportDialog = function (editorUi) {
       borderInput.removeAttribute('disabled')
     }
 
-    if (
-      imageFormatSelect.value === 'png' ||
-      imageFormatSelect.value === 'svg' ||
-      imageFormatSelect.value === 'pdf'
-    ) {
+    if (imageFormatSelect.value === 'png' || imageFormatSelect.value === 'svg' || imageFormatSelect.value === 'pdf') {
       transparentCheckbox.removeAttribute('disabled')
     } else {
       transparentCheckbox.setAttribute('disabled', 'disabled')
     }
 
-    if (
-      imageFormatSelect.value === 'png' ||
-      imageFormatSelect.value === 'jpg' ||
-      imageFormatSelect.value === 'pdf'
-    ) {
+    if (imageFormatSelect.value === 'png' || imageFormatSelect.value === 'jpg' || imageFormatSelect.value === 'pdf') {
       gridCheckbox.removeAttribute('disabled')
     } else {
       gridCheckbox.setAttribute('disabled', 'disabled')
@@ -1393,10 +1366,7 @@ var ExportDialog = function (editorUi) {
         var bg = graph.background
         var dpi = Math.max(1, parseInt(customDpi.value))
 
-        if (
-          (format == 'svg' || format == 'png' || format == 'pdf') &&
-          transparentCheckbox.checked
-        ) {
+        if ((format == 'svg' || format == 'png' || format == 'pdf') && transparentCheckbox.checked) {
           bg = null
         } else if (bg == null || bg == mxConstants.NONE) {
           bg = '#ffffff'
@@ -1453,12 +1423,7 @@ ExportDialog.exportFile = function (editorUi, name, format, bg, s, b, dpi, grid)
   var graph = editorUi.editor.graph
 
   if (format == 'xml') {
-    ExportDialog.saveLocalFile(
-      editorUi,
-      mxUtils.getXml(editorUi.editor.getGraphXml()),
-      name,
-      format
-    )
+    ExportDialog.saveLocalFile(editorUi, mxUtils.getXml(editorUi.editor.getGraphXml()), name, format)
   } else if (format == 'svg') {
     ExportDialog.saveLocalFile(editorUi, mxUtils.getXml(graph.getSvg(bg, s, b)), name, format)
   } else {
@@ -1471,10 +1436,7 @@ ExportDialog.exportFile = function (editorUi, name, format, bg, s, b, dpi, grid)
 
     // Renders graph. Offset will be multiplied with state's scale when painting state.
     var xmlCanvas = new mxXmlCanvas2D(root)
-    xmlCanvas.translate(
-      Math.floor((b / s - bounds.x) / graph.view.scale),
-      Math.floor((b / s - bounds.y) / graph.view.scale)
-    )
+    xmlCanvas.translate(Math.floor((b / s - bounds.x) / graph.view.scale), Math.floor((b / s - bounds.y) / graph.view.scale))
     xmlCanvas.scale(s / graph.view.scale)
 
     var imgExport = new mxImageExport()
@@ -1521,15 +1483,7 @@ ExportDialog.exportFile = function (editorUi, name, format, bg, s, b, dpi, grid)
 ExportDialog.saveLocalFile = function (editorUi, data, filename, format) {
   if (data.length < MAX_REQUEST_SIZE) {
     editorUi.hideDialog()
-    var req = new mxXmlRequest(
-      SAVE_URL,
-      'xml=' +
-        encodeURIComponent(data) +
-        '&filename=' +
-        encodeURIComponent(filename) +
-        '&format=' +
-        format
-    )
+    var req = new mxXmlRequest(SAVE_URL, 'xml=' + encodeURIComponent(data) + '&filename=' + encodeURIComponent(filename) + '&format=' + format)
     req.simulate(document, '_blank')
   } else {
     mxUtils.alert(mxResources.get('drawingTooLarge'))
@@ -1575,8 +1529,7 @@ var EditDataDialog = function (ui, cell) {
   var texts = []
   var count = 0
 
-  var id =
-    EditDataDialog.getDisplayIdForCell != null ? EditDataDialog.getDisplayIdForCell(ui, cell) : null
+  var id = EditDataDialog.getDisplayIdForCell != null ? EditDataDialog.getDisplayIdForCell(ui, cell) : null
 
   var addRemoveButton = function (text, name) {
     var wrapper = document.createElement('div')
@@ -1649,10 +1602,7 @@ var EditDataDialog = function (ui, cell) {
   var isLayer = graph.getModel().getParent(cell) == graph.getModel().getRoot()
 
   for (var i = 0; i < attrs.length; i++) {
-    if (
-      (attrs[i].nodeName != 'label' || Graph.translateDiagram || isLayer) &&
-      attrs[i].nodeName != 'placeholders'
-    ) {
+    if ((attrs[i].nodeName != 'label' || Graph.translateDiagram || isLayer) && attrs[i].nodeName != 'placeholders') {
       temp.push({ name: attrs[i].nodeName, value: attrs[i].nodeValue })
     }
   }
@@ -1767,13 +1717,7 @@ var EditDataDialog = function (ui, cell) {
     var name = nameInput.value
 
     // Avoid ':' in attribute names which seems to be valid in Chrome
-    if (
-      name.length > 0 &&
-      name != 'label' &&
-      name != 'id' &&
-      name != 'placeholders' &&
-      name.indexOf(':') < 0
-    ) {
+    if (name.length > 0 && name != 'label' && name != 'id' && name != 'placeholders' && name.indexOf(':') < 0) {
       try {
         var idx = mxUtils.indexOf(names, name)
 
@@ -1879,8 +1823,7 @@ var EditDataDialog = function (ui, cell) {
           value.removeAttribute(names[i])
         } else {
           value.setAttribute(names[i], texts[i].value)
-          removeLabel =
-            removeLabel || (names[i] == 'placeholder' && value.getAttribute('placeholders') == '1')
+          removeLabel = removeLabel || (names[i] == 'placeholder' && value.getAttribute('placeholders') == '1')
         }
       }
 
@@ -1919,8 +1862,7 @@ var EditDataDialog = function (ui, cell) {
   mxEvent.addListener(nameInput, 'change', updateAddBtn)
 
   var buttons = document.createElement('div')
-  buttons.style.cssText =
-    'position:absolute;left:30px;right:30px;text-align:right;bottom:30px;height:40px;'
+  buttons.style.cssText = 'position:absolute;left:30px;right:30px;text-align:right;bottom:30px;height:40px;'
 
   if (ui.editor.graph.getModel().isVertex(cell) || ui.editor.graph.getModel().isEdge(cell)) {
     var replace = document.createElement('span')
@@ -2586,11 +2528,7 @@ var LayersWindow = function (editorUi, x, y, w, h) {
 
       if (graph.isEnabled()) {
         // Fallback if no drag and drop is available
-        if (
-          mxClient.IS_TOUCH ||
-          mxClient.IS_POINTER ||
-          (mxClient.IS_IE && document.documentMode < 10)
-        ) {
+        if (mxClient.IS_TOUCH || mxClient.IS_POINTER || (mxClient.IS_IE && document.documentMode < 10)) {
           var right = document.createElement('div')
           right.style.display = 'block'
           right.style.textAlign = 'right'
@@ -2691,12 +2629,7 @@ var LayersWindow = function (editorUi, x, y, w, h) {
     // Cannot be moved or deleted
     for (var i = layerCount - 1; i >= 0; i--) {
       mxUtils.bind(this, function (child) {
-        addLayer(
-          i,
-          graph.convertValueToString(child) || mxResources.get('background'),
-          child,
-          child
-        )
+        addLayer(i, graph.convertValueToString(child) || mxResources.get('background'), child, child)
       })(graph.model.getChildAt(graph.model.root, i))
     }
 

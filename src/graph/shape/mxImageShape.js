@@ -161,17 +161,7 @@ mxImageShape.prototype.paintVertexShape = function (c, x, y, w, h) {
     }
 
     // FlipH/V are implicit via mxShape.updateTransform
-    c.image(
-      x,
-      y,
-      w,
-      h,
-      this.getImageDataUri(),
-      this.preserveImageAspect,
-      false,
-      false,
-      this.clipPath
-    )
+    c.image(x, y, w, h, this.getImageDataUri(), this.preserveImageAspect, false, false, this.clipPath)
 
     if (this.imageBorder != null) {
       c.setShadow(false)

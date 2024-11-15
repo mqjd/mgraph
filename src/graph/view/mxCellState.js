@@ -188,13 +188,7 @@ mxCellState.prototype.getPerimeterBounds = function (border, bounds) {
   bounds = bounds != null ? bounds : new mxRectangle(this.x, this.y, this.width, this.height)
 
   if (this.shape != null && this.shape.stencil != null && this.shape.stencil.aspect == 'fixed') {
-    var aspect = this.shape.stencil.computeAspect(
-      this.style,
-      bounds.x,
-      bounds.y,
-      bounds.width,
-      bounds.height
-    )
+    var aspect = this.shape.stencil.computeAspect(this.style, bounds.x, bounds.y, bounds.width, bounds.height)
 
     bounds.x = aspect.x
     bounds.y = aspect.y
@@ -356,12 +350,7 @@ mxCellState.prototype.getPaintBounds = function () {
 mxCellState.prototype.updateCachedBounds = function () {
   var tr = this.view.translate
   var s = this.view.scale
-  this.cellBounds = new mxRectangle(
-    this.x / s - tr.x,
-    this.y / s - tr.y,
-    this.width / s,
-    this.height / s
-  )
+  this.cellBounds = new mxRectangle(this.x / s - tr.x, this.y / s - tr.y, this.width / s, this.height / s)
   this.paintBounds = mxRectangle.fromRectangle(this.cellBounds)
 
   if (this.shape != null && this.shape.isPaintBoundsInverted()) {
@@ -399,11 +388,7 @@ mxCellState.prototype.setState = function (state) {
  * Returns a clone of this <mxPoint>.
  */
 mxCellState.prototype.clone = function () {
-  var clone = new mxCellState(
-    this.view,
-    this.cell,
-    this.style != null ? mxUtils.clone(this.style) : null
-  )
+  var clone = new mxCellState(this.view, this.cell, this.style != null ? mxUtils.clone(this.style) : null)
 
   // Clones the absolute points
   if (this.absolutePoints != null) {

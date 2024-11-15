@@ -90,8 +90,7 @@ mxPolyline.prototype.paintEdgeShape = function (c, pts) {
  * Paints the line shape.
  */
 mxPolyline.prototype.paintLine = function (c, pts, rounded) {
-  var arcSize =
-    mxUtils.getValue(this.style, mxConstants.STYLE_ARCSIZE, mxConstants.LINE_ARCSIZE) / 2
+  var arcSize = mxUtils.getValue(this.style, mxConstants.STYLE_ARCSIZE, mxConstants.LINE_ARCSIZE) / 2
   c.begin()
   this.addPoints(c, pts, rounded, arcSize, false)
   c.stroke()

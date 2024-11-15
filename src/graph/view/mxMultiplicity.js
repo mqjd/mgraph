@@ -46,18 +46,7 @@
  * validNeighborsAllowed - Optional boolean indicating if the array of
  * opposite types should be valid or invalid.
  */
-function mxMultiplicity(
-  source,
-  type,
-  attr,
-  value,
-  min,
-  max,
-  validNeighbors,
-  countError,
-  typeError,
-  validNeighborsAllowed
-) {
+function mxMultiplicity(source, type, attr, value, min, max, validNeighbors, countError, typeError, validNeighborsAllowed) {
   this.source = source
   this.type = type
   this.attr = attr
@@ -171,14 +160,10 @@ mxMultiplicity.prototype.typeError = null
 mxMultiplicity.prototype.check = function (graph, edge, source, target, sourceOut, targetIn) {
   var error = ''
 
-  if (
-    (this.source && this.checkTerminal(graph, source, edge)) ||
-    (!this.source && this.checkTerminal(graph, target, edge))
-  ) {
+  if ((this.source && this.checkTerminal(graph, source, edge)) || (!this.source && this.checkTerminal(graph, target, edge))) {
     if (
       this.countError != null &&
-      ((this.source && (this.max == 0 || sourceOut >= this.max)) ||
-        (!this.source && (this.max == 0 || targetIn >= this.max)))
+      ((this.source && (this.max == 0 || sourceOut >= this.max)) || (!this.source && (this.max == 0 || targetIn >= this.max)))
     ) {
       error += this.countError + '\n'
     }

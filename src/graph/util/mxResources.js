@@ -162,11 +162,7 @@ var mxResources = {
       }
     }
 
-    if (
-      mxResources.loadSpecialBundle &&
-      mxResources.isLanguageSupported(lan) &&
-      lan != mxClient.defaultLanguage
-    ) {
+    if (mxResources.loadSpecialBundle && mxResources.isLanguageSupported(lan) && lan != mxClient.defaultLanguage) {
       return basename + '_' + lan + mxResources.extension
     } else {
       return null
@@ -196,12 +192,7 @@ var mxResources = {
    * callback - Optional callback for asynchronous loading.
    */
   add: function (basename, lan, callback) {
-    lan =
-      lan != null
-        ? lan
-        : mxClient.language != null
-          ? mxClient.language.toLowerCase()
-          : mxConstants.NONE
+    lan = lan != null ? lan : mxClient.language != null ? mxClient.language.toLowerCase() : mxConstants.NONE
 
     if (lan != mxConstants.NONE) {
       var defaultBundle = mxResources.getDefaultBundle(basename, lan)

@@ -282,8 +282,7 @@ mxWindow.prototype.destroyOnClose = true
  * Defines the correction factor for computing the height of the contentWrapper.
  * Default is 6 for IE 7/8 standards mode and 2 for all other browsers and modes.
  */
-mxWindow.prototype.contentHeightCorrection =
-  document.documentMode == 8 || document.documentMode == 7 ? 6 : 2
+mxWindow.prototype.contentHeightCorrection = document.documentMode == 8 || document.documentMode == 7 ? 6 : 2
 
 /**
  * Variable: title
@@ -580,8 +579,7 @@ mxWindow.prototype.setSize = function (width, height) {
   this.table.style.width = width + 'px'
   this.table.style.height = height + 'px'
 
-  this.contentWrapper.style.height =
-    this.div.offsetHeight - this.title.offsetHeight - this.contentHeightCorrection + 'px'
+  this.contentWrapper.style.height = this.div.offsetHeight - this.title.offsetHeight - this.contentHeightCorrection + 'px'
 }
 
 /**
@@ -741,10 +739,7 @@ mxWindow.prototype.installMaximizeHandler = function () {
 
         this.div.style.left = '0px'
         this.div.style.top = '0px'
-        var docHeight = Math.max(
-          document.body.clientHeight || 0,
-          document.documentElement.clientHeight || 0
-        )
+        var docHeight = Math.max(document.body.clientHeight || 0, document.documentElement.clientHeight || 0)
 
         this.div.style.width = document.body.clientWidth - 2 + 'px'
         this.div.style.height = docHeight - 2 + 'px'
@@ -759,8 +754,7 @@ mxWindow.prototype.installMaximizeHandler = function () {
         var style = mxUtils.getCurrentStyle(this.contentWrapper)
 
         if (style.overflow == 'auto' || this.resize != null) {
-          this.contentWrapper.style.height =
-            this.div.offsetHeight - this.title.offsetHeight - this.contentHeightCorrection + 'px'
+          this.contentWrapper.style.height = this.div.offsetHeight - this.title.offsetHeight - this.contentHeightCorrection + 'px'
         }
 
         this.fireEvent(new mxEventObject(mxEvent.MAXIMIZE, 'event', evt))
@@ -782,8 +776,7 @@ mxWindow.prototype.installMaximizeHandler = function () {
         var style = mxUtils.getCurrentStyle(this.contentWrapper)
 
         if (style.overflow == 'auto' || this.resize != null) {
-          this.contentWrapper.style.height =
-            this.div.offsetHeight - this.title.offsetHeight - this.contentHeightCorrection + 'px'
+          this.contentWrapper.style.height = this.div.offsetHeight - this.title.offsetHeight - this.contentHeightCorrection + 'px'
         }
 
         this.table.style.height = height
@@ -989,12 +982,8 @@ mxWindow.prototype.show = function () {
 
   var style = mxUtils.getCurrentStyle(this.contentWrapper)
 
-  if (
-    (style.overflow == 'auto' || this.resize != null) &&
-    this.contentWrapper.style.display != 'none'
-  ) {
-    this.contentWrapper.style.height =
-      this.div.offsetHeight - this.title.offsetHeight - this.contentHeightCorrection + 'px'
+  if ((style.overflow == 'auto' || this.resize != null) && this.contentWrapper.style.display != 'none') {
+    this.contentWrapper.style.height = this.div.offsetHeight - this.title.offsetHeight - this.contentHeightCorrection + 'px'
   }
 
   this.fireEvent(new mxEventObject(mxEvent.SHOW))

@@ -1,13 +1,6 @@
 import mxCodecRegistry from './mxCodecRegistry'
 import mxObjectCodec from './mxObjectCodec'
-import {
-  mxValueChange,
-  mxStyleChange,
-  mxGeometryChange,
-  mxCollapseChange,
-  mxVisibleChange,
-  mxCellAttributeChange
-} from '../model/mxGraphModel'
+import { mxValueChange, mxStyleChange, mxGeometryChange, mxCollapseChange, mxVisibleChange, mxCellAttributeChange } from '../model/mxGraphModel'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder

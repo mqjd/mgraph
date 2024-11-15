@@ -273,10 +273,7 @@ mxShape.prototype.isHtmlAllowed = function () {
  * Returns 0, or 0.5 if <strokewidth> % 2 == 1.
  */
 mxShape.prototype.getSvgScreenOffset = function () {
-  var sw =
-    this.stencil && this.stencil.strokewidth != 'inherit'
-      ? Number(this.stencil.strokewidth)
-      : this.strokewidth
+  var sw = this.stencil && this.stencil.strokewidth != 'inherit' ? Number(this.stencil.strokewidth) : this.strokewidth
 
   return mxUtils.mod(Math.max(1, Math.round(sw * this.scale)), 2) == 1 ? 0.5 : 0
 }
@@ -371,8 +368,7 @@ mxShape.prototype.clear = function () {
       this.node.removeChild(this.node.lastChild)
     }
   } else {
-    this.node.style.cssText =
-      'position:absolute;' + (this.cursor != null ? 'cursor:' + this.cursor + ';' : '')
+    this.node.style.cssText = 'position:absolute;' + (this.cursor != null ? 'cursor:' + this.cursor + ';' : '')
     this.node.innerText = ''
   }
 }
@@ -527,9 +523,7 @@ mxShape.prototype.createDropShadow = function (style, scale) {
  * Removes all child nodes and resets all CSS.
  */
 mxShape.prototype.updateSvgFilters = function (scale) {
-  this.node.style.filter = this.isShadowEnabled()
-    ? this.createDropShadow(this.getShadowStyle(), scale)
-    : ''
+  this.node.style.filter = this.isShadowEnabled() ? this.createDropShadow(this.getShadowStyle(), scale) : ''
 }
 
 /**
@@ -660,12 +654,7 @@ mxShape.prototype.updateHtmlFilters = function (node) {
       "')"
   }
 
-  if (
-    this.fill != null &&
-    this.fill != mxConstants.NONE &&
-    this.gradient &&
-    this.gradient != mxConstants.NONE
-  ) {
+  if (this.fill != null && this.fill != mxConstants.NONE && this.gradient && this.gradient != mxConstants.NONE) {
     var start = this.fill
     var end = this.gradient
     var type = '0'
@@ -690,15 +679,7 @@ mxShape.prototype.updateHtmlFilters = function (node) {
       type = '1'
     }
 
-    f +=
-      'progid:DXImageTransform.Microsoft.gradient(' +
-      "startColorStr='" +
-      start +
-      "', endColorStr='" +
-      end +
-      "', gradientType='" +
-      type +
-      "')"
+    f += 'progid:DXImageTransform.Microsoft.gradient(' + "startColorStr='" + start + "', endColorStr='" + end + "', gradientType='" + type + "')"
   }
 
   node.style.filter = f
@@ -849,10 +830,7 @@ mxShape.prototype.paint = function (c) {
   // Adds background rectangle to capture events
   var bg = null
 
-  if (
-    (this.stencil == null && this.points == null && this.shapePointerEvents) ||
-    (this.stencil != null && this.stencilPointerEvents)
-  ) {
+  if ((this.stencil == null && this.points == null && this.shapePointerEvents) || (this.stencil != null && this.stencilPointerEvents)) {
     var bb = this.createBoundingBox()
 
     if (this.dialect == mxConstants.DIALECT_SVG) {
@@ -957,24 +935,14 @@ mxShape.prototype.configureCanvas = function (c, x, y, w, h) {
 
   // Dash pattern
   if (this.isDashed != null) {
-    c.setDashed(
-      this.isDashed,
-      this.style != null
-        ? mxUtils.getValue(this.style, mxConstants.STYLE_FIX_DASH, false) == 1
-        : false
-    )
+    c.setDashed(this.isDashed, this.style != null ? mxUtils.getValue(this.style, mxConstants.STYLE_FIX_DASH, false) == 1 : false)
   }
 
   if (dash != null) {
     c.setDashPattern(dash)
   }
 
-  if (
-    this.fill != null &&
-    this.fill != mxConstants.NONE &&
-    this.gradient &&
-    this.gradient != mxConstants.NONE
-  ) {
+  if (this.fill != null && this.fill != mxConstants.NONE && this.gradient && this.gradient != mxConstants.NONE) {
     var b = this.getGradientBounds(c, x, y, w, h)
     c.setGradient(this.fill, this.gradient, b.x, b.y, b.width, b.height, this.gradientDirection)
   } else {
@@ -1004,11 +972,7 @@ mxShape.prototype.configureCanvas = function (c, x, y, w, h) {
 mxShape.prototype.configurePointerEvents = function (c) {
   if (
     this.style != null &&
-    (!mxShape.forceFilledPointerEvents ||
-      this.fill == null ||
-      this.fill == mxConstants.NONE ||
-      this.opacity == 0 ||
-      this.fillOpacity == 0) &&
+    (!mxShape.forceFilledPointerEvents || this.fill == null || this.fill == mxConstants.NONE || this.opacity == 0 || this.fillOpacity == 0) &&
     mxUtils.getValue(this.style, mxConstants.STYLE_POINTER_EVENTS, '1') == '0'
   ) {
     c.pointerEvents = false
@@ -1045,11 +1009,7 @@ mxShape.prototype.updateTransform = function (c, x, y, w, h) {
 mxShape.prototype.paintVertexShape = function (c, x, y, w, h) {
   this.paintBackground(c, x, y, w, h)
 
-  if (
-    !this.outline ||
-    this.style == null ||
-    mxUtils.getValue(this.style, mxConstants.STYLE_BACKGROUND_OUTLINE, 0) == 0
-  ) {
+  if (!this.outline || this.style == null || mxUtils.getValue(this.style, mxConstants.STYLE_BACKGROUND_OUTLINE, 0) == 0) {
     c.setShadow(false)
     this.paintForeground(c, x, y, w, h)
   }
@@ -1085,20 +1045,9 @@ mxShape.prototype.getArcSize = function (w, h) {
   var r = 0
 
   if (mxUtils.getValue(this.style, mxConstants.STYLE_ABSOLUTE_ARCSIZE, 0) == '1') {
-    r = Math.min(
-      w / 2,
-      Math.min(
-        h / 2,
-        mxUtils.getValue(this.style, mxConstants.STYLE_ARCSIZE, mxConstants.LINE_ARCSIZE) / 2
-      )
-    )
+    r = Math.min(w / 2, Math.min(h / 2, mxUtils.getValue(this.style, mxConstants.STYLE_ARCSIZE, mxConstants.LINE_ARCSIZE) / 2))
   } else {
-    var f =
-      mxUtils.getValue(
-        this.style,
-        mxConstants.STYLE_ARCSIZE,
-        mxConstants.RECTANGLE_ROUNDING_FACTOR * 100
-      ) / 100
+    var f = mxUtils.getValue(this.style, mxConstants.STYLE_ARCSIZE, mxConstants.RECTANGLE_ROUNDING_FACTOR * 100) / 100
     r = Math.min(w * f, h * f)
   }
 
@@ -1169,11 +1118,7 @@ mxShape.prototype.addPoints = function (c, pts, rounded, arcSize, close, exclude
       var dx = pt.x - tmp.x
       var dy = pt.y - tmp.y
 
-      if (
-        rounded &&
-        (dx != 0 || dy != 0) &&
-        (exclude == null || mxUtils.indexOf(exclude, i - 1) < 0)
-      ) {
+      if (rounded && (dx != 0 || dy != 0) && (exclude == null || mxUtils.indexOf(exclude, i - 1) < 0)) {
         // Draws a line from the last point to the current
         // point with a spacing of size off the current point
         // into direction of the last point
@@ -1191,11 +1136,7 @@ mxShape.prototype.addPoints = function (c, pts, rounded, arcSize, close, exclude
         var next = pts[mxUtils.mod(i + 1, pts.length)]
 
         // Uses next non-overlapping point
-        while (
-          i < pts.length - 2 &&
-          Math.round(next.x - tmp.x) == 0 &&
-          Math.round(next.y - tmp.y) == 0
-        ) {
+        while (i < pts.length - 2 && Math.round(next.x - tmp.x) == 0 && Math.round(next.y - tmp.y) == 0) {
           next = pts[mxUtils.mod(i + 2, pts.length)]
           i++
         }
@@ -1294,29 +1235,13 @@ mxShape.prototype.apply = function (state) {
   if (this.style != null) {
     this.fill = mxUtils.getValue(this.style, mxConstants.STYLE_FILLCOLOR, this.fill)
     this.gradient = mxUtils.getValue(this.style, mxConstants.STYLE_GRADIENTCOLOR, this.gradient)
-    this.gradientDirection = mxUtils.getValue(
-      this.style,
-      mxConstants.STYLE_GRADIENT_DIRECTION,
-      this.gradientDirection
-    )
+    this.gradientDirection = mxUtils.getValue(this.style, mxConstants.STYLE_GRADIENT_DIRECTION, this.gradientDirection)
     this.opacity = mxUtils.getValue(this.style, mxConstants.STYLE_OPACITY, this.opacity)
-    this.fillOpacity = mxUtils.getValue(
-      this.style,
-      mxConstants.STYLE_FILL_OPACITY,
-      this.fillOpacity
-    )
+    this.fillOpacity = mxUtils.getValue(this.style, mxConstants.STYLE_FILL_OPACITY, this.fillOpacity)
     this.fillStyle = mxUtils.getValue(this.style, mxConstants.STYLE_FILL_STYLE, this.fillStyle)
-    this.strokeOpacity = mxUtils.getValue(
-      this.style,
-      mxConstants.STYLE_STROKE_OPACITY,
-      this.strokeOpacity
-    )
+    this.strokeOpacity = mxUtils.getValue(this.style, mxConstants.STYLE_STROKE_OPACITY, this.strokeOpacity)
     this.stroke = mxUtils.getValue(this.style, mxConstants.STYLE_STROKECOLOR, this.stroke)
-    this.strokewidth = mxUtils.getNumber(
-      this.style,
-      mxConstants.STYLE_STROKEWIDTH,
-      this.strokewidth
-    )
+    this.strokewidth = mxUtils.getNumber(this.style, mxConstants.STYLE_STROKEWIDTH, this.strokewidth)
     this.spacing = mxUtils.getValue(this.style, mxConstants.STYLE_SPACING, this.spacing)
     this.startSize = mxUtils.getNumber(this.style, mxConstants.STYLE_STARTSIZE, this.startSize)
     this.endSize = mxUtils.getNumber(this.style, mxConstants.STYLE_ENDSIZE, this.endSize)
@@ -1333,10 +1258,7 @@ mxShape.prototype.apply = function (state) {
       this.flipV = mxUtils.getValue(this.style, 'stencilFlipV', 0) == 1 || this.flipV
     }
 
-    if (
-      this.direction == mxConstants.DIRECTION_NORTH ||
-      this.direction == mxConstants.DIRECTION_SOUTH
-    ) {
+    if (this.direction == mxConstants.DIRECTION_NORTH || this.direction == mxConstants.DIRECTION_SOUTH) {
       var tmp = this.flipH
       this.flipH = this.flipV
       this.flipV = tmp
@@ -1462,9 +1384,7 @@ mxShape.prototype.createBoundingBox = function () {
   var bb = this.bounds.clone()
 
   if (
-    (this.stencil != null &&
-      (this.direction == mxConstants.DIRECTION_NORTH ||
-        this.direction == mxConstants.DIRECTION_SOUTH)) ||
+    (this.stencil != null && (this.direction == mxConstants.DIRECTION_NORTH || this.direction == mxConstants.DIRECTION_SOUTH)) ||
     this.isPaintBoundsInverted()
   ) {
     bb.rotate90()
@@ -1526,10 +1446,7 @@ mxShape.prototype.updateBoundingBox = function () {
  */
 mxShape.prototype.isPaintBoundsInverted = function () {
   // Stencil implements inversion via aspect
-  return (
-    this.stencil == null &&
-    (this.direction == mxConstants.DIRECTION_NORTH || this.direction == mxConstants.DIRECTION_SOUTH)
-  )
+  return this.stencil == null && (this.direction == mxConstants.DIRECTION_NORTH || this.direction == mxConstants.DIRECTION_SOUTH)
 }
 
 /**
@@ -1614,10 +1531,7 @@ mxShape.prototype.setTransparentBackgroundImage = function (node) {
 mxShape.prototype.intersectsRectangle = function (rect, ignoreNode) {
   return (
     rect != null &&
-    (ignoreNode ||
-      (this.node != null &&
-        this.node.style.display != 'none' &&
-        this.node.style.visibility != 'hidden')) &&
+    (ignoreNode || (this.node != null && this.node.style.display != 'none' && this.node.style.visibility != 'hidden')) &&
     mxUtils.intersects(this.bounds, rect, true)
   )
 }

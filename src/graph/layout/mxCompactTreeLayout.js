@@ -233,10 +233,7 @@ mxCompactTreeLayout.prototype.node = null
  * vertex - <mxCell> whose ignored state should be returned.
  */
 mxCompactTreeLayout.prototype.isVertexIgnored = function (vertex) {
-  return (
-    mxGraphLayout.prototype.isVertexIgnored.apply(this, arguments) ||
-    this.graph.getConnections(vertex).length == 0
-  )
+  return mxGraphLayout.prototype.isVertexIgnored.apply(this, arguments) || this.graph.getConnections(vertex).length == 0
 }
 
 /**
@@ -269,10 +266,7 @@ mxCompactTreeLayout.prototype.execute = function (parent, root) {
 
   if (root == null) {
     // Takes the parent as the root if it has outgoing edges
-    if (
-      this.graph.getEdges(parent, model.getParent(parent), this.invert, !this.invert, false)
-        .length > 0
-    ) {
+    if (this.graph.getEdges(parent, model.getParent(parent), this.invert, !this.invert, false).length > 0) {
       this.root = parent
     }
 
@@ -283,10 +277,7 @@ mxCompactTreeLayout.prototype.execute = function (parent, root) {
 
       if (roots.length > 0) {
         for (var i = 0; i < roots.length; i++) {
-          if (
-            !this.isVertexIgnored(roots[i]) &&
-            this.graph.getEdges(roots[i], null, this.invert, !this.invert, false).length > 0
-          ) {
+          if (!this.isVertexIgnored(roots[i]) && this.graph.getEdges(roots[i], null, this.invert, !this.invert, false).length > 0) {
             this.root = roots[i]
             break
           }
@@ -520,10 +511,7 @@ mxCompactTreeLayout.prototype.dfs = function (cell, parent) {
 
         // Checks if terminal in same swimlane
         var state = view.getState(edge)
-        var target =
-          state != null
-            ? state.getVisibleTerminal(this.invert)
-            : view.getVisibleTerminal(edge, this.invert)
+        var target = state != null ? state.getVisibleTerminal(this.invert) : view.getVisibleTerminal(edge, this.invert)
         var tmp = this.dfs(target, parent)
 
         if (tmp != null && model.getGeometry(target) != null) {
@@ -624,16 +612,8 @@ mxCompactTreeLayout.prototype.attachParent = function (node, height) {
   node.child.offsetX = x + node.height
   node.child.offsetY = y1
 
-  node.contour.upperHead = this.createLine(
-    node.height,
-    0,
-    this.createLine(x, y1, node.contour.upperHead)
-  )
-  node.contour.lowerHead = this.createLine(
-    node.height,
-    0,
-    this.createLine(x, y2, node.contour.lowerHead)
-  )
+  node.contour.upperHead = this.createLine(node.height, 0, this.createLine(x, y1, node.contour.upperHead))
+  node.contour.lowerHead = this.createLine(node.height, 0, this.createLine(x, y2, node.contour.lowerHead))
 }
 
 /**

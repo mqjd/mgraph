@@ -1,54 +1,23 @@
 import {
   mxUtils,
-  mxRubberband,
-  mxGraphLayout,
   mxConnectionHandler,
   mxPopupMenuHandler,
-  mxConstraintHandler,
-  mxSelectionCellsHandler,
-  mxPanningHandler,
-  mxCellEditor,
-  mxOutline,
-  mxDragSource,
   mxPopupMenu,
-  mxGuide,
   mxGraph,
   mxConstants,
   mxCodec,
-  mxText,
-  mxGraphModel,
   mxGraphView,
   mxClient,
-  mxShape,
   mxEvent,
   mxWindow,
   mxGraphHandler,
-  mxVertexHandler,
-  mxEdgeHandler,
   mxResources,
   mxUndoManager,
   mxRectangleShape,
   mxEventObject,
-  mxClipboard,
-  mxConnector,
-  mxCellRenderer,
-  mxStackLayout,
-  mxImage,
   mxEventSource,
   mxRectangle,
-  mxPoint,
-  mxImageShape,
-  mxSvgCanvas2D,
-  mxCircleLayout,
-  mxCompactTreeLayout,
-  mxCompositeLayout,
-  mxEdgeLabelLayout,
-  mxFastOrganicLayout,
-  mxParallelEdgeLayout,
-  mxPartitionLayout,
-  mxRadialTreeLayout,
-  mxGeometryChange,
-  mxValueChange
+  mxPoint
 } from '../graph'
 
 import { uiTheme } from './Init'
@@ -450,9 +419,7 @@ Editor.extractGraphModelFromPng = function (data) {
 
           if (value.substring(0, idx) == 'mxGraphModel') {
             // Workaround for Java URL Encoder using + for spaces, which isn't compatible with JS
-            var xmlData = pako
-              .inflateRaw(Graph.stringToArrayBuffer(value.substring(idx + 2)), { to: 'string' })
-              .replace(/\+/g, ' ')
+            var xmlData = pako.inflateRaw(Graph.stringToArrayBuffer(value.substring(idx + 2)), { to: 'string' }).replace(/\+/g, ' ')
 
             if (xmlData != null && xmlData.length > 0) {
               result = xmlData
@@ -724,10 +691,7 @@ Editor.prototype.editAsNew = function (xml, title) {
     p += (p.length > 0 ? '&' : '?') + 'ui=' + urlParams['ui']
   }
 
-  if (
-    typeof window.postMessage !== 'undefined' &&
-    (document.documentMode == null || document.documentMode >= 10)
-  ) {
+  if (typeof window.postMessage !== 'undefined' && (document.documentMode == null || document.documentMode >= 10)) {
     var wnd = null
 
     var l = mxUtils.bind(this, function (evt) {
@@ -738,11 +702,7 @@ Editor.prototype.editAsNew = function (xml, title) {
     })
 
     mxEvent.addListener(window, 'message', l)
-    wnd = this.graph.openLink(
-      this.getEditBlankUrl(p + (p.length > 0 ? '&' : '?') + 'client=1'),
-      null,
-      true
-    )
+    wnd = this.graph.openLink(this.getEditBlankUrl(p + (p.length > 0 ? '&' : '?') + 'client=1'), null, true)
   } else {
     this.graph.openLink(this.getEditBlankUrl(p) + '#R' + encodeURIComponent(xml))
   }
@@ -760,9 +720,7 @@ Editor.prototype.createGraph = function (themes, model) {
   var self = this
 
   graph.isCssTransformsSupported = function () {
-    return (
-      graphIsCssTransformsSupported.apply(this, arguments) && (!self.chromeless || !mxClient.IS_SF)
-    )
+    return graphIsCssTransformsSupported.apply(this, arguments) && (!self.chromeless || !mxClient.IS_SF)
   }
 
   // Opens all links in a new window while editing
@@ -779,8 +737,7 @@ Editor.prototype.createGraph = function (themes, model) {
  * Sets the XML node for the current diagram.
  */
 Editor.prototype.resetGraph = function () {
-  this.graph.gridEnabled =
-    this.graph.defaultGridEnabled && (!this.isChromelessView() || urlParams['grid'] == '1')
+  this.graph.gridEnabled = this.graph.defaultGridEnabled && (!this.isChromelessView() || urlParams['grid'] == '1')
   this.graph.graphHandler.guidesEnabled = true
   this.graph.setTooltips(true)
   this.graph.setConnectable(true)
@@ -921,9 +878,7 @@ Editor.prototype.getGraphXml = function (ignoreSelection) {
     node = enc.encode(this.graph.getModel())
     enc.document.appendChild(node)
   } else {
-    node = this.graph.encodeCells(
-      mxUtils.sortCells(this.graph.model.getTopmostCells(this.graph.getSelectionCells()))
-    )
+    node = this.graph.encodeCells(mxUtils.sortCells(this.graph.model.getTopmostCells(this.graph.getSelectionCells())))
   }
 
   if (this.graph.view.translate.x != 0 || this.graph.view.translate.y != 0) {
@@ -1098,29 +1053,14 @@ OpenFile.prototype.cancel = function (cancel) {
 /**
  * Basic dialogs that are available in the viewer (print dialog).
  */
-function Dialog(
-  editorUi,
-  elt,
-  w,
-  h,
-  modal,
-  closable,
-  onClose,
-  noScroll,
-  transparent,
-  onResize,
-  ignoreBgClick
-) {
+function Dialog(editorUi, elt, w, h, modal, closable, onClose, noScroll, transparent, onResize, ignoreBgClick) {
   this.editorUi = editorUi
   var dx = transparent ? 57 : 0
   var w0 = w
   var h0 = h
   var padding = transparent ? 0 : 64 //No padding needed for transparent dialogs
 
-  var ds =
-    !Editor.inlineFullscreen && editorUi.embedViewport != null
-      ? mxUtils.clone(editorUi.embedViewport)
-      : this.getDocumentSize()
+  var ds = !Editor.inlineFullscreen && editorUi.embedViewport != null ? mxUtils.clone(editorUi.embedViewport) : this.getDocumentSize()
 
   // Workaround for print dialog offset in viewer lightbox
   if (editorUi.embedViewport == null && window.innerHeight != null) {
@@ -1240,10 +1180,7 @@ function Dialog(
       }
     }
 
-    var ds =
-      !Editor.inlineFullscreen && editorUi.embedViewport != null
-        ? mxUtils.clone(editorUi.embedViewport)
-        : this.getDocumentSize()
+    var ds = !Editor.inlineFullscreen && editorUi.embedViewport != null ? mxUtils.clone(editorUi.embedViewport) : this.getDocumentSize()
     dh = ds.height
     this.bg.style.height = dh + 'px'
 
@@ -1388,19 +1325,7 @@ Dialog.prototype.close = function (cancel, isEsc) {
 /**
  *
  */
-var ErrorDialog = function (
-  editorUi,
-  title,
-  message,
-  buttonText,
-  fn,
-  retry,
-  buttonText2,
-  fn2,
-  hide,
-  buttonText3,
-  fn3
-) {
+var ErrorDialog = function (editorUi, title, message, buttonText, fn, retry, buttonText2, fn2, hide, buttonText3, fn3) {
   hide = hide != null ? hide : true
 
   var div = document.createElement('div')
@@ -1681,13 +1606,10 @@ PrintDialog.prototype.create = function (editorUi) {
     td.appendChild(previewBtn)
   }
 
-  var printBtn = mxUtils.button(
-    mxResources.get(!PrintDialog.previewEnabled ? 'ok' : 'print'),
-    function () {
-      editorUi.hideDialog()
-      preview(true)
-    }
-  )
+  var printBtn = mxUtils.button(mxResources.get(!PrintDialog.previewEnabled ? 'ok' : 'print'), function () {
+    editorUi.hideDialog()
+    preview(true)
+  })
   printBtn.className = 'geBtn gePrimaryBtn'
   td.appendChild(printBtn)
 
@@ -1928,12 +1850,7 @@ var PageSetupDialog = function (editorUi) {
       graph.setGridSize(gridSize)
     }
 
-    var change = new ChangePageSetup(
-      editorUi,
-      newBackgroundColor,
-      newBackgroundImage,
-      accessor.get()
-    )
+    var change = new ChangePageSetup(editorUi, newBackgroundColor, newBackgroundImage, accessor.get())
     change.ignoreColor = graph.background == newBackgroundColor
 
     var oldSrc = graph.backgroundImage != null ? graph.backgroundImage.src : null
@@ -2146,14 +2063,8 @@ PageSetupDialog.addPageFormatPanel = function (div, namePostfix, pageFormat, pag
     var f = pf[paperSizeSelect.value]
 
     if (f.format != null) {
-      widthInput.value = Editor.toUnit(
-        !landscapeCheckBox.checked ? f.format.width : f.format.height,
-        unitSelect.value
-      )
-      heightInput.value = Editor.toUnit(
-        !landscapeCheckBox.checked ? f.format.height : f.format.width,
-        unitSelect.value
-      )
+      widthInput.value = Editor.toUnit(!landscapeCheckBox.checked ? f.format.width : f.format.height, unitSelect.value)
+      heightInput.value = Editor.toUnit(!landscapeCheckBox.checked ? f.format.height : f.format.width, unitSelect.value)
 
       customDiv.style.display = 'none'
       formatDiv.style.display = ''
@@ -2182,10 +2093,7 @@ PageSetupDialog.addPageFormatPanel = function (div, namePostfix, pageFormat, pag
     )
 
     // Initial select of custom should not update page format to avoid update of combo
-    if (
-      !quiet &&
-      (newPageFormat.width != pageFormat.width || newPageFormat.height != pageFormat.height)
-    ) {
+    if (!quiet && (newPageFormat.width != pageFormat.width || newPageFormat.height != pageFormat.height)) {
       pageFormat = newPageFormat
 
       // Updates page format and reloads format panel
@@ -2218,14 +2126,8 @@ PageSetupDialog.addPageFormatPanel = function (div, namePostfix, pageFormat, pag
     mxEvent.consume(evt)
   })
   mxEvent.addListener(unitSelect, 'change', function (evt) {
-    widthInput.value = Editor.toUnit(
-      Editor.fromUnit(widthInput.value, Editor.pageSizeUnit),
-      unitSelect.value
-    )
-    heightInput.value = Editor.toUnit(
-      Editor.fromUnit(heightInput.value, Editor.pageSizeUnit),
-      unitSelect.value
-    )
+    widthInput.value = Editor.toUnit(Editor.fromUnit(widthInput.value, Editor.pageSizeUnit), unitSelect.value)
+    heightInput.value = Editor.toUnit(Editor.fromUnit(heightInput.value, Editor.pageSizeUnit), unitSelect.value)
     Editor.pageSizeUnit = unitSelect.value
     update(evt, true)
     mxEvent.consume(evt)
@@ -2283,19 +2185,7 @@ PageSetupDialog.getFormats = function () {
 /**
  * Constructs a new filename dialog.
  */
-var FilenameDialog = function (
-  editorUi,
-  filename,
-  buttonText,
-  fn,
-  label,
-  validateFn,
-  content,
-  helpLink,
-  closeOnBtn,
-  cancelFn,
-  hints
-) {
+var FilenameDialog = function (editorUi, filename, buttonText, fn, label, validateFn, content, helpLink, closeOnBtn, cancelFn, hints) {
   closeOnBtn = closeOnBtn != null ? closeOnBtn : true
 
   var container = document.createElement('div')
@@ -2444,11 +2334,7 @@ var FilenameDialog = function (
       td.style.whiteSpace = 'nowrap'
       table.appendChild(td)
 
-      var typeSelect = FilenameDialog.createFileTypes(
-        editorUi,
-        nameInput,
-        editorUi.editor.diagramFileTypes
-      )
+      var typeSelect = FilenameDialog.createFileTypes(editorUi, nameInput, editorUi.editor.diagramFileTypes)
       typeSelect.style.width = '100%'
 
       td.appendChild(typeSelect)
@@ -2517,10 +2403,7 @@ FilenameDialog.createFileTypes = function (editorUi, nameInput, types) {
   for (var i = 0; i < types.length; i++) {
     var typeOption = document.createElement('option')
     typeOption.setAttribute('value', i)
-    mxUtils.write(
-      typeOption,
-      mxResources.get(types[i].description) + ' (.' + types[i].extension + ')'
-    )
+    mxUtils.write(typeOption, mxResources.get(types[i].description) + ' (.' + types[i].extension + ')')
     typeSelect.appendChild(typeOption)
   }
 
@@ -2695,12 +2578,8 @@ var WrapperWindow = function (editorUi, title, x, y, w, h, fn) {
   mxGraphView.prototype.validateBackgroundStyles = function (factor, cx, cy) {
     var graph = this.graph
     factor = factor != null ? factor : 1
-    var color =
-      graph.background == null || graph.background == mxConstants.NONE
-        ? graph.defaultPageBackgroundColor
-        : graph.background
-    var gridColor =
-      color != null && this.gridColor != color.toLowerCase() ? this.gridColor : '#ffffff'
+    var color = graph.background == null || graph.background == mxConstants.NONE ? graph.defaultPageBackgroundColor : graph.background
+    var gridColor = color != null && this.gridColor != color.toLowerCase() ? this.gridColor : '#ffffff'
     var image = 'none'
     var position = ''
 
@@ -2737,13 +2616,9 @@ var WrapperWindow = function (editorUi, title, x, y, w, h, fn) {
 
       // Computes the offset to maintain origin for grid
       position =
-        -Math.round(
-          phase - mxUtils.mod(this.translate.x * this.scale - x0 + dx, phase) + ddx * factor
-        ) +
+        -Math.round(phase - mxUtils.mod(this.translate.x * this.scale - x0 + dx, phase) + ddx * factor) +
         'px ' +
-        -Math.round(
-          phase - mxUtils.mod(this.translate.y * this.scale - y0 + dy, phase) + ddy * factor
-        ) +
+        -Math.round(phase - mxUtils.mod(this.translate.y * this.scale - y0 + dy, phase) + ddy * factor) +
         'px'
     }
 
@@ -2774,10 +2649,7 @@ var WrapperWindow = function (editorUi, title, x, y, w, h, fn) {
       canvas.style.backgroundPosition = position
       canvas.style.backgroundImage = image
 
-      if (
-        useDiagramBackground &&
-        (graph.background == null || graph.background == mxConstants.NONE)
-      ) {
+      if (useDiagramBackground && (graph.background == null || graph.background == mxConstants.NONE)) {
         canvas.style.backgroundColor = graph.diagramBackgroundColor
         graph.container.style.backgroundColor = ''
       } else {
@@ -2897,17 +2769,11 @@ var WrapperWindow = function (editorUi, title, x, y, w, h, fn) {
           var pts =
             breaks == this.horizontalPageBreaks
               ? [
-                  new mxPoint(
-                    Math.round(bounds2.x),
-                    Math.round(bounds2.y + (i + 1) * bounds.height)
-                  ),
+                  new mxPoint(Math.round(bounds2.x), Math.round(bounds2.y + (i + 1) * bounds.height)),
                   new mxPoint(Math.round(right), Math.round(bounds2.y + (i + 1) * bounds.height))
                 ]
               : [
-                  new mxPoint(
-                    Math.round(bounds2.x + (i + 1) * bounds.width),
-                    Math.round(bounds2.y)
-                  ),
+                  new mxPoint(Math.round(bounds2.x + (i + 1) * bounds.width), Math.round(bounds2.y)),
                   new mxPoint(Math.round(bounds2.x + (i + 1) * bounds.width), Math.round(bottom))
                 ]
 
@@ -2941,8 +2807,7 @@ var WrapperWindow = function (editorUi, title, x, y, w, h, fn) {
   }
 
   // Disables removing relative children and table rows and cells from parents
-  var mxGraphHandlerShouldRemoveCellsFromParent =
-    mxGraphHandler.prototype.shouldRemoveCellsFromParent
+  var mxGraphHandlerShouldRemoveCellsFromParent = mxGraphHandler.prototype.shouldRemoveCellsFromParent
   mxGraphHandler.prototype.shouldRemoveCellsFromParent = function (parent, cells, evt) {
     for (var i = 0; i < cells.length; i++) {
       if (this.graph.isTableCell(cells[i]) || this.graph.isTableRow(cells[i])) {
@@ -3059,9 +2924,7 @@ var WrapperWindow = function (editorUi, title, x, y, w, h, fn) {
       result =
         !this.graph.model.isEdge(parent) &&
         !this.graph.isSiblingSelected(cell) &&
-        ((geo != null && geo.relative) ||
-          !this.graph.isContainer(parent) ||
-          this.graph.isPart(cell))
+        ((geo != null && geo.relative) || !this.graph.isContainer(parent) || this.graph.isPart(cell))
     } else {
       result = mxGraphHandlerIsPropagateSelectionCell.apply(this, arguments)
 

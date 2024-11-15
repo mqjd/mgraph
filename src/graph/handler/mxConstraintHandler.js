@@ -6,7 +6,6 @@ import mxConstants from '../util/mxConstants'
 import mxEvent from '../util/mxEvent'
 import mxRectangle from '../util/mxRectangle'
 
-
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder
@@ -274,11 +273,7 @@ mxConstraintHandler.prototype.update = function (me, source, existingEdge, point
     this.currentPoint = null
     var minDistSq = null
 
-    if (
-      this.focusIcons != null &&
-      this.constraints != null &&
-      (state == null || this.currentFocus == state)
-    ) {
+    if (this.focusIcons != null && this.constraints != null && (state == null || this.currentFocus == state)) {
       var cx = mouse.getCenterX()
       var cy = mouse.getCenterY()
 
@@ -349,12 +344,7 @@ mxConstraintHandler.prototype.redraw = function () {
       var cp = this.graph.getConnectionPoint(state, this.constraints[i])
       var img = this.getImageForConstraint(state, this.constraints[i], cp)
 
-      var bounds = new mxRectangle(
-        Math.round(cp.x - img.width / 2),
-        Math.round(cp.y - img.height / 2),
-        img.width,
-        img.height
-      )
+      var bounds = new mxRectangle(Math.round(cp.x - img.width / 2), Math.round(cp.y - img.height / 2), img.width, img.height)
       this.focusIcons[i].bounds = bounds
       this.focusIcons[i].redraw()
       this.currentFocusArea.add(this.focusIcons[i].bounds)
@@ -400,17 +390,9 @@ mxConstraintHandler.prototype.setFocus = function (me, state, source) {
       var img = this.getImageForConstraint(state, this.constraints[i], cp)
 
       var src = img.src
-      var bounds = new mxRectangle(
-        Math.round(cp.x - img.width / 2),
-        Math.round(cp.y - img.height / 2),
-        img.width,
-        img.height
-      )
+      var bounds = new mxRectangle(Math.round(cp.x - img.width / 2), Math.round(cp.y - img.height / 2), img.width, img.height)
       var icon = new mxImageShape(bounds, src)
-      icon.dialect =
-        this.graph.dialect != mxConstants.DIALECT_SVG
-          ? mxConstants.DIALECT_MIXEDHTML
-          : mxConstants.DIALECT_SVG
+      icon.dialect = this.graph.dialect != mxConstants.DIALECT_SVG ? mxConstants.DIALECT_MIXEDHTML : mxConstants.DIALECT_SVG
       icon.preserveImageAspect = false
       icon.init(this.graph.getView().getDecoratorPane())
 
@@ -446,12 +428,7 @@ mxConstraintHandler.prototype.setFocus = function (me, state, source) {
  * Returns true if the given icon intersects the given point.
  */
 mxConstraintHandler.prototype.createHighlightShape = function () {
-  var hl = new mxRectangleShape(
-    null,
-    this.highlightColor,
-    this.highlightColor,
-    mxConstants.HIGHLIGHT_STROKEWIDTH
-  )
+  var hl = new mxRectangleShape(null, this.highlightColor, this.highlightColor, mxConstants.HIGHLIGHT_STROKEWIDTH)
   hl.opacity = mxConstants.HIGHLIGHT_OPACITY
 
   return hl

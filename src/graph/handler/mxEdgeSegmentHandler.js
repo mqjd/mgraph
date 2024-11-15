@@ -87,10 +87,7 @@ mxEdgeSegmentHandler.prototype.getPreviewPoints = function (point) {
       var x = result[0].x * scale + tr.x
       var y = result[0].y * scale + tr.y
 
-      if (
-        (source != null && mxUtils.contains(source, x, y)) ||
-        (target != null && mxUtils.contains(target, x, y))
-      ) {
+      if ((source != null && mxUtils.contains(source, x, y)) || (target != null && mxUtils.contains(target, x, y))) {
         result = [point, point]
       }
     }
@@ -120,10 +117,7 @@ mxEdgeSegmentHandler.prototype.updatePreviewState = function (edge, point, termi
       var pt2 = pts[i]
 
       // Merges adjacent segments only if more than 2 to allow for straight edges
-      if (
-        (Math.round(pt0.x - pt1.x) != 0 || Math.round(pt1.x - pt2.x) != 0) &&
-        (Math.round(pt0.y - pt1.y) != 0 || Math.round(pt1.y - pt2.y) != 0)
-      ) {
+      if ((Math.round(pt0.x - pt1.x) != 0 || Math.round(pt1.x - pt2.x) != 0) && (Math.round(pt0.y - pt1.y) != 0 || Math.round(pt1.y - pt2.y) != 0)) {
         result.push(this.convertPoint(pt1.clone(), false))
       }
 
@@ -136,11 +130,7 @@ mxEdgeSegmentHandler.prototype.updatePreviewState = function (edge, point, termi
     var rpts = this.state.absolutePoints
 
     // A straight line is represented by 3 handles
-    if (
-      result.length == 0 &&
-      (Math.round(pts[0].x - pts[pts.length - 1].x) == 0 ||
-        Math.round(pts[0].y - pts[pts.length - 1].y) == 0)
-    ) {
+    if (result.length == 0 && (Math.round(pts[0].x - pts[pts.length - 1].x) == 0 || Math.round(pts[0].y - pts[pts.length - 1].y) == 0)) {
       result = [point, point]
     }
     // Handles special case of transitions from straight vertical to routed
@@ -215,10 +205,7 @@ mxEdgeSegmentHandler.prototype.connect = function (edge, terminal, isSource, isC
       var pt2 = pts[i]
 
       // Merges adjacent segments only if more than 2 to allow for straight edges
-      if (
-        (Math.round(pt0.x - pt1.x) != 0 || Math.round(pt1.x - pt2.x) != 0) &&
-        (Math.round(pt0.y - pt1.y) != 0 || Math.round(pt1.y - pt2.y) != 0)
-      ) {
+      if ((Math.round(pt0.x - pt1.x) != 0 || Math.round(pt1.x - pt2.x) != 0) && (Math.round(pt0.y - pt1.y) != 0 || Math.round(pt1.y - pt2.y) != 0)) {
         result.push(this.convertPoint(pt1.clone(), false))
       }
 
@@ -339,11 +326,7 @@ mxEdgeSegmentHandler.prototype.redrawInnerBends = function (p0, pe) {
       var straight = false
 
       // Puts handle in the center of straight edges
-      if (
-        pts.length == 4 &&
-        Math.round(pts[1].x - pts[2].x) == 0 &&
-        Math.round(pts[1].y - pts[2].y) == 0
-      ) {
+      if (pts.length == 4 && Math.round(pts[1].x - pts[2].x) == 0 && Math.round(pts[1].y - pts[2].y) == 0) {
         straight = true
 
         if (Math.round(pts[0].y - pts[pts.length - 1].y) == 0) {
@@ -363,12 +346,7 @@ mxEdgeSegmentHandler.prototype.redrawInnerBends = function (p0, pe) {
           var pe = pts[i + 1]
           var pt = new mxPoint(p0.x + (pe.x - p0.x) / 2, p0.y + (pe.y - p0.y) / 2)
           var b = this.bends[i + 1].bounds
-          this.bends[i + 1].bounds = new mxRectangle(
-            Math.floor(pt.x - b.width / 2),
-            Math.floor(pt.y - b.height / 2),
-            b.width,
-            b.height
-          )
+          this.bends[i + 1].bounds = new mxRectangle(Math.floor(pt.x - b.width / 2), Math.floor(pt.y - b.height / 2), b.width, b.height)
           this.bends[i + 1].redraw()
 
           if (this.manageLabelHandle) {

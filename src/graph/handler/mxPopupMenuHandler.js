@@ -174,12 +174,7 @@ mxPopupMenuHandler.prototype.mouseUp = function (sender, me, popup) {
     var cell = this.getCellForPopupEvent(me)
 
     // Selects the cell for which the context menu is being displayed
-    if (
-      this.graph.isEnabled() &&
-      this.isSelectOnPopup(me) &&
-      cell != null &&
-      !this.graph.isCellSelected(cell)
-    ) {
+    if (this.graph.isEnabled() && this.isSelectOnPopup(me) && cell != null && !this.graph.isCellSelected(cell)) {
       this.graph.setSelectionCell(cell)
     } else if (this.clearSelectionOnBackground && cell == null) {
       this.graph.clearSelection()

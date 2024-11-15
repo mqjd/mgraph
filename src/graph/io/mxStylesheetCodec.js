@@ -134,9 +134,7 @@ var mxStylesheetCodec = mxCodecRegistry.register(
 
             if (style == null) {
               if (extend != null) {
-                mxLog.warn(
-                  'mxStylesheetCodec.decode: stylesheet ' + extend + ' not found to extend'
-                )
+                mxLog.warn('mxStylesheetCodec.decode: stylesheet ' + extend + ' not found to extend')
               }
 
               style = new Object()

@@ -318,17 +318,7 @@ mxXmlCanvas2D.prototype.setFillColor = function (value) {
  * alpha2 - Optional alpha of the end color. Default is 1. Possible values
  * are between 1 (opaque) and 0 (transparent).
  */
-mxXmlCanvas2D.prototype.setGradient = function (
-  color1,
-  color2,
-  x,
-  y,
-  w,
-  h,
-  direction,
-  alpha1,
-  alpha2
-) {
+mxXmlCanvas2D.prototype.setGradient = function (color1, color2, x, y, w, h, direction, alpha1, alpha2) {
   if (color1 != null && color2 != null) {
     mxAbstractCanvas2D.prototype.setGradient.apply(this, arguments)
 
@@ -1032,21 +1022,7 @@ mxXmlCanvas2D.prototype.close = function () {
  * rotation - Number that specifies the angle of the rotation around the anchor point of the text.
  * dir - Optional string that specifies the text direction. Possible values are rtl and lrt.
  */
-mxXmlCanvas2D.prototype.text = function (
-  x,
-  y,
-  w,
-  h,
-  str,
-  align,
-  valign,
-  wrap,
-  format,
-  overflow,
-  clip,
-  rotation,
-  dir
-) {
+mxXmlCanvas2D.prototype.text = function (x, y, w, h, str, align, valign, wrap, format, overflow, clip, rotation, dir) {
   if (this.textEnabled && str != null) {
     if (mxUtils.isNode(str)) {
       str = mxUtils.getOuterHtml(str)

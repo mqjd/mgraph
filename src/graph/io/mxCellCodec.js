@@ -47,11 +47,7 @@ mxCodecRegistry.register(
      * mxCodecRegistry.addAlias('CustomCell', 'mxCell');
      * (end)
      */
-    var codec = new mxObjectCodec(
-      new mxCell(),
-      ['children', 'edges', 'overlays', 'mxTransient'],
-      ['parent', 'source', 'target']
-    )
+    var codec = new mxObjectCodec(new mxCell(), ['children', 'edges', 'overlays', 'mxTransient'], ['parent', 'source', 'target'])
 
     /**
      * Function: isCellCodec
@@ -66,10 +62,7 @@ mxCodecRegistry.register(
      * Overidden to disable conversion of value to number.
      */
     codec.isNumericAttribute = function (dec, attr, obj) {
-      return (
-        attr.nodeName !== 'value' &&
-        mxObjectCodec.prototype.isNumericAttribute.apply(this, arguments)
-      )
+      return attr.nodeName !== 'value' && mxObjectCodec.prototype.isNumericAttribute.apply(this, arguments)
     }
 
     /**
@@ -78,10 +71,7 @@ mxCodecRegistry.register(
      * Excludes user objects that are XML nodes.
      */
     codec.isExcluded = function (obj, attr, value, isWrite) {
-      return (
-        mxObjectCodec.prototype.isExcluded.apply(this, arguments) ||
-        (isWrite && attr == 'value' && mxUtils.isNode(value))
-      )
+      return mxObjectCodec.prototype.isExcluded.apply(this, arguments) || (isWrite && attr == 'value' && mxUtils.isNode(value))
     }
 
     /**
@@ -165,15 +155,7 @@ mxCodecRegistry.register(
                 var decoder = mxCodecRegistry.codecs[element.nodeName] || this
                 object = decoder.decode(dec, element)
               } else if (window.console != null) {
-                console.error(
-                  'mxCellCodec.beforeDecode: ' +
-                    this.idrefs[i] +
-                    ' ' +
-                    ref +
-                    ' not found' +
-                    ' for cell ' +
-                    obj.getId()
-                )
+                console.error('mxCellCodec.beforeDecode: ' + this.idrefs[i] + ' ' + ref + ' not found' + ' for cell ' + obj.getId())
               }
             }
 

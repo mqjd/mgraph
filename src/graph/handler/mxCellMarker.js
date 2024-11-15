@@ -383,14 +383,7 @@ mxCellMarker.prototype.getStateToMark = function (state) {
  */
 mxCellMarker.prototype.intersects = function (state, me) {
   if (this.hotspotEnabled) {
-    return mxUtils.intersectsHotspot(
-      state,
-      me.getGraphX(),
-      me.getGraphY(),
-      this.hotspot,
-      mxConstants.MIN_HOTSPOT_SIZE,
-      mxConstants.MAX_HOTSPOT_SIZE
-    )
+    return mxUtils.intersectsHotspot(state, me.getGraphX(), me.getGraphY(), this.hotspot, mxConstants.MIN_HOTSPOT_SIZE, mxConstants.MAX_HOTSPOT_SIZE)
   }
 
   return true

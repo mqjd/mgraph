@@ -1,7 +1,7 @@
 import mxClient from '../mxClient'
 
-import mxUtils from "./mxUtils";
-import mxMouseEvent from "./mxMouseEvent";
+import mxUtils from './mxUtils'
+import mxMouseEvent from './mxMouseEvent'
 
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
@@ -464,12 +464,7 @@ var mxEvent = {
    * Returns true if the event was generated using a touch device (not a pen or mouse).
    */
   isMultiTouchEvent: function (evt) {
-    return (
-      evt.type != null &&
-      evt.type.indexOf('touch') == 0 &&
-      evt.touches != null &&
-      evt.touches.length > 1
-    )
+    return evt.type != null && evt.type.indexOf('touch') == 0 && evt.touches != null && evt.touches.length > 1
   },
 
   /**
@@ -550,11 +545,7 @@ var mxEvent = {
   isPopupTrigger: function (evt) {
     return (
       mxEvent.isRightMouseButton(evt) ||
-      (mxClient.IS_MAC &&
-        mxEvent.isControlDown(evt) &&
-        !mxEvent.isShiftDown(evt) &&
-        !mxEvent.isMetaDown(evt) &&
-        !mxEvent.isAltDown(evt))
+      (mxClient.IS_MAC && mxEvent.isControlDown(evt) && !mxEvent.isShiftDown(evt) && !mxEvent.isMetaDown(evt) && !mxEvent.isAltDown(evt))
     )
   },
 
@@ -600,11 +591,7 @@ var mxEvent = {
    * Returns the touch or mouse event that contains the mouse coordinates.
    */
   getMainEvent: function (e) {
-    if (
-      (e.type == 'touchstart' || e.type == 'touchmove') &&
-      e.touches != null &&
-      e.touches[0] != null
-    ) {
+    if ((e.type == 'touchstart' || e.type == 'touchmove') && e.touches != null && e.touches[0] != null) {
       e = e.touches[0]
     } else if (e.type == 'touchend' && e.changedTouches != null && e.changedTouches[0] != null) {
       e = e.changedTouches[0]

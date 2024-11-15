@@ -329,12 +329,7 @@ mxXmlRequest.prototype.send = function (onload, onerror, timeout, ontimeout) {
       })
     }
 
-    if (
-      (document.documentMode == null || document.documentMode > 9) &&
-      window.XMLHttpRequest &&
-      timeout != null &&
-      ontimeout != null
-    ) {
+    if ((document.documentMode == null || document.documentMode > 9) && window.XMLHttpRequest && timeout != null && ontimeout != null) {
       this.request.timeout = timeout
       this.request.ontimeout = ontimeout
     }

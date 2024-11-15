@@ -132,10 +132,7 @@ mxPartitionLayout.prototype.execute = function (parent) {
   // Handles special case where the parent is either a layer with no
   // geometry or the current root of the view in which case the size
   // of the graph's container will be used.
-  if (
-    this.graph.container != null &&
-    ((pgeo == null && model.isLayer(parent)) || parent == this.graph.getView().currentRoot)
-  ) {
+  if (this.graph.container != null && ((pgeo == null && model.isLayer(parent)) || parent == this.graph.getView().currentRoot)) {
     var width = this.graph.container.offsetWidth - 1
     var height = this.graph.container.offsetHeight - 1
     pgeo = new mxRectangle(0, 0, width, height)

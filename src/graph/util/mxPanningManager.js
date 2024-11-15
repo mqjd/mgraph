@@ -175,10 +175,7 @@ function mxPanningManager(graph) {
 
         if (px != 0 || py != 0) {
           graph.panGraph(0, 0)
-          graph.view.setTranslate(
-            this.t0x + px / graph.view.scale,
-            this.t0y + py / graph.view.scale
-          )
+          graph.view.setTranslate(this.t0x + px / graph.view.scale, this.t0y + py / graph.view.scale)
         }
       } else {
         graph.panDx = 0

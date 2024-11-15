@@ -147,14 +147,7 @@ var mxLog = {
         w = document.body.clientWidth
       }
 
-      mxLog.window = new mxWindow(
-        title,
-        table,
-        Math.max(0, w - 320),
-        Math.max(0, h - 210),
-        300,
-        160
-      )
+      mxLog.window = new mxWindow(title, table, Math.max(0, w - 320), Math.max(0, h - 210), 300, 160)
       mxLog.window.setMaximizable(true)
       mxLog.window.setScrollable(false)
       mxLog.window.setResizable(true)
@@ -163,10 +156,7 @@ var mxLog = {
 
       // Workaround for ignored textarea height in various setups
       if (
-        ((mxClient.IS_NS || mxClient.IS_IE) &&
-          !mxClient.IS_GC &&
-          !mxClient.IS_SF &&
-          document.compatMode != 'BackCompat') ||
+        ((mxClient.IS_NS || mxClient.IS_IE) && !mxClient.IS_GC && !mxClient.IS_SF && document.compatMode != 'BackCompat') ||
         document.documentMode == 11
       ) {
         var elt = mxLog.window.getElement()

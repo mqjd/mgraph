@@ -380,16 +380,12 @@ mxGeometry.prototype.equals = function (obj) {
   return (
     mxRectangle.prototype.equals.apply(this, arguments) &&
     this.relative == obj.relative &&
-    ((this.sourcePoint == null && obj.sourcePoint == null) ||
-      (this.sourcePoint != null && this.sourcePoint.equals(obj.sourcePoint))) &&
-    ((this.targetPoint == null && obj.targetPoint == null) ||
-      (this.targetPoint != null && this.targetPoint.equals(obj.targetPoint))) &&
-    ((this.points == null && obj.points == null) ||
-      (this.points != null && mxUtils.equalPoints(this.points, obj.points))) &&
+    ((this.sourcePoint == null && obj.sourcePoint == null) || (this.sourcePoint != null && this.sourcePoint.equals(obj.sourcePoint))) &&
+    ((this.targetPoint == null && obj.targetPoint == null) || (this.targetPoint != null && this.targetPoint.equals(obj.targetPoint))) &&
+    ((this.points == null && obj.points == null) || (this.points != null && mxUtils.equalPoints(this.points, obj.points))) &&
     ((this.alternateBounds == null && obj.alternateBounds == null) ||
       (this.alternateBounds != null && this.alternateBounds.equals(obj.alternateBounds))) &&
-    ((this.offset == null && obj.offset == null) ||
-      (this.offset != null && this.offset.equals(obj.offset)))
+    ((this.offset == null && obj.offset == null) || (this.offset != null && this.offset.equals(obj.offset)))
   )
 }
 

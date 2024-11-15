@@ -137,10 +137,7 @@ mxRadialTreeLayout.prototype.row = []
  * vertex - <mxCell> whose ignored state should be returned.
  */
 mxRadialTreeLayout.prototype.isVertexIgnored = function (vertex) {
-  return (
-    mxGraphLayout.prototype.isVertexIgnored.apply(this, arguments) ||
-    this.graph.getConnections(vertex).length == 0
-  )
+  return mxGraphLayout.prototype.isVertexIgnored.apply(this, arguments) || this.graph.getConnections(vertex).length == 0
 }
 
 /**
@@ -286,14 +283,8 @@ mxRadialTreeLayout.prototype.calcRowDims = function (row, rowNum) {
 
       this.rowMinX[rowNum] = Math.min(vertexBounds.x, this.rowMinX[rowNum])
       this.rowMaxX[rowNum] = Math.max(vertexBounds.x + vertexBounds.width, this.rowMaxX[rowNum])
-      this.rowMinCenX[rowNum] = Math.min(
-        vertexBounds.x + vertexBounds.width / 2,
-        this.rowMinCenX[rowNum]
-      )
-      this.rowMaxCenX[rowNum] = Math.max(
-        vertexBounds.x + vertexBounds.width / 2,
-        this.rowMaxCenX[rowNum]
-      )
+      this.rowMinCenX[rowNum] = Math.min(vertexBounds.x + vertexBounds.width / 2, this.rowMinCenX[rowNum])
+      this.rowMaxCenX[rowNum] = Math.max(vertexBounds.x + vertexBounds.width / 2, this.rowMaxCenX[rowNum])
       this.rowRadi[rowNum] = vertexBounds.y - this.getVertexBounds(this.root).y
 
       if (child.child != null) {

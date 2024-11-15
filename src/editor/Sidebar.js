@@ -1,59 +1,20 @@
 import {
   mxUtils,
-  mxRubberband,
-  mxGraphLayout,
-  mxConnectionHandler,
-  mxConstraintHandler,
-  mxSelectionCellsHandler,
-  mxElbowEdgeHandler,
-  mxPanningHandler,
-  mxCellEditor,
-  mxOutline,
   mxCell,
   mxGeometry,
   mxDragSource,
-  mxPolyline,
   mxPopupMenu,
-  mxGuide,
-  mxEdgeStyle,
-  mxGraph,
   mxConstants,
   mxCodec,
-  mxText,
   mxGraphModel,
-  mxGraphView,
   mxClient,
-  mxShape,
   mxEvent,
-  mxWindow,
-  mxGraphHandler,
-  mxVertexHandler,
-  mxEdgeHandler,
   mxResources,
-  mxLayoutManager,
-  mxCellHighlight,
   mxStencilRegistry,
-  mxStencil,
   mxDictionary,
-  mxConnector,
-  mxCellRenderer,
   mxStackLayout,
-  mxImage,
-  mxEventSource,
   mxRectangle,
-  mxEventObject,
-  mxObjectCodec,
-  mxCodecRegistry,
-  mxCircleLayout,
-  mxCompactTreeLayout,
-  mxCompositeLayout,
-  mxEdgeLabelLayout,
-  mxFastOrganicLayout,
-  mxParallelEdgeLayout,
-  mxPartitionLayout,
-  mxRadialTreeLayout,
-  mxGeometryChange,
-  mxValueChange
+  mxEventObject
 } from '../graph'
 
 import Graph from './Graph'
@@ -82,15 +43,7 @@ function Sidebar(editorUi, container) {
   // Uses the initial default style for rendering the sidebars
   this.initialDefaultVertexStyle = mxUtils.clone(editorUi.editor.graph.defaultVertexStyle)
   this.initialDefaultEdgeStyle = mxUtils.clone(editorUi.editor.graph.defaultEdgeStyle)
-  this.ignoredStyles = [
-    'html',
-    'whiteSpace',
-    'aspect',
-    'points',
-    'verticalLabelPosition',
-    'labelPosition',
-    'outlineConnect'
-  ].concat(Graph.cellStyles)
+  this.ignoredStyles = ['html', 'whiteSpace', 'aspect', 'points', 'verticalLabelPosition', 'labelPosition', 'outlineConnect'].concat(Graph.cellStyles)
 
   // Wrapper for entries and footer
   /*
@@ -511,24 +464,13 @@ Sidebar.prototype.getTooltipOffset = function (elt, bounds) {
       this.container.offsetWidth + 2 + this.editorUi.container.offsetLeft,
       Math.min(
         bottom - height - 20 /*status bar*/,
-        Math.max(
-          0,
-          this.editorUi.container.offsetTop +
-            this.container.offsetTop +
-            elt.offsetTop -
-            this.wrapper.scrollTop -
-            height / 2 +
-            16
-        )
+        Math.max(0, this.editorUi.container.offsetTop + this.container.offsetTop + elt.offsetTop - this.wrapper.scrollTop - height / 2 + 16)
       )
     )
   } else {
     var rect = elt.getBoundingClientRect()
 
-    return new mxPoint(
-      rect.x + rect.width + this.tooltipBorder,
-      rect.y + rect.height / 2 - bounds.height / 2 - 6
-    )
+    return new mxPoint(rect.x + rect.width + this.tooltipBorder, rect.y + rect.height / 2 - bounds.height / 2 - 6)
   }
 }
 
@@ -587,19 +529,7 @@ Sidebar.prototype.createMoreShapes = function () {
 /**
  * Adds all palettes to the sidebar.
  */
-Sidebar.prototype.createTooltip = function (
-  elt,
-  cells,
-  w,
-  h,
-  title,
-  showLabel,
-  off,
-  maxSize,
-  mouseDown,
-  closable,
-  applyAllStyles
-) {
+Sidebar.prototype.createTooltip = function (elt, cells, w, h, title, showLabel, off, maxSize, mouseDown, closable, applyAllStyles) {
   applyAllStyles = applyAllStyles != null ? applyAllStyles : true
   this.tooltipMouseDown = mouseDown
   var graph = this.editorUi.editor.graph
@@ -698,8 +628,7 @@ Sidebar.prototype.createTooltip = function (
   this.graph2.view.setTranslate(this.tooltipBorder, this.tooltipBorder)
 
   if (!maxSize && (w > this.maxTooltipWidth || h > this.maxTooltipHeight)) {
-    this.graph2.view.scale =
-      Math.round(Math.min(this.maxTooltipWidth / w, this.maxTooltipHeight / h) * 100) / 100
+    this.graph2.view.scale = Math.round(Math.min(this.maxTooltipWidth / w, this.maxTooltipHeight / h) * 100) / 100
   } else {
     this.graph2.view.scale = 1
   }
@@ -739,11 +668,7 @@ Sidebar.prototype.createTooltip = function (
       bounds.width *= s
       bounds.height *= s
     } else {
-      this.graph2.view.setScale(
-        Math.round(
-          Math.min(this.maxTooltipWidth / bounds.width, this.maxTooltipHeight / bounds.height) * 100
-        ) / 100
-      )
+      this.graph2.view.setScale(Math.round(Math.min(this.maxTooltipWidth / bounds.width, this.maxTooltipHeight / bounds.height) * 100) / 100)
       bounds = this.graph2.getGraphBounds()
     }
   } else if (!mxClient.NO_FO) {
@@ -913,35 +838,16 @@ Sidebar.prototype.addEntries = function (images) {
               s += 'aspect=fixed;'
             }
 
-            return this.createVertexTemplate(
-              s + 'image=' + data,
-              img.w,
-              img.h,
-              '',
-              img.title || '',
-              false,
-              false,
-              true
-            )
+            return this.createVertexTemplate(s + 'image=' + data, img.w, img.h, '', img.title || '', false, false, true)
           })
         )
       } else if (img.xml != null && tags.length > 0) {
         this.addEntry(
           tags,
           mxUtils.bind(this, function () {
-            var cells = this.editorUi.stringToCells(
-              img.xml.charAt(0) == '<' ? img.xml : Graph.decompress(img.xml)
-            )
+            var cells = this.editorUi.stringToCells(img.xml.charAt(0) == '<' ? img.xml : Graph.decompress(img.xml))
 
-            return this.createVertexTemplateFromCells(
-              cells,
-              img.w,
-              img.h,
-              img.title || '',
-              true,
-              false,
-              true
-            )
+            return this.createVertexTemplateFromCells(cells, img.w, img.h, img.title || '', true, false, true)
           })
         )
       }
@@ -1010,13 +916,7 @@ Sidebar.prototype.addEntry = function (tags, fn) {
     var self = this
     var createVertexTemplateFromCells = this.createVertexTemplateFromCells
 
-    this.createVertexTemplateFromCells = function (
-      cells,
-      width,
-      height,
-      title,
-      allowCellsInserted
-    ) {
+    this.createVertexTemplateFromCells = function (cells, width, height, title, allowCellsInserted) {
       if (cells != null) {
         for (var i = 0; i < cells.length; i++) {
           self.addLibForStyle(self.getKeyStyle(cells[i].style), this.currentSearchEntryLibrary)
@@ -1104,14 +1004,7 @@ Sidebar.prototype.isEntryIgnored = function (entry, searchClosedLibraries) {
 /**
  * Adds shape search UI.
  */
-Sidebar.prototype.searchEntries = function (
-  searchTerms,
-  count,
-  page,
-  success,
-  error,
-  searchClosedLibraries
-) {
+Sidebar.prototype.searchEntries = function (searchTerms, count, page, success, error, searchClosedLibraries) {
   if (this.taglist != null && searchTerms != null) {
     var tmp = searchTerms.toLowerCase().split(' ')
     var dict = new mxDictionary()
@@ -1379,8 +1272,7 @@ Sidebar.prototype.addSearchPalette = function (expand) {
 
                         // Avoids duplicates in results
                         if (hash[elt.innerHTML] == null) {
-                          hash[elt.innerHTML] =
-                            result.parentLibraries != null ? result.parentLibraries.slice() : []
+                          hash[elt.innerHTML] = result.parentLibraries != null ? result.parentLibraries.slice() : []
                           div.appendChild(elt)
                         } else if (result.parentLibraries != null) {
                           hash[elt.innerHTML] = hash[elt.innerHTML].concat(result.parentLibraries)
@@ -1528,16 +1420,7 @@ Sidebar.prototype.addSearchPalette = function (expand) {
 /**
  * Adds the general palette to the sidebar.
  */
-Sidebar.prototype.insertSearchHint = function (
-  div,
-  searchTerm,
-  count,
-  page,
-  results,
-  len,
-  more,
-  terms
-) {
+Sidebar.prototype.insertSearchHint = function (div, searchTerm, count, page, results, len, more, terms) {
   if (results.length == 0 && page == 1) {
     var err = document.createElement('div')
     err.className = 'geTitle'
@@ -1576,31 +1459,10 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
   field.vertex = true
 
   var fns = [
+    this.createVertexTemplateEntry('rounded=0;whiteSpace=wrap;html=1;', 120, 60, '', 'Rectangle', null, null, 'rect rectangle box'),
+    this.createVertexTemplateEntry('rounded=1;whiteSpace=wrap;html=1;', 120, 60, '', 'Rounded Rectangle', null, null, 'rounded rect rectangle box'),
     this.createVertexTemplateEntry(
-      'rounded=0;whiteSpace=wrap;html=1;',
-      120,
-      60,
-      '',
-      'Rectangle',
-      null,
-      null,
-      'rect rectangle box'
-    ),
-    this.createVertexTemplateEntry(
-      'rounded=1;whiteSpace=wrap;html=1;',
-      120,
-      60,
-      '',
-      'Rounded Rectangle',
-      null,
-      null,
-      'rounded rect rectangle box'
-    ),
-    this.createVertexTemplateEntry(
-      graph.appendFontSize(
-        'text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;',
-        graph.vertexFontSize
-      ),
+      graph.appendFontSize('text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;', graph.vertexFontSize),
       60,
       30,
       'Text',
@@ -1620,46 +1482,10 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
       null,
       'text textbox textarea'
     ),
-    this.createVertexTemplateEntry(
-      'ellipse;whiteSpace=wrap;html=1;',
-      120,
-      80,
-      '',
-      'Ellipse',
-      null,
-      null,
-      'oval ellipse state'
-    ),
-    this.createVertexTemplateEntry(
-      'whiteSpace=wrap;html=1;aspect=fixed;',
-      80,
-      80,
-      '',
-      'Square',
-      null,
-      null,
-      'square'
-    ),
-    this.createVertexTemplateEntry(
-      'ellipse;whiteSpace=wrap;html=1;aspect=fixed;',
-      80,
-      80,
-      '',
-      'Circle',
-      null,
-      null,
-      'circle'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;',
-      120,
-      60,
-      '',
-      'Process',
-      null,
-      null,
-      'process task'
-    ),
+    this.createVertexTemplateEntry('ellipse;whiteSpace=wrap;html=1;', 120, 80, '', 'Ellipse', null, null, 'oval ellipse state'),
+    this.createVertexTemplateEntry('whiteSpace=wrap;html=1;aspect=fixed;', 80, 80, '', 'Square', null, null, 'square'),
+    this.createVertexTemplateEntry('ellipse;whiteSpace=wrap;html=1;aspect=fixed;', 80, 80, '', 'Circle', null, null, 'circle'),
+    this.createVertexTemplateEntry('shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;', 120, 60, '', 'Process', null, null, 'process task'),
     this.createVertexTemplateEntry(
       'rhombus;whiteSpace=wrap;html=1;',
       80,
@@ -1687,16 +1513,7 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
       null,
       'hexagon preparation'
     ),
-    this.createVertexTemplateEntry(
-      'triangle;whiteSpace=wrap;html=1;',
-      60,
-      80,
-      '',
-      'Triangle',
-      null,
-      null,
-      'triangle logic inverter buffer'
-    ),
+    this.createVertexTemplateEntry('triangle;whiteSpace=wrap;html=1;', 60, 80, '', 'Triangle', null, null, 'triangle logic inverter buffer'),
     this.createVertexTemplateEntry(
       'shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;',
       60,
@@ -1707,30 +1524,9 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
       null,
       'cylinder data database'
     ),
-    this.createVertexTemplateEntry(
-      'ellipse;shape=cloud;whiteSpace=wrap;html=1;',
-      120,
-      80,
-      '',
-      'Cloud',
-      null,
-      null,
-      'cloud network'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=document;whiteSpace=wrap;html=1;boundedLbl=1;',
-      120,
-      80,
-      '',
-      'Document'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;',
-      80,
-      80,
-      '',
-      'Internal Storage'
-    ),
+    this.createVertexTemplateEntry('ellipse;shape=cloud;whiteSpace=wrap;html=1;', 120, 80, '', 'Cloud', null, null, 'cloud network'),
+    this.createVertexTemplateEntry('shape=document;whiteSpace=wrap;html=1;boundedLbl=1;', 120, 80, '', 'Document'),
+    this.createVertexTemplateEntry('shape=internalStorage;whiteSpace=wrap;html=1;backgroundOutline=1;', 80, 80, '', 'Internal Storage'),
     this.createVertexTemplateEntry(
       'shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;',
       120,
@@ -1738,28 +1534,10 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
       '',
       'Cube'
     ),
-    this.createVertexTemplateEntry(
-      'shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;',
-      120,
-      80,
-      '',
-      'Step'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;',
-      120,
-      60,
-      '',
-      'Trapezoid'
-    ),
+    this.createVertexTemplateEntry('shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;', 120, 80, '', 'Step'),
+    this.createVertexTemplateEntry('shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;', 120, 60, '', 'Trapezoid'),
     this.createVertexTemplateEntry('shape=tape;whiteSpace=wrap;html=1;', 120, 100, '', 'Tape'),
-    this.createVertexTemplateEntry(
-      'shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;',
-      80,
-      100,
-      '',
-      'Note'
-    ),
+    this.createVertexTemplateEntry('shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;', 80, 100, '', 'Note'),
     this.createVertexTemplateEntry('shape=card;whiteSpace=wrap;html=1;', 80, 100, '', 'Card'),
     this.createVertexTemplateEntry(
       'shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;',
@@ -1781,43 +1559,10 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
       null,
       'user person human stickman'
     ),
-    this.createVertexTemplateEntry(
-      'shape=xor;whiteSpace=wrap;html=1;',
-      60,
-      80,
-      '',
-      'Or',
-      null,
-      null,
-      'logic or'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=or;whiteSpace=wrap;html=1;',
-      60,
-      80,
-      '',
-      'And',
-      null,
-      null,
-      'logic and'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=dataStorage;whiteSpace=wrap;html=1;fixedSize=1;',
-      100,
-      80,
-      '',
-      'Data Storage'
-    ),
-    this.createVertexTemplateEntry(
-      'swimlane;startSize=0;',
-      200,
-      200,
-      '',
-      'Container',
-      null,
-      null,
-      'container swimlane lane pool group'
-    ),
+    this.createVertexTemplateEntry('shape=xor;whiteSpace=wrap;html=1;', 60, 80, '', 'Or', null, null, 'logic or'),
+    this.createVertexTemplateEntry('shape=or;whiteSpace=wrap;html=1;', 60, 80, '', 'And', null, null, 'logic and'),
+    this.createVertexTemplateEntry('shape=dataStorage;whiteSpace=wrap;html=1;fixedSize=1;', 100, 80, '', 'Data Storage'),
+    this.createVertexTemplateEntry('swimlane;startSize=0;', 200, 200, '', 'Container', null, null, 'container swimlane lane pool group'),
     this.createVertexTemplateEntry(
       'swimlane;whiteSpace=wrap;html=1;',
       200,
@@ -1850,20 +1595,10 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
       cell.insert(sb.cloneCell(field, 'Item 2'))
       cell.insert(sb.cloneCell(field, 'Item 3'))
 
-      return sb.createVertexTemplateFromCells(
-        [cell],
-        cell.geometry.width,
-        cell.geometry.height,
-        'List'
-      )
+      return sb.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'List')
     }),
     this.addEntry('list item entry value group erd table', function () {
-      return sb.createVertexTemplateFromCells(
-        [sb.cloneCell(field, 'List Item')],
-        field.geometry.width,
-        field.geometry.height,
-        'List Item'
-      )
+      return sb.createVertexTemplateFromCells([sb.cloneCell(field, 'List Item')], field.geometry.width, field.geometry.height, 'List Item')
     }),
     this.addEntry(
       'curve',
@@ -1875,12 +1610,7 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
         cell.geometry.relative = true
         cell.edge = true
 
-        return this.createEdgeTemplateFromCells(
-          [cell],
-          cell.geometry.width,
-          cell.geometry.height,
-          'Curve'
-        )
+        return this.createEdgeTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Curve')
       })
     ),
     this.createEdgeTemplateEntry(
@@ -1892,24 +1622,8 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
       null,
       lineTags + 'bidirectional'
     ),
-    this.createEdgeTemplateEntry(
-      'shape=flexArrow;endArrow=classic;html=1;',
-      50,
-      50,
-      '',
-      'Arrow',
-      null,
-      lineTags + 'directional directed'
-    ),
-    this.createEdgeTemplateEntry(
-      'endArrow=none;dashed=1;html=1;',
-      50,
-      50,
-      '',
-      'Dashed Line',
-      null,
-      lineTags + 'dashed undirected no'
-    ),
+    this.createEdgeTemplateEntry('shape=flexArrow;endArrow=classic;html=1;', 50, 50, '', 'Arrow', null, lineTags + 'directional directed'),
+    this.createEdgeTemplateEntry('endArrow=none;dashed=1;html=1;', 50, 50, '', 'Dashed Line', null, lineTags + 'dashed undirected no'),
     this.createEdgeTemplateEntry(
       'endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;',
       50,
@@ -1919,15 +1633,7 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
       null,
       lineTags + 'dotted undirected no'
     ),
-    this.createEdgeTemplateEntry(
-      'endArrow=none;html=1;',
-      50,
-      50,
-      '',
-      'Line',
-      null,
-      lineTags + 'simple undirected plain blank no'
-    ),
+    this.createEdgeTemplateEntry('endArrow=none;html=1;', 50, 50, '', 'Line', null, lineTags + 'simple undirected plain blank no'),
     this.createEdgeTemplateEntry(
       'endArrow=classic;startArrow=classic;html=1;',
       50,
@@ -1937,15 +1643,7 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
       null,
       lineTags + 'bidirectional'
     ),
-    this.createEdgeTemplateEntry(
-      'endArrow=classic;html=1;',
-      50,
-      50,
-      '',
-      'Directional Connector',
-      null,
-      lineTags + 'directional directed'
-    ),
+    this.createEdgeTemplateEntry('endArrow=classic;html=1;', 50, 50, '', 'Directional Connector', null, lineTags + 'directional directed'),
     this.createEdgeTemplateEntry('shape=link;html=1;', 100, 0, '', 'Link', null, lineTags + 'link'),
     this.addEntry(
       lineTags + 'edge title',
@@ -1956,11 +1654,7 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
         edge.geometry.relative = true
         edge.edge = true
 
-        var cell0 = new mxCell(
-          'Label',
-          new mxGeometry(0, 0, 0, 0),
-          edgeLabelStyle + ';align=center;verticalAlign=middle;'
-        )
+        var cell0 = new mxCell('Label', new mxGeometry(0, 0, 0, 0), edgeLabelStyle + ';align=center;verticalAlign=middle;')
         cell0.geometry.relative = true
         cell0.setConnectable(false)
         cell0.vertex = true
@@ -1978,21 +1672,13 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
         edge.geometry.relative = true
         edge.edge = true
 
-        var cell0 = new mxCell(
-          'Label',
-          new mxGeometry(0, 0, 0, 0),
-          edgeLabelStyle + ';align=center;verticalAlign=middle;'
-        )
+        var cell0 = new mxCell('Label', new mxGeometry(0, 0, 0, 0), edgeLabelStyle + ';align=center;verticalAlign=middle;')
         cell0.geometry.relative = true
         cell0.setConnectable(false)
         cell0.vertex = true
         edge.insert(cell0)
 
-        var cell1 = new mxCell(
-          'Source',
-          new mxGeometry(-1, 0, 0, 0),
-          edgeLabelStyle + ';align=left;verticalAlign=bottom;'
-        )
+        var cell1 = new mxCell('Source', new mxGeometry(-1, 0, 0, 0), edgeLabelStyle + ';align=left;verticalAlign=bottom;')
         cell1.geometry.relative = true
         cell1.setConnectable(false)
         cell1.vertex = true
@@ -2010,31 +1696,19 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
         edge.geometry.relative = true
         edge.edge = true
 
-        var cell0 = new mxCell(
-          'Label',
-          new mxGeometry(0, 0, 0, 0),
-          edgeLabelStyle + ';align=center;verticalAlign=middle;'
-        )
+        var cell0 = new mxCell('Label', new mxGeometry(0, 0, 0, 0), edgeLabelStyle + ';align=center;verticalAlign=middle;')
         cell0.geometry.relative = true
         cell0.setConnectable(false)
         cell0.vertex = true
         edge.insert(cell0)
 
-        var cell1 = new mxCell(
-          'Source',
-          new mxGeometry(-1, 0, 0, 0),
-          edgeLabelStyle + ';align=left;verticalAlign=bottom;'
-        )
+        var cell1 = new mxCell('Source', new mxGeometry(-1, 0, 0, 0), edgeLabelStyle + ';align=left;verticalAlign=bottom;')
         cell1.geometry.relative = true
         cell1.setConnectable(false)
         cell1.vertex = true
         edge.insert(cell1)
 
-        var cell2 = new mxCell(
-          'Target',
-          new mxGeometry(1, 0, 0, 0),
-          edgeLabelStyle + ';align=right;verticalAlign=bottom;'
-        )
+        var cell2 = new mxCell('Target', new mxGeometry(1, 0, 0, 0), edgeLabelStyle + ';align=right;verticalAlign=bottom;')
         cell2.geometry.relative = true
         cell2.setConnectable(false)
         cell2.vertex = true
@@ -2052,11 +1726,7 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
         edge.geometry.relative = true
         edge.edge = true
 
-        var cell = new mxCell(
-          '',
-          new mxGeometry(0, 0, 20, 14),
-          'shape=message;html=1;outlineConnect=0;'
-        )
+        var cell = new mxCell('', new mxGeometry(0, 0, 20, 14), 'shape=message;html=1;outlineConnect=0;')
         cell.geometry.relative = true
         cell.vertex = true
         cell.geometry.offset = new mxPoint(-10, -7)
@@ -2067,12 +1737,7 @@ Sidebar.prototype.addGeneralPalette = function (expand) {
     )
   ]
 
-  this.addPaletteFunctions(
-    'general',
-    mxResources.get('general'),
-    expand != null ? expand : true,
-    fns
-  )
+  this.addPaletteFunctions('general', mxResources.get('general'), expand != null ? expand : true, fns)
   this.setCurrentSearchEntryLibrary()
 }
 
@@ -2135,12 +1800,7 @@ Sidebar.prototype.addMiscPalette = function (expand) {
         cell.vertex = true
         this.graph.setLinkForCell(cell, 'https://www.draw.io')
 
-        return this.createVertexTemplateFromCells(
-          [cell],
-          cell.geometry.width,
-          cell.geometry.height,
-          'Vertical List'
-        )
+        return this.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Vertical List')
       })
     ),
 
@@ -2226,12 +1886,7 @@ Sidebar.prototype.addMiscPalette = function (expand) {
         cell.vertex = true
         this.graph.setLinkForCell(cell, 'https://www.draw.io')
 
-        return this.createVertexTemplateFromCells(
-          [cell],
-          cell.geometry.width,
-          cell.geometry.height,
-          'Link'
-        )
+        return this.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Link')
       })
     ),
     this.addEntry(
@@ -2245,12 +1900,7 @@ Sidebar.prototype.addMiscPalette = function (expand) {
         cell.vertex = true
         this.graph.setAttributeForCell(cell, 'placeholders', '1')
 
-        return this.createVertexTemplateFromCells(
-          [cell],
-          cell.geometry.width,
-          cell.geometry.height,
-          'Timestamp'
-        )
+        return this.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Timestamp')
       })
     ),
     this.addEntry(
@@ -2265,12 +1915,7 @@ Sidebar.prototype.addMiscPalette = function (expand) {
         this.graph.setAttributeForCell(cell, 'placeholders', '1')
         this.graph.setAttributeForCell(cell, 'name', 'Variable')
 
-        return this.createVertexTemplateFromCells(
-          [cell],
-          cell.geometry.width,
-          cell.geometry.height,
-          'Variable'
-        )
+        return this.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Variable')
       })
     ),
     this.createVertexTemplateEntry(
@@ -2373,20 +2018,8 @@ Sidebar.prototype.addMiscPalette = function (expand) {
       null,
       'rectangle rect box iso isometric'
     ),
-    this.createEdgeTemplateEntry(
-      'edgeStyle=isometricEdgeStyle;endArrow=none;html=1;',
-      50,
-      100,
-      '',
-      'Isometric Edge 1'
-    ),
-    this.createEdgeTemplateEntry(
-      'edgeStyle=isometricEdgeStyle;endArrow=none;html=1;elbow=vertical;',
-      50,
-      100,
-      '',
-      'Isometric Edge 2'
-    ),
+    this.createEdgeTemplateEntry('edgeStyle=isometricEdgeStyle;endArrow=none;html=1;', 50, 100, '', 'Isometric Edge 1'),
+    this.createEdgeTemplateEntry('edgeStyle=isometricEdgeStyle;endArrow=none;html=1;elbow=vertical;', 50, 100, '', 'Isometric Edge 2'),
     this.createVertexTemplateEntry(
       'shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;labelPosition=left;verticalLabelPosition=middle;align=right;verticalAlign=middle;',
       20,
@@ -2402,13 +2035,7 @@ Sidebar.prototype.addMiscPalette = function (expand) {
       'Right Curly Bracket'
     ),
     this.createVertexTemplateEntry('line;strokeWidth=2;html=1;', 160, 10, '', 'Horizontal Line'),
-    this.createVertexTemplateEntry(
-      'line;strokeWidth=2;direction=south;html=1;',
-      10,
-      160,
-      '',
-      'Vertical Line'
-    ),
+    this.createVertexTemplateEntry('line;strokeWidth=2;direction=south;html=1;', 10, 160, '', 'Vertical Line'),
     this.createVertexTemplateEntry(
       'line;strokeWidth=4;html=1;perimeter=backbonePerimeter;points=[];outlineConnect=0;',
       160,
@@ -2450,8 +2077,7 @@ Sidebar.prototype.addMiscPalette = function (expand) {
       'crossbar distance measure dimension unit'
     ),
     this.createVertexTemplateEntry(
-      'shape=image;html=1;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=1;aspect=fixed;image=' +
-        this.gearImage,
+      'shape=image;html=1;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=1;aspect=fixed;image=' + this.gearImage,
       52,
       61,
       '',
@@ -2461,8 +2087,7 @@ Sidebar.prototype.addMiscPalette = function (expand) {
       'fixed image icon symbol'
     ),
     this.createVertexTemplateEntry(
-      'shape=image;html=1;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;image=' +
-        this.gearImage,
+      'shape=image;html=1;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;image=' + this.gearImage,
       50,
       60,
       '',
@@ -2471,16 +2096,7 @@ Sidebar.prototype.addMiscPalette = function (expand) {
       null,
       'strechted image icon symbol'
     ),
-    this.createVertexTemplateEntry(
-      'icon;html=1;image=' + this.gearImage,
-      60,
-      60,
-      'Icon',
-      'Icon',
-      false,
-      null,
-      'icon image symbol'
-    ),
+    this.createVertexTemplateEntry('icon;html=1;image=' + this.gearImage, 60, 60, 'Icon', 'Icon', false, null, 'icon image symbol'),
     this.createVertexTemplateEntry(
       'label;whiteSpace=wrap;html=1;image=' + this.gearImage,
       140,
@@ -2503,42 +2119,17 @@ Sidebar.prototype.addMiscPalette = function (expand) {
       'label image icon symbol'
     ),
     this.addEntry('shape group container', function () {
-      var cell = new mxCell(
-        'Label',
-        new mxGeometry(0, 0, 160, 70),
-        'html=1;whiteSpace=wrap;container=1;recursiveResize=0;collapsible=0;'
-      )
+      var cell = new mxCell('Label', new mxGeometry(0, 0, 160, 70), 'html=1;whiteSpace=wrap;container=1;recursiveResize=0;collapsible=0;')
       cell.vertex = true
 
-      var symbol = new mxCell(
-        '',
-        new mxGeometry(20, 20, 20, 30),
-        'triangle;html=1;whiteSpace=wrap;'
-      )
+      var symbol = new mxCell('', new mxGeometry(20, 20, 20, 30), 'triangle;html=1;whiteSpace=wrap;')
       symbol.vertex = true
       cell.insert(symbol)
 
-      return sb.createVertexTemplateFromCells(
-        [cell],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Shape Group'
-      )
+      return sb.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Shape Group')
     }),
-    this.createVertexTemplateEntry(
-      'shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=none;',
-      120,
-      60,
-      '',
-      'Partial Rectangle'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=partialRectangle;whiteSpace=wrap;html=1;bottom=0;top=0;fillColor=none;',
-      120,
-      60,
-      '',
-      'Partial Rectangle'
-    ),
+    this.createVertexTemplateEntry('shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=none;', 120, 60, '', 'Partial Rectangle'),
+    this.createVertexTemplateEntry('shape=partialRectangle;whiteSpace=wrap;html=1;bottom=0;top=0;fillColor=none;', 120, 60, '', 'Partial Rectangle'),
     this.createVertexTemplateEntry(
       'shape=partialRectangle;whiteSpace=wrap;html=1;bottom=0;right=0;fillColor=none;',
       120,
@@ -2604,12 +2195,7 @@ Sidebar.prototype.addMiscPalette = function (expand) {
  */
 Sidebar.prototype.addAdvancedPalette = function (expand) {
   this.setCurrentSearchEntryLibrary('general', 'advanced')
-  this.addPaletteFunctions(
-    'advanced',
-    mxResources.get('advanced'),
-    expand != null ? expand : false,
-    this.createAdvancedShapes()
-  )
+  this.addPaletteFunctions('advanced', mxResources.get('advanced'), expand != null ? expand : false, this.createAdvancedShapes())
   this.setCurrentSearchEntryLibrary()
 }
 
@@ -2649,13 +2235,7 @@ Sidebar.prototype.addBasicPalette = function (dir) {
         '',
         'Partial Rectangle'
       ),
-      this.createVertexTemplateEntry(
-        'shape=partialRectangle;whiteSpace=wrap;html=1;top=0;left=0;fillColor=none;',
-        120,
-        60,
-        '',
-        'Partial Rectangle'
-      )
+      this.createVertexTemplateEntry('shape=partialRectangle;whiteSpace=wrap;html=1;top=0;left=0;fillColor=none;', 120, 60, '', 'Partial Rectangle')
     ]
   )
   this.setCurrentSearchEntryLibrary()
@@ -2677,71 +2257,17 @@ Sidebar.prototype.createAdvancedShapes = function () {
   field.vertex = true
 
   return [
-    this.createVertexTemplateEntry(
-      'shape=tapeData;whiteSpace=wrap;html=1;perimeter=ellipsePerimeter;',
-      80,
-      80,
-      '',
-      'Tape Data'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=manualInput;whiteSpace=wrap;html=1;',
-      80,
-      80,
-      '',
-      'Manual Input'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=loopLimit;whiteSpace=wrap;html=1;',
-      100,
-      80,
-      '',
-      'Loop Limit'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=offPageConnector;whiteSpace=wrap;html=1;',
-      80,
-      80,
-      '',
-      'Off Page Connector'
-    ),
+    this.createVertexTemplateEntry('shape=tapeData;whiteSpace=wrap;html=1;perimeter=ellipsePerimeter;', 80, 80, '', 'Tape Data'),
+    this.createVertexTemplateEntry('shape=manualInput;whiteSpace=wrap;html=1;', 80, 80, '', 'Manual Input'),
+    this.createVertexTemplateEntry('shape=loopLimit;whiteSpace=wrap;html=1;', 100, 80, '', 'Loop Limit'),
+    this.createVertexTemplateEntry('shape=offPageConnector;whiteSpace=wrap;html=1;', 80, 80, '', 'Off Page Connector'),
     this.createVertexTemplateEntry('shape=delay;whiteSpace=wrap;html=1;', 80, 40, '', 'Delay'),
     this.createVertexTemplateEntry('shape=display;whiteSpace=wrap;html=1;', 80, 40, '', 'Display'),
-    this.createVertexTemplateEntry(
-      'shape=singleArrow;direction=west;whiteSpace=wrap;html=1;',
-      100,
-      60,
-      '',
-      'Arrow Left'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=singleArrow;whiteSpace=wrap;html=1;',
-      100,
-      60,
-      '',
-      'Arrow Right'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=singleArrow;direction=north;whiteSpace=wrap;html=1;',
-      60,
-      100,
-      '',
-      'Arrow Up'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=singleArrow;direction=south;whiteSpace=wrap;html=1;',
-      60,
-      100,
-      '',
-      'Arrow Down'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=doubleArrow;whiteSpace=wrap;html=1;',
-      100,
-      60,
-      '',
-      'Double Arrow'
-    ),
+    this.createVertexTemplateEntry('shape=singleArrow;direction=west;whiteSpace=wrap;html=1;', 100, 60, '', 'Arrow Left'),
+    this.createVertexTemplateEntry('shape=singleArrow;whiteSpace=wrap;html=1;', 100, 60, '', 'Arrow Right'),
+    this.createVertexTemplateEntry('shape=singleArrow;direction=north;whiteSpace=wrap;html=1;', 60, 100, '', 'Arrow Up'),
+    this.createVertexTemplateEntry('shape=singleArrow;direction=south;whiteSpace=wrap;html=1;', 60, 100, '', 'Arrow Down'),
+    this.createVertexTemplateEntry('shape=doubleArrow;whiteSpace=wrap;html=1;', 100, 60, '', 'Double Arrow'),
     this.createVertexTemplateEntry(
       'shape=doubleArrow;direction=south;whiteSpace=wrap;html=1;',
       60,
@@ -2752,29 +2278,11 @@ Sidebar.prototype.createAdvancedShapes = function () {
       null,
       'double arrow'
     ),
-    this.createVertexTemplateEntry(
-      'shape=actor;whiteSpace=wrap;html=1;',
-      40,
-      60,
-      '',
-      'User',
-      null,
-      null,
-      'user person human'
-    ),
+    this.createVertexTemplateEntry('shape=actor;whiteSpace=wrap;html=1;', 40, 60, '', 'User', null, null, 'user person human'),
     this.createVertexTemplateEntry('shape=cross;whiteSpace=wrap;html=1;', 80, 80, '', 'Cross'),
     this.createVertexTemplateEntry('shape=corner;whiteSpace=wrap;html=1;', 80, 80, '', 'Corner'),
     this.createVertexTemplateEntry('shape=tee;whiteSpace=wrap;html=1;', 80, 80, '', 'Tee'),
-    this.createVertexTemplateEntry(
-      'shape=datastore;whiteSpace=wrap;html=1;',
-      60,
-      60,
-      '',
-      'Data Store',
-      null,
-      null,
-      'data store cylinder database'
-    ),
+    this.createVertexTemplateEntry('shape=datastore;whiteSpace=wrap;html=1;', 60, 60, '', 'Data Store', null, null, 'data store cylinder database'),
     this.createVertexTemplateEntry(
       'shape=orEllipse;perimeter=ellipsePerimeter;whiteSpace=wrap;html=1;backgroundOutline=1;',
       80,
@@ -2815,36 +2323,9 @@ Sidebar.prototype.createAdvancedShapes = function () {
       null,
       'circle oval ellipse'
     ),
-    this.createVertexTemplateEntry(
-      'shape=sortShape;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;',
-      80,
-      80,
-      '',
-      'Sort',
-      null,
-      null,
-      'sort'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=collate;whiteSpace=wrap;html=1;',
-      80,
-      80,
-      '',
-      'Collate',
-      null,
-      null,
-      'collate'
-    ),
-    this.createVertexTemplateEntry(
-      'shape=switch;whiteSpace=wrap;html=1;',
-      60,
-      60,
-      '',
-      'Switch',
-      null,
-      null,
-      'switch router'
-    ),
+    this.createVertexTemplateEntry('shape=sortShape;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;', 80, 80, '', 'Sort', null, null, 'sort'),
+    this.createVertexTemplateEntry('shape=collate;whiteSpace=wrap;html=1;', 80, 80, '', 'Collate', null, null, 'collate'),
+    this.createVertexTemplateEntry('shape=switch;whiteSpace=wrap;html=1;', 60, 60, '', 'Switch', null, null, 'switch router'),
 
     this.addEntry('process bar', function () {
       return sb.createVertexTemplateFromData(
@@ -2854,16 +2335,7 @@ Sidebar.prototype.createAdvancedShapes = function () {
         'Process Bar'
       )
     }),
-    this.createVertexTemplateEntry(
-      'swimlane;',
-      200,
-      200,
-      'Container',
-      'Container',
-      null,
-      null,
-      'container swimlane lane pool group'
-    ),
+    this.createVertexTemplateEntry('swimlane;', 200, 200, 'Container', 'Container', null, null, 'container swimlane lane pool group'),
     this.addEntry('list group erd table', function () {
       var cell = new mxCell(
         'List',
@@ -2876,20 +2348,10 @@ Sidebar.prototype.createAdvancedShapes = function () {
       cell.insert(sb.cloneCell(field, 'Item 2'))
       cell.insert(sb.cloneCell(field, 'Item 3'))
 
-      return sb.createVertexTemplateFromCells(
-        [cell],
-        cell.geometry.width,
-        cell.geometry.height,
-        'List'
-      )
+      return sb.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'List')
     }),
     this.addEntry('list item entry value group erd table', function () {
-      return sb.createVertexTemplateFromCells(
-        [sb.cloneCell(field, 'List Item')],
-        field.geometry.width,
-        field.geometry.height,
-        'List Item'
-      )
+      return sb.createVertexTemplateFromCells([sb.cloneCell(field, 'List Item')], field.geometry.width, field.geometry.height, 'List Item')
     })
   ]
 }
@@ -2930,13 +2392,7 @@ Sidebar.prototype.addBasicPalette = function (dir) {
         '',
         'Partial Rectangle'
       ),
-      this.createVertexTemplateEntry(
-        'shape=partialRectangle;whiteSpace=wrap;html=1;top=0;left=0;fillColor=none;',
-        120,
-        60,
-        '',
-        'Partial Rectangle'
-      )
+      this.createVertexTemplateEntry('shape=partialRectangle;whiteSpace=wrap;html=1;top=0;left=0;fillColor=none;', 120, 60, '', 'Partial Rectangle')
     ]
   )
   this.setCurrentSearchEntryLibrary()
@@ -2980,16 +2436,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
   this.setCurrentSearchEntryLibrary('uml')
 
   var fns = [
-    this.createVertexTemplateEntry(
-      'html=1;whiteSpace=wrap;',
-      110,
-      50,
-      'Object',
-      'Object',
-      null,
-      null,
-      dt + 'object instance'
-    ),
+    this.createVertexTemplateEntry('html=1;whiteSpace=wrap;', 110, 50, 'Object', 'Object', null, null, dt + 'object instance'),
     this.createVertexTemplateEntry(
       'html=1;whiteSpace=wrap;',
       110,
@@ -3011,12 +2458,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       cell.insert(divider.clone())
       cell.insert(sb.cloneCell(field, '+ method(type): type'))
 
-      return sb.createVertexTemplateFromCells(
-        [cell],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Class'
-      )
+      return sb.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Class')
     }),
     this.addEntry(dt + 'section subsection', function () {
       var cell = new mxCell(
@@ -3029,20 +2471,10 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       cell.insert(field.clone())
       cell.insert(field.clone())
 
-      return sb.createVertexTemplateFromCells(
-        [cell],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Class 2'
-      )
+      return sb.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Class 2')
     }),
     this.addEntry(dt + 'item member method function variable field attribute label', function () {
-      return sb.createVertexTemplateFromCells(
-        [sb.cloneCell(field, '+ item: attribute')],
-        field.geometry.width,
-        field.geometry.height,
-        'Item 1'
-      )
+      return sb.createVertexTemplateFromCells([sb.cloneCell(field, '+ item: attribute')], field.geometry.width, field.geometry.height, 'Item 1')
     }),
     this.addEntry(dt + 'item member method function variable field attribute label', function () {
       var cell = new mxCell(
@@ -3054,20 +2486,10 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       )
       cell.vertex = true
 
-      return sb.createVertexTemplateFromCells(
-        [cell],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Item 2'
-      )
+      return sb.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Item 2')
     }),
     this.addEntry(dt + 'divider hline line separator', function () {
-      return sb.createVertexTemplateFromCells(
-        [divider.clone()],
-        divider.geometry.width,
-        divider.geometry.height,
-        'Divider'
-      )
+      return sb.createVertexTemplateFromCells([divider.clone()], divider.geometry.width, divider.geometry.height, 'Divider')
     }),
     this.addEntry(dt + 'spacer space gap separator', function () {
       var cell = new mxCell(
@@ -3077,12 +2499,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       )
       cell.vertex = true
 
-      return sb.createVertexTemplateFromCells(
-        [cell.clone()],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Spacer'
-      )
+      return sb.createVertexTemplateFromCells([cell.clone()], cell.geometry.width, cell.geometry.height, 'Spacer')
     }),
     this.createVertexTemplateEntry(
       'text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;',
@@ -3095,29 +2512,16 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       dt + 'title label'
     ),
     this.addEntry(dt + 'component', function () {
-      var cell = new mxCell(
-        '&laquo;Annotation&raquo;<br/><b>Component</b>',
-        new mxGeometry(0, 0, 180, 90),
-        'html=1;dropTarget=0;whiteSpace=wrap;'
-      )
+      var cell = new mxCell('&laquo;Annotation&raquo;<br/><b>Component</b>', new mxGeometry(0, 0, 180, 90), 'html=1;dropTarget=0;whiteSpace=wrap;')
       cell.vertex = true
 
-      var symbol = new mxCell(
-        '',
-        new mxGeometry(1, 0, 20, 20),
-        'shape=module;jettyWidth=8;jettyHeight=4;'
-      )
+      var symbol = new mxCell('', new mxGeometry(1, 0, 20, 20), 'shape=module;jettyWidth=8;jettyHeight=4;')
       symbol.vertex = true
       symbol.geometry.relative = true
       symbol.geometry.offset = new mxPoint(-27, 7)
       cell.insert(symbol)
 
-      return sb.createVertexTemplateFromCells(
-        [cell],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Component'
-      )
+      return sb.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Component')
     }),
     this.addEntry(dt + 'component', function () {
       var cell = new mxCell(
@@ -3129,22 +2533,13 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       )
       cell.vertex = true
 
-      var symbol = new mxCell(
-        '',
-        new mxGeometry(1, 0, 20, 20),
-        'shape=component;jettyWidth=8;jettyHeight=4;'
-      )
+      var symbol = new mxCell('', new mxGeometry(1, 0, 20, 20), 'shape=component;jettyWidth=8;jettyHeight=4;')
       symbol.vertex = true
       symbol.geometry.relative = true
       symbol.geometry.offset = new mxPoint(-24, 4)
       cell.insert(symbol)
 
-      return sb.createVertexTemplateFromCells(
-        [cell],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Component with Attributes'
-      )
+      return sb.createVertexTemplateFromCells([cell], cell.geometry.width, cell.geometry.height, 'Component with Attributes')
     }),
     this.createVertexTemplateEntry(
       'verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;',
@@ -3203,21 +2598,13 @@ Sidebar.prototype.addUmlPalette = function (expand) {
     ),
     this.addEntry(dt + 'object instance', function () {
       var cell = new mxCell(
-        '<p style="margin:0px;margin-top:4px;text-align:center;">' +
-          '<b>Class</b></p>' +
-          hr +
-          '<div style="height:2px;"></div>',
+        '<p style="margin:0px;margin-top:4px;text-align:center;">' + '<b>Class</b></p>' + hr + '<div style="height:2px;"></div>',
         new mxGeometry(0, 0, 140, 60),
         'verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;'
       )
       cell.vertex = true
 
-      return sb.createVertexTemplateFromCells(
-        [cell.clone()],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Class 3'
-      )
+      return sb.createVertexTemplateFromCells([cell.clone()], cell.geometry.width, cell.geometry.height, 'Class 3')
     }),
     this.addEntry(dt + 'object instance', function () {
       var cell = new mxCell(
@@ -3232,12 +2619,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       )
       cell.vertex = true
 
-      return sb.createVertexTemplateFromCells(
-        [cell.clone()],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Class 4'
-      )
+      return sb.createVertexTemplateFromCells([cell.clone()], cell.geometry.width, cell.geometry.height, 'Class 4')
     }),
     this.addEntry(dt + 'object instance', function () {
       var cell = new mxCell(
@@ -3252,12 +2634,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       )
       cell.vertex = true
 
-      return sb.createVertexTemplateFromCells(
-        [cell.clone()],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Class 5'
-      )
+      return sb.createVertexTemplateFromCells([cell.clone()], cell.geometry.width, cell.geometry.height, 'Class 5')
     }),
     this.addEntry(dt + 'object instance', function () {
       var cell = new mxCell(
@@ -3275,12 +2652,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       )
       cell.vertex = true
 
-      return sb.createVertexTemplateFromCells(
-        [cell.clone()],
-        cell.geometry.width,
-        cell.geometry.height,
-        'Interface 2'
-      )
+      return sb.createVertexTemplateFromCells([cell.clone()], cell.geometry.width, cell.geometry.height, 'Interface 2')
     }),
     this.createVertexTemplateEntry(
       'shape=providedRequiredInterface;html=1;verticalLabelPosition=bottom;sketch=0;',
@@ -3357,22 +2729,9 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       null,
       'uml actor'
     ),
-    this.createVertexTemplateEntry(
-      'ellipse;whiteSpace=wrap;html=1;',
-      140,
-      70,
-      'Use Case',
-      'Use Case',
-      null,
-      null,
-      'uml use case usecase'
-    ),
+    this.createVertexTemplateEntry('ellipse;whiteSpace=wrap;html=1;', 140, 70, 'Use Case', 'Use Case', null, null, 'uml use case usecase'),
     this.addEntry('uml activity state start', function () {
-      var cell = new mxCell(
-        '',
-        new mxGeometry(0, 0, 30, 30),
-        'ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;'
-      )
+      var cell = new mxCell('', new mxGeometry(0, 0, 30, 30), 'ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;')
       cell.vertex = true
 
       var edge = new mxCell(
@@ -3473,11 +2832,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       return sb.createVertexTemplateFromCells([cell, edge1, edge2], 180, 100, 'Condition')
     }),
     this.addEntry('uml activity fork join', function () {
-      var cell = new mxCell(
-        '',
-        new mxGeometry(0, 0, 200, 10),
-        'shape=line;html=1;strokeWidth=6;strokeColor=#ff0000;'
-      )
+      var cell = new mxCell('', new mxGeometry(0, 0, 200, 10), 'shape=line;html=1;strokeWidth=6;strokeColor=#ff0000;')
       cell.vertex = true
 
       var edge = new mxCell(
@@ -3503,16 +2858,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       null,
       'uml activity state end'
     ),
-    this.createVertexTemplateEntry(
-      lifelineStyle,
-      100,
-      300,
-      ':Object',
-      'Lifeline',
-      null,
-      null,
-      'uml sequence participant lifeline'
-    ),
+    this.createVertexTemplateEntry(lifelineStyle, 100, 300, ':Object', 'Lifeline', null, null, 'uml sequence participant lifeline'),
     this.createVertexTemplateEntry(
       lifelineStyle + 'participant=umlActor;',
       20,
@@ -3580,8 +2926,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       var edge = new mxCell(
         'dispatch',
         new mxGeometry(0, 0, 0, 0),
-        'html=1;verticalAlign=bottom;startArrow=oval;endArrow=block;' +
-          'startSize=8;curved=0;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=5;'
+        'html=1;verticalAlign=bottom;startArrow=oval;endArrow=block;' + 'startSize=8;curved=0;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=5;'
       )
       edge.geometry.setTerminalPoint(new mxPoint(-70, 5), true)
       edge.geometry.relative = true
@@ -3591,44 +2936,34 @@ Sidebar.prototype.addUmlPalette = function (expand) {
 
       return sb.createVertexTemplateFromCells([cell, edge], 10, 80, 'Found Message')
     }),
-    this.addEntry(
-      'uml sequence invoke call delegation synchronous invocation activation bar',
-      function () {
-        var cell = new mxCell('', new mxGeometry(0, 0, 10, 80), activationStyle)
-        cell.vertex = true
+    this.addEntry('uml sequence invoke call delegation synchronous invocation activation bar', function () {
+      var cell = new mxCell('', new mxGeometry(0, 0, 10, 80), activationStyle)
+      cell.vertex = true
 
-        var edge1 = new mxCell(
-          'dispatch',
-          new mxGeometry(0, 0, 0, 0),
-          'html=1;verticalAlign=bottom;endArrow=block;' +
-            'curved=0;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=5;'
-        )
-        edge1.geometry.setTerminalPoint(new mxPoint(-70, 5), true)
-        edge1.geometry.relative = true
-        edge1.edge = true
+      var edge1 = new mxCell(
+        'dispatch',
+        new mxGeometry(0, 0, 0, 0),
+        'html=1;verticalAlign=bottom;endArrow=block;' + 'curved=0;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=5;'
+      )
+      edge1.geometry.setTerminalPoint(new mxPoint(-70, 5), true)
+      edge1.geometry.relative = true
+      edge1.edge = true
 
-        cell.insertEdge(edge1, false)
+      cell.insertEdge(edge1, false)
 
-        var edge2 = new mxCell(
-          'return',
-          new mxGeometry(0, 0, 0, 0),
-          'html=1;verticalAlign=bottom;endArrow=open;dashed=1;' +
-            'endSize=8;curved=0;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=-5;'
-        )
-        edge2.geometry.setTerminalPoint(new mxPoint(-70, 75), false)
-        edge2.geometry.relative = true
-        edge2.edge = true
+      var edge2 = new mxCell(
+        'return',
+        new mxGeometry(0, 0, 0, 0),
+        'html=1;verticalAlign=bottom;endArrow=open;dashed=1;' + 'endSize=8;curved=0;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=-5;'
+      )
+      edge2.geometry.setTerminalPoint(new mxPoint(-70, 75), false)
+      edge2.geometry.relative = true
+      edge2.edge = true
 
-        cell.insertEdge(edge2, true)
+      cell.insertEdge(edge2, true)
 
-        return sb.createVertexTemplateFromCells(
-          [cell, edge1, edge2],
-          10,
-          80,
-          'Synchronous Invocation'
-        )
-      }
-    ),
+      return sb.createVertexTemplateFromCells([cell, edge1, edge2], 10, 80, 'Synchronous Invocation')
+    }),
     this.addEntry('uml sequence self call recursion delegation activation bar', function () {
       var cell = new mxCell('', new mxGeometry(-5, 20, 10, 40), activationStyle)
       cell.vertex = true
@@ -3636,8 +2971,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       var edge = new mxCell(
         'self call',
         new mxGeometry(0, 0, 0, 0),
-        'html=1;align=left;spacingLeft=2;endArrow=block;' +
-          'rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;'
+        'html=1;align=left;spacingLeft=2;endArrow=block;' + 'rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;'
       )
       edge.geometry.setTerminalPoint(new mxPoint(0, 0), true)
       edge.geometry.points = [new mxPoint(30, 30)]
@@ -3655,8 +2989,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       var edge1 = new mxCell(
         'callback',
         new mxGeometry(0, 0, 0, 0),
-        'html=1;verticalAlign=bottom;endArrow=block;' +
-          'curved=0;rounded=0;entryX=1;entryY=0;entryDx=0;entryDy=5;'
+        'html=1;verticalAlign=bottom;endArrow=block;' + 'curved=0;rounded=0;entryX=1;entryY=0;entryDx=0;entryDy=5;'
       )
       edge1.geometry.setTerminalPoint(new mxPoint(80, 5), true)
       edge1.geometry.relative = true
@@ -3667,8 +3000,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       var edge2 = new mxCell(
         'return',
         new mxGeometry(0, 0, 0, 0),
-        'html=1;verticalAlign=bottom;endArrow=open;dashed=1;' +
-          'endSize=8;curved=0;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=-5;'
+        'html=1;verticalAlign=bottom;endArrow=open;dashed=1;' + 'endSize=8;curved=0;rounded=0;exitX=1;exitY=1;exitDx=0;exitDy=-5;'
       )
       edge2.geometry.setTerminalPoint(new mxPoint(80, 75), false)
       edge2.geometry.relative = true
@@ -3678,19 +3010,9 @@ Sidebar.prototype.addUmlPalette = function (expand) {
 
       return sb.createVertexTemplateFromCells([cell, edge1, edge2], 10, 80, 'Callback')
     }),
-    this.createVertexTemplateEntry(
-      activationStyle,
-      10,
-      80,
-      '',
-      'Activation Bar',
-      null,
-      null,
-      'uml sequence activation bar'
-    ),
+    this.createVertexTemplateEntry(activationStyle, 10, 80, '', 'Activation Bar', null, null, 'uml sequence activation bar'),
     this.createEdgeTemplateEntry(
-      'html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;' +
-        'curved=0;rounded=0;',
+      'html=1;verticalAlign=bottom;startArrow=oval;startFill=1;endArrow=block;startSize=8;' + 'curved=0;rounded=0;',
       60,
       0,
       'dispatch',
@@ -3699,8 +3021,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       'uml sequence message call invoke dispatch'
     ),
     this.createEdgeTemplateEntry(
-      'html=1;verticalAlign=bottom;startArrow=circle;startFill=1;endArrow=open;startSize=6;endSize=8;' +
-        'curved=0;rounded=0;',
+      'html=1;verticalAlign=bottom;startArrow=circle;startFill=1;endArrow=open;startSize=6;endSize=8;' + 'curved=0;rounded=0;',
       80,
       0,
       'dispatch',
@@ -3742,11 +3063,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       edge.geometry.x = -1
       edge.edge = true
 
-      var cell = new mxCell(
-        '1',
-        new mxGeometry(-1, 0, 0, 0),
-        'edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;'
-      )
+      var cell = new mxCell('1', new mxGeometry(-1, 0, 0, 0), 'edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;')
       cell.geometry.relative = true
       cell.setConnectable(false)
       cell.vertex = true
@@ -3755,31 +3072,19 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       return sb.createEdgeTemplateFromCells([edge], 160, 0, 'Relation 1')
     }),
     this.addEntry('uml association', function () {
-      var edge = new mxCell(
-        '',
-        new mxGeometry(0, 0, 0, 0),
-        'endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;'
-      )
+      var edge = new mxCell('', new mxGeometry(0, 0, 0, 0), 'endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;')
       edge.geometry.setTerminalPoint(new mxPoint(0, 0), true)
       edge.geometry.setTerminalPoint(new mxPoint(160, 0), false)
       edge.geometry.relative = true
       edge.edge = true
 
-      var cell1 = new mxCell(
-        'parent',
-        new mxGeometry(-1, 0, 0, 0),
-        'edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;'
-      )
+      var cell1 = new mxCell('parent', new mxGeometry(-1, 0, 0, 0), 'edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;')
       cell1.geometry.relative = true
       cell1.setConnectable(false)
       cell1.vertex = true
       edge.insert(cell1)
 
-      var cell2 = new mxCell(
-        'child',
-        new mxGeometry(1, 0, 0, 0),
-        'edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;'
-      )
+      var cell2 = new mxCell('child', new mxGeometry(1, 0, 0, 0), 'edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;')
       cell2.geometry.relative = true
       cell2.setConnectable(false)
       cell2.vertex = true
@@ -3828,21 +3133,13 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       edge.geometry.relative = true
       edge.edge = true
 
-      var cell1 = new mxCell(
-        '0..n',
-        new mxGeometry(-1, 0, 0, 0),
-        'edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;'
-      )
+      var cell1 = new mxCell('0..n', new mxGeometry(-1, 0, 0, 0), 'edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;')
       cell1.geometry.relative = true
       cell1.setConnectable(false)
       cell1.vertex = true
       edge.insert(cell1)
 
-      var cell2 = new mxCell(
-        '1',
-        new mxGeometry(1, 0, 0, 0),
-        'edgeLabel;resizable=0;html=1;align=right;verticalAlign=top;'
-      )
+      var cell2 = new mxCell('1', new mxGeometry(1, 0, 0, 0), 'edgeLabel;resizable=0;html=1;align=right;verticalAlign=top;')
       cell2.geometry.relative = true
       cell2.setConnectable(false)
       cell2.vertex = true
@@ -3850,15 +3147,7 @@ Sidebar.prototype.addUmlPalette = function (expand) {
 
       return sb.createEdgeTemplateFromCells([edge], 160, 0, 'Relation 2')
     }),
-    this.createEdgeTemplateEntry(
-      'endArrow=open;endSize=12;dashed=1;html=1;',
-      160,
-      0,
-      'Use',
-      'Dependency',
-      null,
-      'uml dependency use'
-    ),
+    this.createEdgeTemplateEntry('endArrow=open;endSize=12;dashed=1;html=1;', 160, 0, 'Use', 'Dependency', null, 'uml dependency use'),
     this.createEdgeTemplateEntry(
       'endArrow=block;endSize=16;endFill=0;html=1;',
       160,
@@ -3904,33 +3193,9 @@ Sidebar.prototype.addUmlPalette = function (expand) {
       null,
       'uml realization implementation'
     ),
-    this.createEdgeTemplateEntry(
-      'endArrow=diamondThin;endFill=0;endSize=24;html=1;',
-      160,
-      0,
-      '',
-      'Aggregation 2',
-      null,
-      'uml aggregation'
-    ),
-    this.createEdgeTemplateEntry(
-      'endArrow=diamondThin;endFill=1;endSize=24;html=1;',
-      160,
-      0,
-      '',
-      'Composition 2',
-      null,
-      'uml composition'
-    ),
-    this.createEdgeTemplateEntry(
-      'endArrow=open;endFill=1;endSize=12;html=1;',
-      160,
-      0,
-      '',
-      'Association 3',
-      null,
-      'uml association'
-    )
+    this.createEdgeTemplateEntry('endArrow=diamondThin;endFill=0;endSize=24;html=1;', 160, 0, '', 'Aggregation 2', null, 'uml aggregation'),
+    this.createEdgeTemplateEntry('endArrow=diamondThin;endFill=1;endSize=24;html=1;', 160, 0, '', 'Composition 2', null, 'uml composition'),
+    this.createEdgeTemplateEntry('endArrow=open;endFill=1;endSize=12;html=1;', 160, 0, '', 'Association 3', null, 'uml association')
   ]
 
   this.addPaletteFunctions('uml', mxResources.get('uml'), expand || false, fns)
@@ -3955,20 +3220,7 @@ Sidebar.prototype.createTitle = function (label) {
 /**
  * Creates a thumbnail for the given cells.
  */
-Sidebar.prototype.createThumb = function (
-  cells,
-  width,
-  height,
-  parent,
-  title,
-  showLabel,
-  showTitle,
-  w,
-  h,
-  bg,
-  border,
-  scale
-) {
+Sidebar.prototype.createThumb = function (cells, width, height, parent, title, showLabel, showTitle, w, h, bg, border, scale) {
   this.graph.labelsVisible = showLabel == null || showLabel
   var fo = mxClient.NO_FO
   mxClient.NO_FO = Editor.prototype.originalNoForeignObject
@@ -3981,28 +3233,14 @@ Sidebar.prototype.createThumb = function (
   var bounds = this.graph.getGraphBounds()
 
   if (scale == null) {
-    var s =
-      Math.floor(
-        Math.min(
-          (width - 2 * this.thumbBorder) / bounds.width,
-          (height - 2 * this.thumbBorder) / bounds.height
-        ) * 100
-      ) / 100
-    this.graph.view.scaleAndTranslate(
-      s,
-      (width - bounds.width * s) / 2 / s - bounds.x,
-      (height - bounds.height * s) / 2 / s - bounds.y
-    )
+    var s = Math.floor(Math.min((width - 2 * this.thumbBorder) / bounds.width, (height - 2 * this.thumbBorder) / bounds.height) * 100) / 100
+    this.graph.view.scaleAndTranslate(s, (width - bounds.width * s) / 2 / s - bounds.x, (height - bounds.height * s) / 2 / s - bounds.y)
   }
 
   var node = null
 
   // For supporting HTML labels in IE9 standards mode the container is cloned instead
-  if (
-    this.graph.dialect == mxConstants.DIALECT_SVG &&
-    !mxClient.NO_FO &&
-    this.graph.view.getCanvas().ownerSVGElement != null
-  ) {
+  if (this.graph.dialect == mxConstants.DIALECT_SVG && !mxClient.NO_FO && this.graph.view.getCanvas().ownerSVGElement != null) {
     node = this.graph.view.getCanvas().ownerSVGElement.cloneNode(true)
   }
   // LATER: Check if deep clone can be used for quirks if container in DOM
@@ -4116,11 +3354,7 @@ Sidebar.prototype.createItem = function (
   if (cells != null && cells.length > 0) {
     var originalCells = cells
     cells = this.graph.cloneCells(cells)
-    this.graph.pasteCellStyles(
-      this.graph.includeDescendants(originalCells),
-      this.initialDefaultVertexStyle,
-      this.initialDefaultEdgeStyle
-    )
+    this.graph.pasteCellStyles(this.graph.includeDescendants(originalCells), this.initialDefaultVertexStyle, this.initialDefaultEdgeStyle)
 
     if (icon != null) {
       elt.style.backgroundImage = 'url(' + icon + ')'
@@ -4128,17 +3362,7 @@ Sidebar.prototype.createItem = function (
       elt.style.backgroundPosition = 'center'
       elt.style.backgroundSize = '24px 24px'
     } else {
-      this.createThumb(
-        originalCells,
-        thumbWidth,
-        thumbHeight,
-        elt,
-        title,
-        showLabel,
-        showTitle,
-        width,
-        height
-      )
+      this.createThumb(originalCells, thumbWidth, thumbHeight, elt, title, showLabel, showTitle, width, height)
     }
 
     if (cells.length > 1 || cells[0].vertex) {
@@ -4191,14 +3415,7 @@ Sidebar.prototype.createItem = function (
 /**
  * Creates a drop handler for inserting the given cells.
  */
-Sidebar.prototype.createDropHandler = function (
-  cells,
-  allowSplit,
-  allowCellsInserted,
-  bounds,
-  startEditing,
-  sourceCell
-) {
+Sidebar.prototype.createDropHandler = function (cells, allowSplit, allowCellsInserted, bounds, startEditing, sourceCell) {
   allowCellsInserted = allowCellsInserted != null ? allowCellsInserted : true
 
   return mxUtils.bind(this, function (graph, evt, target, x, y, force) {
@@ -4219,10 +3436,7 @@ Sidebar.prototype.createDropHandler = function (
         graph.stopEditing()
 
         // Holding alt while mouse is released ignores drop target
-        var validDropTarget =
-          target != null && !mxEvent.isAltDown(evt)
-            ? graph.isValidDropTarget(target, cells, evt)
-            : false
+        var validDropTarget = target != null && !mxEvent.isAltDown(evt) ? graph.isValidDropTarget(target, cells, evt) : false
 
         var select = null
 
@@ -4244,32 +3458,13 @@ Sidebar.prototype.createDropHandler = function (
               var ty = (y + tr.y) * s
 
               var clones = graph.cloneCells(cells)
-              graph.splitEdge(
-                target,
-                clones,
-                null,
-                x - bounds.width / 2,
-                y - bounds.height / 2,
-                tx,
-                ty
-              )
+              graph.splitEdge(target, clones, null, x - bounds.width / 2, y - bounds.height / 2, tx, ty)
               select = clones
             } else if (cells.length > 0) {
               select = graph.importCells(cells, x, y, target)
 
-              if (
-                graph.model.isVertex(sourceCell) &&
-                select.length == 1 &&
-                graph.model.isVertex(select[0])
-              ) {
-                var edge = graph.insertEdge(
-                  graph.model.getParent(sourceCell),
-                  null,
-                  '',
-                  sourceCell,
-                  select[0],
-                  graph.createCurrentEdgeStyle()
-                )
+              if (graph.model.isVertex(sourceCell) && select.length == 1 && graph.model.isVertex(select[0])) {
+                var edge = graph.insertEdge(graph.model.getParent(sourceCell), null, '', sourceCell, select[0], graph.createCurrentEdgeStyle())
                 graph.applyNewEdgeStyle(sourceCell, [edge])
                 select.push(edge)
 
@@ -4315,14 +3510,7 @@ Sidebar.prototype.createDropHandler = function (
             graph.setSelectionCells(select)
           }
 
-          if (
-            startEditing ||
-            (graph.editAfterInsert &&
-              evt != null &&
-              mxEvent.isMouseEvent(evt) &&
-              select != null &&
-              select.length == 1)
-          ) {
+          if (startEditing || (graph.editAfterInsert && evt != null && mxEvent.isMouseEvent(evt) && select != null && select.length == 1)) {
             window.setTimeout(function () {
               graph.startEditing(select[0])
             }, 0)
@@ -4350,15 +3538,7 @@ Sidebar.prototype.createDragPreview = function (width, height) {
 /**
  * Creates a drag source for the given element.
  */
-Sidebar.prototype.dropAndConnect = function (
-  source,
-  targets,
-  direction,
-  dropCellIndex,
-  evt,
-  firstVertex,
-  freeSourceEdge
-) {
+Sidebar.prototype.dropAndConnect = function (source, targets, direction, dropCellIndex, evt, firstVertex, freeSourceEdge) {
   var graph = this.editorUi.editor.graph
   var index = graph.model.isEdge(source) || firstVertex != null ? firstVertex : freeSourceEdge
   var geo = this.getDropAndConnectGeometry(source, targets[index], direction, targets)
@@ -4444,22 +3624,13 @@ Sidebar.prototype.dropAndConnect = function (
         dy = 0
       }
 
-      targets = graph.importCells(
-        targets,
-        geo.x - (useParent ? dx : 0),
-        geo.y - (useParent ? dy : 0),
-        useParent ? targetParent : null
-      )
+      targets = graph.importCells(targets, geo.x - (useParent ? dx : 0), geo.y - (useParent ? dy : 0), useParent ? targetParent : null)
       tmp = targets
 
       if (graph.model.isEdge(source)) {
         // Adds new terminal to edge
         // LATER: Push new terminal out radially from edge start point
-        graph.model.setTerminal(
-          source,
-          targets[dropCellIndex],
-          direction == mxConstants.DIRECTION_NORTH
-        )
+        graph.model.setTerminal(source, targets[dropCellIndex], direction == mxConstants.DIRECTION_NORTH)
 
         // Replaces the source edge style with the dangling edge and
         // removes the dangling edge from the graph
@@ -4513,16 +3684,7 @@ Sidebar.prototype.dropAndConnect = function (
         if (freeSourceEdge != null) {
           graph.model.setTerminal(targets[freeSourceEdge], source, true)
         } else {
-          targets.push(
-            graph.insertEdge(
-              null,
-              null,
-              '',
-              source,
-              targets[dropCellIndex],
-              graph.createCurrentEdgeStyle()
-            )
-          )
+          targets.push(graph.insertEdge(null, null, '', source, targets[dropCellIndex], graph.createCurrentEdgeStyle()))
         }
       }
 
@@ -4587,11 +3749,7 @@ Sidebar.prototype.getDropAndConnectGeometry = function (source, target, directio
       var length = graph.defaultEdgeLength
 
       // Maintains edge length
-      if (
-        graph.model.isEdge(target) &&
-        geo2.getTerminalPoint(true) != null &&
-        geo2.getTerminalPoint(false) != null
-      ) {
+      if (graph.model.isEdge(target) && geo2.getTerminalPoint(true) != null && geo2.getTerminalPoint(false) != null) {
         var p0 = geo2.getTerminalPoint(true)
         var pe = geo2.getTerminalPoint(false)
         var dx = pe.x - p0.x
@@ -4643,11 +3801,7 @@ Sidebar.prototype.getDropAndConnectGeometry = function (source, target, directio
         }
 
         // Adds offset to match cells without connecting edge
-        if (
-          graph.model.isEdge(target) &&
-          geo2.getTerminalPoint(true) != null &&
-          target.getTerminal(false) != null
-        ) {
+        if (graph.model.isEdge(target) && geo2.getTerminalPoint(true) != null && target.getTerminal(false) != null) {
           var targetGeo = graph.getCellGeometry(target.getTerminal(false))
 
           if (targetGeo != null) {
@@ -4684,8 +3838,7 @@ Sidebar.prototype.isDropStyleEnabled = function (cells, firstVertex) {
 
     if (vstyle != null) {
       result =
-        mxUtils.getValue(vstyle, mxConstants.STYLE_STROKECOLOR, mxConstants.NONE) !=
-          mxConstants.NONE ||
+        mxUtils.getValue(vstyle, mxConstants.STYLE_STROKECOLOR, mxConstants.NONE) != mxConstants.NONE ||
         mxUtils.getValue(vstyle, mxConstants.STYLE_FILLCOLOR, mxConstants.NONE) != mxConstants.NONE
     }
   }
@@ -4698,10 +3851,7 @@ Sidebar.prototype.isDropStyleEnabled = function (cells, firstVertex) {
  */
 Sidebar.prototype.isDropStyleTargetIgnored = function (state) {
   return (
-    this.graph.isSwimlane(state.cell) ||
-    this.graph.isTableCell(state.cell) ||
-    this.graph.isTableRow(state.cell) ||
-    this.graph.isTable(state.cell)
+    this.graph.isSwimlane(state.cell) || this.graph.isTableCell(state.cell) || this.graph.isTableRow(state.cell) || this.graph.isTable(state.cell)
   )
 }
 
@@ -4723,14 +3873,7 @@ Sidebar.prototype.disablePointerEvents = function (node) {
 /**
  * Creates a drag source for the given element.
  */
-Sidebar.prototype.createDragSource = function (
-  elt,
-  dropHandler,
-  preview,
-  cells,
-  bounds,
-  startEditing
-) {
+Sidebar.prototype.createDragSource = function (elt, dropHandler, preview, cells, bounds, startEditing) {
   // Checks if the cells contain any vertices
   var me = this
   var ui = this.editorUi
@@ -4749,11 +3892,7 @@ Sidebar.prototype.createDragSource = function (
   for (var i = 0; i < cells.length; i++) {
     if (firstVertex == null && graph.model.isVertex(cells[i])) {
       firstVertex = i
-    } else if (
-      freeSourceEdge == null &&
-      graph.model.isEdge(cells[i]) &&
-      graph.model.getTerminal(cells[i], true) == null
-    ) {
+    } else if (freeSourceEdge == null && graph.model.isEdge(cells[i]) && graph.model.getTerminal(cells[i], true) == null) {
       freeSourceEdge = i
     }
 
@@ -4773,36 +3912,12 @@ Sidebar.prototype.createDragSource = function (
       }
 
       if (cells != null && currentStyleTarget != null && activeArrow == styleTarget) {
-        var tmp = graph.isCellSelected(currentStyleTarget.cell)
-          ? graph.getSelectionCells()
-          : [currentStyleTarget.cell]
-        graph.updateShapes(
-          graph.model.isEdge(currentStyleTarget.cell) ? cells[0] : cells[firstVertex],
-          tmp,
-          true
-        )
+        var tmp = graph.isCellSelected(currentStyleTarget.cell) ? graph.getSelectionCells() : [currentStyleTarget.cell]
+        graph.updateShapes(graph.model.isEdge(currentStyleTarget.cell) ? cells[0] : cells[firstVertex], tmp, true)
         graph.setSelectionCells(tmp)
-      } else if (
-        cells != null &&
-        activeArrow != null &&
-        currentTargetState != null &&
-        activeArrow != styleTarget
-      ) {
-        var index =
-          graph.model.isEdge(currentTargetState.cell) || freeSourceEdge == null
-            ? firstVertex
-            : freeSourceEdge
-        graph.setSelectionCells(
-          this.dropAndConnect(
-            currentTargetState.cell,
-            cells,
-            direction,
-            index,
-            evt,
-            firstVertex,
-            freeSourceEdge
-          )
-        )
+      } else if (cells != null && activeArrow != null && currentTargetState != null && activeArrow != styleTarget) {
+        var index = graph.model.isEdge(currentTargetState.cell) || freeSourceEdge == null ? firstVertex : freeSourceEdge
+        graph.setSelectionCells(this.dropAndConnect(currentTargetState.cell, cells, direction, index, evt, firstVertex, freeSourceEdge))
       } else {
         dropHandler.apply(this, arguments)
       }
@@ -4836,13 +3951,7 @@ Sidebar.prototype.createDragSource = function (
       mxUtils.setOpacity(elt, 50)
 
       var clones = graph.cloneCells(cells)
-      this.graph.pasteCellStyles(
-        graph.includeDescendants(clones),
-        graph.currentVertexStyle,
-        graph.currentEdgeStyle,
-        null,
-        graph.pasteEdgeStyle
-      )
+      this.graph.pasteCellStyles(graph.includeDescendants(clones), graph.currentVertexStyle, graph.currentEdgeStyle, null, graph.pasteEdgeStyle)
 
       sidebar.createThumb(
         clones,
@@ -4867,11 +3976,7 @@ Sidebar.prototype.createDragSource = function (
   var mouseDown = dragSource.mouseDown
 
   dragSource.mouseDown = function (evt) {
-    if (
-      !mxEvent.isPopupTrigger(evt) &&
-      !mxEvent.isMultiTouchEvent(evt) &&
-      !graph.isCellLocked(graph.getDefaultParent())
-    ) {
+    if (!mxEvent.isPopupTrigger(evt) && !mxEvent.isMultiTouchEvent(evt) && !graph.isCellLocked(graph.getDefaultParent())) {
       graph.stopEditing()
       mouseDown.apply(this, arguments)
     }
@@ -4981,30 +4086,15 @@ Sidebar.prototype.createDragSource = function (
           dragSource.currentHighlight.hide()
         }
 
-        var index =
-          graph.model.isEdge(currentTargetState.cell) || firstVertex != null
-            ? firstVertex
-            : freeSourceEdge
-        var geo = sidebar.getDropAndConnectGeometry(
-          currentTargetState.cell,
-          cells[index],
-          direction,
-          cells
-        )
-        var geo2 = !graph.model.isEdge(currentTargetState.cell)
-          ? graph.getCellGeometry(currentTargetState.cell)
-          : null
+        var index = graph.model.isEdge(currentTargetState.cell) || firstVertex != null ? firstVertex : freeSourceEdge
+        var geo = sidebar.getDropAndConnectGeometry(currentTargetState.cell, cells[index], direction, cells)
+        var geo2 = !graph.model.isEdge(currentTargetState.cell) ? graph.getCellGeometry(currentTargetState.cell) : null
         var geo3 = graph.getCellGeometry(cells[index])
         var parent = graph.model.getParent(currentTargetState.cell)
         var dx = view.translate.x * view.scale
         var dy = view.translate.y * view.scale
 
-        if (
-          geo2 != null &&
-          !geo2.relative &&
-          graph.model.isVertex(parent) &&
-          parent != view.currentRoot
-        ) {
+        if (geo2 != null && !geo2.relative && graph.model.isVertex(parent) && parent != view.currentRoot) {
           var pState = view.getState(parent)
 
           dx = pState.x
@@ -5042,12 +4132,8 @@ Sidebar.prototype.createDragSource = function (
         graph.model.isEdge(dragSource.currentHighlight.state.cell)
       ) {
         // Centers drop cells when splitting edges
-        this.previewElement.style.left =
-          Math.round(parseInt(this.previewElement.style.left) - (bounds.width * view.scale) / 2) +
-          'px'
-        this.previewElement.style.top =
-          Math.round(parseInt(this.previewElement.style.top) - (bounds.height * view.scale) / 2) +
-          'px'
+        this.previewElement.style.left = Math.round(parseInt(this.previewElement.style.left) - (bounds.width * view.scale) / 2) + 'px'
+        this.previewElement.style.top = Math.round(parseInt(this.previewElement.style.top) - (bounds.height * view.scale) / 2) + 'px'
       } else {
         this.previewElement.style.width = this.previewElementWidth
         this.previewElement.style.height = this.previewElementHeight
@@ -5076,10 +4162,7 @@ Sidebar.prototype.createDragSource = function (
     var cell =
       !mxEvent.isAltDown(evt) && cells != null
         ? graph.getCellAt(x, y, null, null, null, function (state, x, y) {
-            return (
-              graph.isContainer(state.cell) &&
-              mxUtils.getValue(state.style, 'dropTarget', '1') != '0'
-            )
+            return graph.isContainer(state.cell) && mxUtils.getValue(state.style, 'dropTarget', '1') != '0'
           })
         : null
 
@@ -5130,27 +4213,20 @@ Sidebar.prototype.createDragSource = function (
       state != null &&
       !mxEvent.isShiftDown(evt) &&
       // If shape is equal or target has no stroke, fill and gradient then use longer delay except for images
-      ((mxUtils.getValue(state.style, mxConstants.STYLE_SHAPE) !=
-        mxUtils.getValue(sourceCellStyle, mxConstants.STYLE_SHAPE) &&
-        (mxUtils.getValue(state.style, mxConstants.STYLE_STROKECOLOR, mxConstants.NONE) !=
-          mxConstants.NONE ||
-          mxUtils.getValue(state.style, mxConstants.STYLE_FILLCOLOR, mxConstants.NONE) !=
-            mxConstants.NONE ||
-          mxUtils.getValue(state.style, mxConstants.STYLE_GRADIENTCOLOR, mxConstants.NONE) !=
-            mxConstants.NONE)) ||
+      ((mxUtils.getValue(state.style, mxConstants.STYLE_SHAPE) != mxUtils.getValue(sourceCellStyle, mxConstants.STYLE_SHAPE) &&
+        (mxUtils.getValue(state.style, mxConstants.STYLE_STROKECOLOR, mxConstants.NONE) != mxConstants.NONE ||
+          mxUtils.getValue(state.style, mxConstants.STYLE_FILLCOLOR, mxConstants.NONE) != mxConstants.NONE ||
+          mxUtils.getValue(state.style, mxConstants.STYLE_GRADIENTCOLOR, mxConstants.NONE) != mxConstants.NONE)) ||
         mxUtils.getValue(sourceCellStyle, mxConstants.STYLE_SHAPE) == 'image' ||
         timeOnTarget > 1500 ||
         graph.model.isEdge(state.cell)) &&
       timeOnTarget > this.dropTargetDelay &&
       !this.isDropStyleTargetIgnored(state) &&
-      ((graph.model.isVertex(state.cell) && firstVertex != null) ||
-        (graph.model.isEdge(state.cell) && graph.model.isEdge(cells[0])))
+      ((graph.model.isVertex(state.cell) && firstVertex != null) || (graph.model.isEdge(state.cell) && graph.model.isEdge(cells[0])))
     ) {
       if (graph.isCellEditable(state.cell)) {
         currentStyleTarget = state
-        var tmp = graph.model.isEdge(state.cell)
-          ? graph.view.getPoint(state)
-          : new mxPoint(state.getCenterX(), state.getCenterY())
+        var tmp = graph.model.isEdge(state.cell) ? graph.view.getPoint(state) : new mxPoint(state.getCenterX(), state.getCenterY())
         tmp = new mxRectangle(
           tmp.x - this.refreshTarget.width / 2,
           tmp.y - this.refreshTarget.height / 2,
@@ -5170,11 +4246,7 @@ Sidebar.prototype.createDragSource = function (
       }
     }
     // Does not reset on ignored edges
-    else if (
-      currentStyleTarget == null ||
-      !mxUtils.contains(currentStyleTarget, x, y) ||
-      (timeOnTarget > 1500 && !mxEvent.isShiftDown(evt))
-    ) {
+    else if (currentStyleTarget == null || !mxUtils.contains(currentStyleTarget, x, y) || (timeOnTarget > 1500 && !mxEvent.isShiftDown(evt))) {
       currentStyleTarget = null
 
       if (styleTargetParent != null) {
@@ -5196,12 +4268,7 @@ Sidebar.prototype.createDragSource = function (
     }
 
     // Checks if inside bounds
-    if (
-      activeTarget &&
-      currentTargetState != null &&
-      !mxEvent.isAltDown(evt) &&
-      activeArrow == null
-    ) {
+    if (activeTarget && currentTargetState != null && !mxEvent.isAltDown(evt) && activeArrow == null) {
       // LATER: Use hit-detection for edges
       bbox = mxRectangle.fromRectangle(currentTargetState)
 
@@ -5214,12 +4281,7 @@ Sidebar.prototype.createDragSource = function (
             checkArrow(
               x,
               y,
-              new mxRectangle(
-                p0.x - this.roundDrop.width / 2,
-                p0.y - this.roundDrop.height / 2,
-                this.roundDrop.width,
-                this.roundDrop.height
-              ),
+              new mxRectangle(p0.x - this.roundDrop.width / 2, p0.y - this.roundDrop.height / 2, this.roundDrop.width, this.roundDrop.height),
               roundSource
             )
           )
@@ -5231,12 +4293,7 @@ Sidebar.prototype.createDragSource = function (
             checkArrow(
               x,
               y,
-              new mxRectangle(
-                pe.x - this.roundDrop.width / 2,
-                pe.y - this.roundDrop.height / 2,
-                this.roundDrop.width,
-                this.roundDrop.height
-              ),
+              new mxRectangle(pe.x - this.roundDrop.width / 2, pe.y - this.roundDrop.height / 2, this.roundDrop.width, this.roundDrop.height),
               roundTarget
             )
           )
@@ -5348,22 +4405,15 @@ Sidebar.prototype.createDragSource = function (
 
     var validTarget =
       (firstVertex == null || graph.isCellConnectable(cells[firstVertex])) &&
-      ((graph.model.isEdge(cell) && firstVertex != null) ||
-        (graph.model.isVertex(cell) && graph.isCellConnectable(cell)))
+      ((graph.model.isEdge(cell) && firstVertex != null) || (graph.model.isVertex(cell) && graph.isCellConnectable(cell)))
 
     // Drop arrows shown after this.dropTargetDelay, hidden after 5 secs, switches arrows after 500ms
     if (
       (currentTargetState != null && timeOnTarget >= 5000) ||
-      (currentTargetState != state &&
-        (bbox == null ||
-          !mxUtils.contains(bbox, x, y) ||
-          (timeOnTarget > 500 && activeArrow == null && validTarget)))
+      (currentTargetState != state && (bbox == null || !mxUtils.contains(bbox, x, y) || (timeOnTarget > 500 && activeArrow == null && validTarget)))
     ) {
       activeTarget = false
-      currentTargetState =
-        (timeOnTarget < 5000 && timeOnTarget > this.dropTargetDelay) || graph.model.isEdge(cell)
-          ? state
-          : null
+      currentTargetState = (timeOnTarget < 5000 && timeOnTarget > this.dropTargetDelay) || graph.model.isEdge(cell) ? state : null
 
       if (currentTargetState != null && validTarget) {
         var elts = [roundSource, roundTarget, arrowUp, arrowRight, arrowDown, arrowLeft]
@@ -5430,8 +4480,7 @@ Sidebar.prototype.createDragSource = function (
           arrowUp.style.top = Math.floor(bds.y - this.triangleUp.height) + 'px'
 
           arrowRight.style.left = Math.floor(bds.x + bds.width) + 'px'
-          arrowRight.style.top =
-            Math.floor(state.getCenterY() - this.triangleRight.height / 2) + 'px'
+          arrowRight.style.top = Math.floor(state.getCenterY() - this.triangleRight.height / 2) + 'px'
 
           arrowDown.style.left = arrowUp.style.left
           arrowDown.style.top = Math.floor(bds.y + bds.height) + 'px'
@@ -5475,8 +4524,7 @@ Sidebar.prototype.createDragSource = function (
 
     // Handles drop target
     var target =
-      (!mxEvent.isAltDown(evt) || mxEvent.isShiftDown(evt)) &&
-      !(currentStyleTarget != null && activeArrow == styleTarget)
+      (!mxEvent.isAltDown(evt) || mxEvent.isShiftDown(evt)) && !(currentStyleTarget != null && activeArrow == styleTarget)
         ? mxDragSource.prototype.getDropTarget.apply(this, arguments)
         : null
 
@@ -5531,11 +4579,7 @@ Sidebar.prototype.itemClicked = function (cells, ds, evt, elt) {
   graph.container.focus()
 
   // Alt+Click inserts and connects
-  if (
-    mxEvent.isAltDown(evt) &&
-    graph.getSelectionCount() == 1 &&
-    graph.model.isVertex(graph.getSelectionCell())
-  ) {
+  if (mxEvent.isAltDown(evt) && graph.getSelectionCount() == 1 && graph.model.isVertex(graph.getSelectionCell())) {
     var firstVertex = null
 
     for (var i = 0; i < cells.length && firstVertex == null; i++) {
@@ -5569,9 +4613,7 @@ Sidebar.prototype.itemClicked = function (cells, ds, evt, elt) {
     graph.updateShapes(cells[0], temp, true)
     graph.scrollCellToVisible(temp)
   } else {
-    var pt = mxEvent.isAltDown(evt)
-      ? graph.getFreeInsertPoint()
-      : graph.getCenterInsertPoint(graph.getBoundingBoxFromGeometry(cells, true))
+    var pt = mxEvent.isAltDown(evt) ? graph.getFreeInsertPoint() : graph.getCenterInsertPoint(graph.getBoundingBoxFromGeometry(cells, true))
     ds.drop(graph, evt, null, pt.x, pt.y, true)
   }
 }
@@ -5616,10 +4658,7 @@ Sidebar.prototype.addClickHandler = function (elt, ds, cells, clickFn) {
   }
 
   ds.mouseMove = function (evt) {
-    active =
-      first != null &&
-      (Math.abs(first.x - mxEvent.getClientX(evt)) > tol ||
-        Math.abs(first.y - mxEvent.getClientY(evt)) > tol)
+    active = first != null && (Math.abs(first.x - mxEvent.getClientX(evt)) > tol || Math.abs(first.y - mxEvent.getClientY(evt)) > tol)
 
     if (active && this.dragElement != null && this.dragElement.style.display == 'none') {
       this.dragElement.style.display = ''
@@ -5631,12 +4670,7 @@ Sidebar.prototype.addClickHandler = function (elt, ds, cells, clickFn) {
 
   ds.mouseUp = function (evt) {
     try {
-      if (
-        !mxEvent.isPopupTrigger(evt) &&
-        this.currentGraph == null &&
-        this.dragElement != null &&
-        this.dragElement.style.display == 'none'
-      ) {
+      if (!mxEvent.isPopupTrigger(evt) && this.currentGraph == null && this.dragElement != null && this.dragElement.style.display == 'none') {
         if (clickFn != null) {
           clickFn(evt)
         }
@@ -5662,16 +4696,7 @@ Sidebar.prototype.addClickHandler = function (elt, ds, cells, clickFn) {
 /**
  * Creates a drop handler for inserting the given cells.
  */
-Sidebar.prototype.createVertexTemplateEntry = function (
-  style,
-  width,
-  height,
-  value,
-  title,
-  showLabel,
-  showTitle,
-  tags
-) {
+Sidebar.prototype.createVertexTemplateEntry = function (style, width, height, value, title, showLabel, showTitle, tags) {
   if (tags != null && title != null) {
     tags += ' ' + title
   }
@@ -5728,16 +4753,7 @@ Sidebar.prototype.createVertexTemplate = function (
 /**
  * Creates a drop handler for inserting the given cells.
  */
-Sidebar.prototype.createVertexTemplateFromData = function (
-  data,
-  width,
-  height,
-  title,
-  showLabel,
-  showTitle,
-  allowCellsInserted,
-  showTooltip
-) {
+Sidebar.prototype.createVertexTemplateFromData = function (data, width, height, title, showLabel, showTitle, allowCellsInserted, showTooltip) {
   var cells = null
 
   try {
@@ -5752,16 +4768,7 @@ Sidebar.prototype.createVertexTemplateFromData = function (
     title = mxResources.get('error') + ': ' + e.message
   }
 
-  return this.createVertexTemplateFromCells(
-    cells,
-    width,
-    height,
-    title,
-    showLabel,
-    showTitle,
-    allowCellsInserted,
-    showTooltip
-  )
+  return this.createVertexTemplateFromCells(cells, width, height, title, showLabel, showTitle, allowCellsInserted, showTooltip)
 }
 
 /**
@@ -5806,32 +4813,13 @@ Sidebar.prototype.createVertexTemplateFromCells = function (
 /**
  *
  */
-Sidebar.prototype.createEdgeTemplateEntry = function (
-  style,
-  width,
-  height,
-  value,
-  title,
-  showLabel,
-  tags,
-  allowCellsInserted,
-  showTooltip
-) {
+Sidebar.prototype.createEdgeTemplateEntry = function (style, width, height, value, title, showLabel, tags, allowCellsInserted, showTooltip) {
   tags = tags != null && tags.length > 0 ? tags : title.toLowerCase()
 
   return this.addEntry(
     tags,
     mxUtils.bind(this, function () {
-      return this.createEdgeTemplate(
-        style,
-        width,
-        height,
-        value,
-        title,
-        showLabel,
-        allowCellsInserted,
-        showTooltip
-      )
+      return this.createEdgeTemplate(style, width, height, value, title, showLabel, allowCellsInserted, showTooltip)
     })
   )
 }
@@ -5839,31 +4827,14 @@ Sidebar.prototype.createEdgeTemplateEntry = function (
 /**
  * Creates a drop handler for inserting the given cells.
  */
-Sidebar.prototype.createEdgeTemplate = function (
-  style,
-  width,
-  height,
-  value,
-  title,
-  showLabel,
-  allowCellsInserted,
-  showTooltip
-) {
+Sidebar.prototype.createEdgeTemplate = function (style, width, height, value, title, showLabel, allowCellsInserted, showTooltip) {
   var cell = new mxCell(value != null ? value : '', new mxGeometry(0, 0, width, height), style)
   cell.geometry.setTerminalPoint(new mxPoint(0, height), true)
   cell.geometry.setTerminalPoint(new mxPoint(width, 0), false)
   cell.geometry.relative = true
   cell.edge = true
 
-  return this.createEdgeTemplateFromCells(
-    [cell],
-    width,
-    height,
-    title,
-    showLabel,
-    allowCellsInserted,
-    showTooltip
-  )
+  return this.createEdgeTemplateFromCells([cell], width, height, title, showLabel, allowCellsInserted, showTooltip)
 }
 
 /**
@@ -5959,10 +4930,7 @@ Sidebar.prototype.addFoldingHandler = function (title, content, funct) {
 
   // Avoids mixed content warning in IE6-8
   if (!mxClient.IS_IE || document.documentMode >= 8) {
-    title.style.backgroundImage =
-      content.style.display == 'none'
-        ? "url('" + this.collapsedImage + "')"
-        : "url('" + this.expandedImage + "')"
+    title.style.backgroundImage = content.style.display == 'none' ? "url('" + this.collapsedImage + "')" : "url('" + this.expandedImage + "')"
   }
 
   title.style.backgroundRepeat = 'no-repeat'
@@ -6105,9 +5073,7 @@ Sidebar.prototype.addImagePalette = function (id, title, prefix, postfix, items,
       if (tmpTags == null && (prefix == null || prefix.substring(0, 17) != 'img/lib/clip_art/')) {
         var slash = item.lastIndexOf('/')
         var dot = item.lastIndexOf('.')
-        tmpTags = item
-          .substring(slash >= 0 ? slash + 1 : 0, dot >= 0 ? dot : item.length)
-          .replace(/[-_]/g, ' ')
+        tmpTags = item.substring(slash >= 0 ? slash + 1 : 0, dot >= 0 ? dot : item.length).replace(/[-_]/g, ' ')
       }
 
       fns.push(
@@ -6150,18 +5116,7 @@ Sidebar.prototype.getTagsForStencil = function (packageName, stencilName, moreTa
 /**
  * Adds the given stencil palette.
  */
-Sidebar.prototype.addStencilPalette = function (
-  id,
-  title,
-  stencilFile,
-  style,
-  ignore,
-  onInit,
-  scale,
-  tags,
-  customFns,
-  groupId
-) {
+Sidebar.prototype.addStencilPalette = function (id, title, stencilFile, style, ignore, onInit, scale, tags, customFns, groupId) {
   scale = scale != null ? scale : 1
 
   if (this.addStencilsToIndex) {
@@ -6266,38 +5221,22 @@ Sidebar.prototype.destroy = function () {
   }
 
   if (this.pointerUpHandler != null) {
-    mxEvent.removeListener(
-      document,
-      mxClient.IS_POINTER ? 'pointerup' : 'mouseup',
-      this.pointerUpHandler
-    )
+    mxEvent.removeListener(document, mxClient.IS_POINTER ? 'pointerup' : 'mouseup', this.pointerUpHandler)
     this.pointerUpHandler = null
   }
 
   if (this.pointerDownHandler != null) {
-    mxEvent.removeListener(
-      document,
-      mxClient.IS_POINTER ? 'pointerdown' : 'mousedown',
-      this.pointerDownHandler
-    )
+    mxEvent.removeListener(document, mxClient.IS_POINTER ? 'pointerdown' : 'mousedown', this.pointerDownHandler)
     this.pointerDownHandler = null
   }
 
   if (this.pointerMoveHandler != null) {
-    mxEvent.removeListener(
-      document,
-      mxClient.IS_POINTER ? 'pointermove' : 'mousemove',
-      this.pointerMoveHandler
-    )
+    mxEvent.removeListener(document, mxClient.IS_POINTER ? 'pointermove' : 'mousemove', this.pointerMoveHandler)
     this.pointerMoveHandler = null
   }
 
   if (this.pointerOutHandler != null) {
-    mxEvent.removeListener(
-      document,
-      mxClient.IS_POINTER ? 'pointerout' : 'mouseout',
-      this.pointerOutHandler
-    )
+    mxEvent.removeListener(document, mxClient.IS_POINTER ? 'pointerout' : 'mouseout', this.pointerOutHandler)
     this.pointerOutHandler = null
   }
 }

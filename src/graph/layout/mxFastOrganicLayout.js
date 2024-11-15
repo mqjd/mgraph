@@ -205,10 +205,7 @@ mxFastOrganicLayout.prototype.allowedToRun = true
  * vertex - <mxCell> whose ignored state should be returned.
  */
 mxFastOrganicLayout.prototype.isVertexIgnored = function (vertex) {
-  return (
-    mxGraphLayout.prototype.isVertexIgnored.apply(this, arguments) ||
-    this.graph.getConnections(vertex).length == 0
-  )
+  return mxGraphLayout.prototype.isVertexIgnored.apply(this, arguments) || this.graph.getConnections(vertex).length == 0
 }
 
 /**
@@ -228,9 +225,7 @@ mxFastOrganicLayout.prototype.execute = function (parent) {
     }
   }
 
-  var initialBounds = this.useInputOrigin
-    ? this.graph.getBoundingBoxFromGeometry(this.vertexArray)
-    : null
+  var initialBounds = this.useInputOrigin ? this.graph.getBoundingBoxFromGeometry(this.vertexArray) : null
   var n = this.vertexArray.length
 
   this.indices = []
@@ -406,9 +401,7 @@ mxFastOrganicLayout.prototype.calcPositions = function () {
     if (this.isMoveable[index]) {
       // Get the distance of displacement for this node for this
       // iteration
-      var deltaLength = Math.sqrt(
-        this.dispX[index] * this.dispX[index] + this.dispY[index] * this.dispY[index]
-      )
+      var deltaLength = Math.sqrt(this.dispX[index] * this.dispX[index] + this.dispY[index] * this.dispY[index])
 
       if (deltaLength < 0.001) {
         deltaLength = 0.001
@@ -451,8 +444,7 @@ mxFastOrganicLayout.prototype.calcAttraction = function () {
         var yDelta = this.cellLocation[i][1] - this.cellLocation[j][1]
 
         // The distance between the nodes
-        var deltaLengthSquared =
-          xDelta * xDelta + yDelta * yDelta - this.radiusSquared[i] - this.radiusSquared[j]
+        var deltaLengthSquared = xDelta * xDelta + yDelta * yDelta - this.radiusSquared[i] - this.radiusSquared[j]
 
         if (deltaLengthSquared < this.minDistanceLimitSquared) {
           deltaLengthSquared = this.minDistanceLimitSquared

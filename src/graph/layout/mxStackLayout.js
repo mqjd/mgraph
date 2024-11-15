@@ -240,10 +240,7 @@ mxStackLayout.prototype.getParentSize = function (parent) {
   // Handles special case where the parent is either a layer with no
   // geometry or the current root of the view in which case the size
   // of the graph's container will be used.
-  if (
-    this.graph.container != null &&
-    ((pgeo == null && model.isLayer(parent)) || parent == this.graph.getView().currentRoot)
-  ) {
+  if (this.graph.container != null && ((pgeo == null && model.isLayer(parent)) || parent == this.graph.getView().currentRoot)) {
     var width = this.graph.container.offsetWidth - 1
     var height = this.graph.container.offsetHeight - 1
     pgeo = new mxRectangle(0, 0, width, height)
@@ -276,17 +273,7 @@ mxStackLayout.prototype.getLayoutCells = function (parent) {
         var geo1 = this.graph.getCellGeometry(c1)
         var geo2 = this.graph.getCellGeometry(c2)
 
-        return this.horizontal
-          ? geo1.x == geo2.x
-            ? 0
-            : geo1.x > geo2.x > 0
-              ? 1
-              : -1
-          : geo1.y == geo2.y
-            ? 0
-            : geo1.y > geo2.y > 0
-              ? 1
-              : -1
+        return this.horizontal ? (geo1.x == geo2.x ? 0 : geo1.x > geo2.x > 0 ? 1 : -1) : geo1.y == geo2.y ? 0 : geo1.y > geo2.y > 0 ? 1 : -1
       })
     )
   }
@@ -328,9 +315,7 @@ mxStackLayout.prototype.execute = function (parent) {
     var fillValue = null
 
     if (pgeo != null) {
-      fillValue = horizontal
-        ? pgeo.height - this.marginTop - this.marginBottom
-        : pgeo.width - this.marginLeft - this.marginRight
+      fillValue = horizontal ? pgeo.height - this.marginTop - this.marginBottom : pgeo.width - this.marginLeft - this.marginRight
     }
 
     fillValue -= 2 * this.border
@@ -341,11 +326,7 @@ mxStackLayout.prototype.execute = function (parent) {
     if (this.graph.isSwimlane(parent)) {
       // Uses computed style to get latest
       var style = this.graph.getCellStyle(parent)
-      var start = mxUtils.getNumber(
-        style,
-        mxConstants.STYLE_STARTSIZE,
-        mxConstants.DEFAULT_STARTSIZE
-      )
+      var start = mxUtils.getNumber(style, mxConstants.STYLE_STARTSIZE, mxConstants.DEFAULT_STARTSIZE)
       var horz = mxUtils.getValue(style, mxConstants.STYLE_HORIZONTAL, true) == 1
 
       if (pgeo != null) {
@@ -411,25 +392,15 @@ mxStackLayout.prototype.execute = function (parent) {
             var temp = lastValue + this.spacing + Math.floor(sw / 2)
 
             if (horizontal) {
-              geo.x =
-                this.snap((this.allowGaps ? Math.max(temp, geo.x) : temp) - this.marginLeft) +
-                this.marginLeft
+              geo.x = this.snap((this.allowGaps ? Math.max(temp, geo.x) : temp) - this.marginLeft) + this.marginLeft
             } else {
-              geo.y =
-                this.snap((this.allowGaps ? Math.max(temp, geo.y) : temp) - this.marginTop) +
-                this.marginTop
+              geo.y = this.snap((this.allowGaps ? Math.max(temp, geo.y) : temp) - this.marginTop) + this.marginTop
             }
           } else if (!this.keepFirstLocation) {
             if (horizontal) {
-              geo.x =
-                this.allowGaps && geo.x > x0
-                  ? Math.max(this.snap(geo.x - this.marginLeft) + this.marginLeft, x0)
-                  : x0
+              geo.x = this.allowGaps && geo.x > x0 ? Math.max(this.snap(geo.x - this.marginLeft) + this.marginLeft, x0) : x0
             } else {
-              geo.y =
-                this.allowGaps && geo.y > y0
-                  ? Math.max(this.snap(geo.y - this.marginTop) + this.marginTop, y0)
-                  : y0
+              geo.y = this.allowGaps && geo.y > y0 ? Math.max(this.snap(geo.y - this.marginTop) + this.marginTop, y0) : y0
             }
           }
 
@@ -465,12 +436,7 @@ mxStackLayout.prototype.execute = function (parent) {
         }
       }
 
-      if (
-        this.resizeParent &&
-        pgeo != null &&
-        last != null &&
-        !this.graph.isCellCollapsed(parent)
-      ) {
+      if (this.resizeParent && pgeo != null && last != null && !this.graph.isCellCollapsed(parent)) {
         this.updateParentGeometry(parent, pgeo, last)
       } else if (this.resizeLast && pgeo != null && last != null && lastChild != null) {
         if (horizontal) {
@@ -500,13 +466,7 @@ mxStackLayout.prototype.execute = function (parent) {
 mxStackLayout.prototype.setChildGeometry = function (child, geo) {
   var geo2 = this.graph.getCellGeometry(child)
 
-  if (
-    geo2 == null ||
-    geo.x != geo2.x ||
-    geo.y != geo2.y ||
-    geo.width != geo2.width ||
-    geo.height != geo2.height
-  ) {
+  if (geo2 == null || geo.x != geo2.x || geo.y != geo2.y || geo.width != geo2.width || geo.height != geo2.height) {
     this.graph.getModel().setGeometry(child, geo)
   }
 }
@@ -546,12 +506,7 @@ mxStackLayout.prototype.updateParentGeometry = function (parent, pgeo, last) {
     }
   }
 
-  if (
-    pgeo.x != pgeo2.x ||
-    pgeo.y != pgeo2.y ||
-    pgeo.width != pgeo2.width ||
-    pgeo.height != pgeo2.height
-  ) {
+  if (pgeo.x != pgeo2.x || pgeo.y != pgeo2.y || pgeo.width != pgeo2.width || pgeo.height != pgeo2.height) {
     model.setGeometry(parent, pgeo2)
   }
 }

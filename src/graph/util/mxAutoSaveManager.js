@@ -168,10 +168,7 @@ mxAutoSaveManager.prototype.graphModelChanged = function (changes) {
   var now = new Date().getTime()
   var dt = (now - this.lastSnapshot) / 1000
 
-  if (
-    dt > this.autoSaveDelay ||
-    (this.ignoredChanges >= this.autoSaveThreshold && dt > this.autoSaveThrottle)
-  ) {
+  if (dt > this.autoSaveDelay || (this.ignoredChanges >= this.autoSaveThreshold && dt > this.autoSaveThrottle)) {
     this.save()
     this.reset()
   } else {

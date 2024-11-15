@@ -44,8 +44,7 @@ mxElbowEdgeHandler.prototype.flipEnabled = true
  * exist then the value is used as the error message. Default is
  * 'doubleClickOrientation'.
  */
-mxElbowEdgeHandler.prototype.doubleClickOrientationResource =
-  mxClient.language != 'none' ? 'doubleClickOrientation' : ''
+mxElbowEdgeHandler.prototype.doubleClickOrientationResource = mxClient.language != 'none' ? 'doubleClickOrientation' : ''
 
 /**
  * Function: createBends
@@ -135,11 +134,7 @@ mxElbowEdgeHandler.prototype.getCursorForBend = function () {
 mxElbowEdgeHandler.prototype.getTooltipForNode = function (node) {
   var tip = null
 
-  if (
-    this.bends != null &&
-    this.bends[1] != null &&
-    (node == this.bends[1].node || node.parentNode == this.bends[1].node)
-  ) {
+  if (this.bends != null && this.bends[1] != null && (node == this.bends[1].node || node.parentNode == this.bends[1].node)) {
     tip = this.doubleClickOrientationResource
     tip = mxResources.get(tip) || tip // translate
   }
@@ -215,11 +210,7 @@ mxElbowEdgeHandler.prototype.redrawInnerBends = function (p0, pe) {
 
   if (this.manageLabelHandle) {
     this.checkLabelHandle(bounds)
-  } else if (
-    this.handleImage == null &&
-    this.labelShape.visible &&
-    mxUtils.intersects(bounds, this.labelShape.bounds)
-  ) {
+  } else if (this.handleImage == null && this.labelShape.visible && mxUtils.intersects(bounds, this.labelShape.bounds)) {
     w = mxConstants.HANDLE_SIZE + 3
     h = mxConstants.HANDLE_SIZE + 3
     bounds = new mxRectangle(Math.floor(pt.x - w / 2), Math.floor(pt.y - h / 2), w, h)

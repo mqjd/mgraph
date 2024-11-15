@@ -78,8 +78,7 @@ mxGraphSelectionModel.prototype.doneResource = mxClient.language != 'none' ? 'do
  * being updated. If the resource for this key does not exist then the
  * value is used as the status message. Default is 'updatingSelection'.
  */
-mxGraphSelectionModel.prototype.updatingSelectionResource =
-  mxClient.language != 'none' ? 'updatingSelection' : ''
+mxGraphSelectionModel.prototype.updatingSelectionResource = mxClient.language != 'none' ? 'updatingSelection' : ''
 
 /**
  * Variable: graph
@@ -300,10 +299,7 @@ mxGraphSelectionModel.prototype.removeCells = function (cells) {
  * remove - Array of <mxCell> to remove from the selection.
  */
 mxGraphSelectionModel.prototype.changeSelection = function (added, removed) {
-  if (
-    (added != null && added.length > 0 && added[0] != null) ||
-    (removed != null && removed.length > 0 && removed[0] != null)
-  ) {
+  if ((added != null && added.length > 0 && added[0] != null) || (removed != null && removed.length > 0 && removed[0] != null)) {
     var change = new mxSelectionChange(this, added, removed)
     change.execute()
     var edit = new mxUndoableEdit(this, false)
@@ -370,9 +366,7 @@ function mxSelectionChange(selectionModel, added, removed) {
  */
 mxSelectionChange.prototype.execute = function () {
   var t0 = mxLog.enter('mxSelectionChange.execute')
-  window.status =
-    mxResources.get(this.selectionModel.updatingSelectionResource) ||
-    this.selectionModel.updatingSelectionResource
+  window.status = mxResources.get(this.selectionModel.updatingSelectionResource) || this.selectionModel.updatingSelectionResource
 
   if (this.removed != null) {
     for (var i = 0; i < this.removed.length; i++) {
@@ -390,13 +384,10 @@ mxSelectionChange.prototype.execute = function () {
   this.added = this.removed
   this.removed = tmp
 
-  window.status =
-    mxResources.get(this.selectionModel.doneResource) || this.selectionModel.doneResource
+  window.status = mxResources.get(this.selectionModel.doneResource) || this.selectionModel.doneResource
   mxLog.leave('mxSelectionChange.execute', t0)
 
-  this.selectionModel.fireEvent(
-    new mxEventObject(mxEvent.CHANGE, 'added', this.added, 'removed', this.removed)
-  )
+  this.selectionModel.fireEvent(new mxEventObject(mxEvent.CHANGE, 'added', this.added, 'removed', this.removed))
 }
 
 export default mxGraphSelectionModel

@@ -364,8 +364,7 @@ mxPanningHandler.prototype.mouseMove = function (sender, me) {
 
     // Panning is activated only if the mouse is moved
     // beyond the graph tolerance
-    this.active =
-      Math.abs(this.dx) > this.graph.tolerance || Math.abs(this.dy) > this.graph.tolerance
+    this.active = Math.abs(this.dx) > this.graph.tolerance || Math.abs(this.dy) > this.graph.tolerance
 
     if (!tmp && this.active) {
       this.fireEvent(new mxEventObject(mxEvent.PAN_START, 'event', me))

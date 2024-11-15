@@ -77,11 +77,7 @@ mxDoubleEllipse.prototype.paintBackground = function (c, x, y, w, h) {
  */
 mxDoubleEllipse.prototype.paintForeground = function (c, x, y, w, h) {
   if (!this.outline) {
-    var margin = mxUtils.getValue(
-      this.style,
-      mxConstants.STYLE_MARGIN,
-      Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5))
-    )
+    var margin = mxUtils.getValue(this.style, mxConstants.STYLE_MARGIN, Math.min(3 + this.strokewidth, Math.min(w / 5, h / 5)))
     x += margin
     y += margin
     w -= 2 * margin
@@ -106,18 +102,10 @@ mxDoubleEllipse.prototype.getLabelBounds = function (rect) {
     mxUtils.getValue(
       this.style,
       mxConstants.STYLE_MARGIN,
-      Math.min(
-        3 + this.strokewidth,
-        Math.min(rect.width / 5 / this.scale, rect.height / 5 / this.scale)
-      )
+      Math.min(3 + this.strokewidth, Math.min(rect.width / 5 / this.scale, rect.height / 5 / this.scale))
     ) * this.scale
 
-  return new mxRectangle(
-    rect.x + margin,
-    rect.y + margin,
-    rect.width - 2 * margin,
-    rect.height - 2 * margin
-  )
+  return new mxRectangle(rect.x + margin, rect.y + margin, rect.width - 2 * margin, rect.height - 2 * margin)
 }
 
 export default mxDoubleEllipse

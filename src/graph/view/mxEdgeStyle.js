@@ -97,9 +97,7 @@ var mxEdgeStyle = {
   EntityRelation: function (state, source, target, points, result) {
     var view = state.view
     var graph = view.graph
-    var segment =
-      mxUtils.getValue(state.style, mxConstants.STYLE_SEGMENT, mxConstants.ENTITY_SEGMENT) *
-      view.scale
+    var segment = mxUtils.getValue(state.style, mxConstants.STYLE_SEGMENT, mxConstants.ENTITY_SEGMENT) * view.scale
 
     var pts = state.absolutePoints
     var p0 = pts[0]
@@ -113,8 +111,7 @@ var mxEdgeStyle = {
       if (sourceGeometry.relative) {
         isSourceLeft = sourceGeometry.x <= 0.5
       } else if (target != null) {
-        isSourceLeft =
-          (pe != null ? pe.x : target.x + target.width) < (p0 != null ? p0.x : source.x)
+        isSourceLeft = (pe != null ? pe.x : target.x + target.width) < (p0 != null ? p0.x : source.x)
       }
     }
 
@@ -123,17 +120,9 @@ var mxEdgeStyle = {
       source.x = p0.x
       source.y = p0.y
     } else if (source != null) {
-      var constraint = mxUtils.getPortConstraints(
-        source,
-        state,
-        true,
-        mxConstants.DIRECTION_MASK_NONE
-      )
+      var constraint = mxUtils.getPortConstraints(source, state, true, mxConstants.DIRECTION_MASK_NONE)
 
-      if (
-        constraint != mxConstants.DIRECTION_MASK_NONE &&
-        constraint != mxConstants.DIRECTION_MASK_WEST + mxConstants.DIRECTION_MASK_EAST
-      ) {
+      if (constraint != mxConstants.DIRECTION_MASK_NONE && constraint != mxConstants.DIRECTION_MASK_WEST + mxConstants.DIRECTION_MASK_EAST) {
         isSourceLeft = constraint == mxConstants.DIRECTION_MASK_WEST
       }
     } else {
@@ -148,8 +137,7 @@ var mxEdgeStyle = {
       if (targetGeometry.relative) {
         isTargetLeft = targetGeometry.x <= 0.5
       } else if (source != null) {
-        isTargetLeft =
-          (p0 != null ? p0.x : source.x + source.width) < (pe != null ? pe.x : target.x)
+        isTargetLeft = (p0 != null ? p0.x : source.x + source.width) < (pe != null ? pe.x : target.x)
       }
     }
 
@@ -158,17 +146,9 @@ var mxEdgeStyle = {
       target.x = pe.x
       target.y = pe.y
     } else if (target != null) {
-      var constraint = mxUtils.getPortConstraints(
-        target,
-        state,
-        false,
-        mxConstants.DIRECTION_MASK_NONE
-      )
+      var constraint = mxUtils.getPortConstraints(target, state, false, mxConstants.DIRECTION_MASK_NONE)
 
-      if (
-        constraint != mxConstants.DIRECTION_MASK_NONE &&
-        constraint != mxConstants.DIRECTION_MASK_WEST + mxConstants.DIRECTION_MASK_EAST
-      ) {
+      if (constraint != mxConstants.DIRECTION_MASK_NONE && constraint != mxConstants.DIRECTION_MASK_WEST + mxConstants.DIRECTION_MASK_EAST) {
         isTargetLeft = constraint == mxConstants.DIRECTION_MASK_WEST
       }
     }
@@ -249,13 +229,8 @@ var mxEdgeStyle = {
       var y = 0
       var dy = 0
 
-      var seg =
-        mxUtils.getValue(state.style, mxConstants.STYLE_SEGMENT, graph.gridSize) * view.scale
-      var dir = mxUtils.getValue(
-        state.style,
-        mxConstants.STYLE_DIRECTION,
-        mxConstants.DIRECTION_WEST
-      )
+      var seg = mxUtils.getValue(state.style, mxConstants.STYLE_SEGMENT, graph.gridSize) * view.scale
+      var dir = mxUtils.getValue(state.style, mxConstants.STYLE_DIRECTION, mxConstants.DIRECTION_WEST)
 
       if (dir == mxConstants.DIRECTION_NORTH || dir == mxConstants.DIRECTION_SOUTH) {
         x = view.getRoutingCenterX(source)
@@ -333,10 +308,7 @@ var mxEdgeStyle = {
       }
     }
 
-    if (
-      !horizontal &&
-      (vertical || state.style[mxConstants.STYLE_ELBOW] == mxConstants.ELBOW_VERTICAL)
-    ) {
+    if (!horizontal && (vertical || state.style[mxConstants.STYLE_ELBOW] == mxConstants.ELBOW_VERTICAL)) {
       mxEdgeStyle.TopToBottom(state, source, target, points, result)
     } else {
       mxEdgeStyle.SideToSide(state, source, target, points, result)
@@ -521,11 +493,7 @@ var mxEdgeStyle = {
       pt.x = Math.round(pt.x * state.view.scale * 10) / 10
       pt.y = Math.round(pt.y * state.view.scale * 10) / 10
 
-      if (
-        lastPushed == null ||
-        Math.abs(lastPushed.x - pt.x) >= tol ||
-        Math.abs(lastPushed.y - pt.y) >= Math.max(1, state.view.scale)
-      ) {
+      if (lastPushed == null || Math.abs(lastPushed.x - pt.x) >= tol || Math.abs(lastPushed.y - pt.y) >= Math.max(1, state.view.scale)) {
         result.push(pt)
         lastPushed = pt
       }
@@ -602,14 +570,8 @@ var mxEdgeStyle = {
         var fixedVertAlign = currentPt != null && currentPt.x == currentHint.x
         var fixedHozAlign = currentPt != null && currentPt.y == currentHint.y
 
-        var inHozChan =
-          currentTerm != null &&
-          currentHint.y >= currentTerm.y &&
-          currentHint.y <= currentTerm.y + currentTerm.height
-        var inVertChan =
-          currentTerm != null &&
-          currentHint.x >= currentTerm.x &&
-          currentHint.x <= currentTerm.x + currentTerm.width
+        var inHozChan = currentTerm != null && currentHint.y >= currentTerm.y && currentHint.y <= currentTerm.y + currentTerm.height
+        var inVertChan = currentTerm != null && currentHint.x >= currentTerm.x && currentHint.x <= currentTerm.x + currentTerm.width
 
         hozChan = fixedHozAlign || (currentPt == null && inHozChan)
         vertChan = fixedVertAlign || (currentPt == null && inVertChan)
@@ -653,18 +615,12 @@ var mxEdgeStyle = {
 
       if (
         horizontal &&
-        ((pts[0] != null && pts[0].y != hint.y) ||
-          (pts[0] == null &&
-            source != null &&
-            (hint.y < source.y || hint.y > source.y + source.height)))
+        ((pts[0] != null && pts[0].y != hint.y) || (pts[0] == null && source != null && (hint.y < source.y || hint.y > source.y + source.height)))
       ) {
         addPoint(new mxPoint(pt.x, hint.y))
       } else if (
         !horizontal &&
-        ((pts[0] != null && pts[0].x != hint.x) ||
-          (pts[0] == null &&
-            source != null &&
-            (hint.x < source.x || hint.x > source.x + source.width)))
+        ((pts[0] != null && pts[0].x != hint.x) || (pts[0] == null && source != null && (hint.x < source.x || hint.x > source.x + source.width)))
       ) {
         addPoint(new mxPoint(hint.x, pt.y))
       }
@@ -708,17 +664,13 @@ var mxEdgeStyle = {
         if (
           horizontal &&
           ((pts[lastInx] != null && pts[lastInx].y != hint.y) ||
-            (pts[lastInx] == null &&
-              target != null &&
-              (hint.y < target.y || hint.y > target.y + target.height)))
+            (pts[lastInx] == null && target != null && (hint.y < target.y || hint.y > target.y + target.height)))
         ) {
           addPoint(new mxPoint(pt.x, hint.y))
         } else if (
           !horizontal &&
           ((pts[lastInx] != null && pts[lastInx].x != hint.x) ||
-            (pts[lastInx] == null &&
-              target != null &&
-              (hint.x < target.x || hint.x > target.x + target.width)))
+            (pts[lastInx] == null && target != null && (hint.x < target.x || hint.x > target.x + target.width)))
         ) {
           addPoint(new mxPoint(hint.x, pt.y))
         }
@@ -727,11 +679,7 @@ var mxEdgeStyle = {
 
     // Removes bends inside the source terminal
     if (pts[0] == null && source != null) {
-      while (
-        tempPoints.length > 0 &&
-        tempPoints[0] != null &&
-        mxUtils.contains(source, tempPoints[0].x, tempPoints[0].y)
-      ) {
+      while (tempPoints.length > 0 && tempPoints[0] != null && mxUtils.contains(source, tempPoints[0].x, tempPoints[0].y)) {
         tempPoints.splice(0, 1)
       }
     }
@@ -741,11 +689,7 @@ var mxEdgeStyle = {
       while (
         tempPoints.length > 0 &&
         tempPoints[tempPoints.length - 1] != null &&
-        mxUtils.contains(
-          target,
-          tempPoints[tempPoints.length - 1].x,
-          tempPoints[tempPoints.length - 1].y
-        )
+        mxUtils.contains(target, tempPoints[tempPoints.length - 1].x, tempPoints[tempPoints.length - 1].y)
       ) {
         tempPoints.splice(tempPoints.length - 1, 1)
       }
@@ -886,21 +830,11 @@ var mxEdgeStyle = {
 
     if (value == 'auto') {
       // Computes the automatic jetty size
-      var type = mxUtils.getValue(
-        state.style,
-        isSource ? mxConstants.STYLE_STARTARROW : mxConstants.STYLE_ENDARROW,
-        mxConstants.NONE
-      )
+      var type = mxUtils.getValue(state.style, isSource ? mxConstants.STYLE_STARTARROW : mxConstants.STYLE_ENDARROW, mxConstants.NONE)
 
       if (type != mxConstants.NONE) {
-        var size = mxUtils.getNumber(
-          state.style,
-          isSource ? mxConstants.STYLE_STARTSIZE : mxConstants.STYLE_ENDSIZE,
-          mxConstants.DEFAULT_MARKERSIZE
-        )
-        value =
-          Math.max(2, Math.ceil((size + mxEdgeStyle.orthBuffer) / mxEdgeStyle.orthBuffer)) *
-          mxEdgeStyle.orthBuffer
+        var size = mxUtils.getNumber(state.style, isSource ? mxConstants.STYLE_STARTSIZE : mxConstants.STYLE_ENDSIZE, mxConstants.DEFAULT_MARKERSIZE)
+        value = Math.max(2, Math.ceil((size + mxEdgeStyle.orthBuffer) / mxEdgeStyle.orthBuffer)) * mxEdgeStyle.orthBuffer
       } else {
         value = 2 * mxEdgeStyle.orthBuffer
       }
@@ -926,10 +860,7 @@ var mxEdgeStyle = {
     if (points != null) {
       for (var i = 0; i < points.length; i++) {
         if (points[i] != null) {
-          var pt = new mxPoint(
-            Math.round((points[i].x / scale) * 10) / 10,
-            Math.round((points[i].y / scale) * 10) / 10
-          )
+          var pt = new mxPoint(Math.round((points[i].x / scale) * 10) / 10, Math.round((points[i].y / scale) * 10) / 10)
           result[i] = pt
         } else {
           result[i] = null
@@ -1032,12 +963,7 @@ var mxEdgeStyle = {
       tooShort = dx * dx + dy * dy < totalBuffer * totalBuffer
     }
 
-    if (
-      tooShort ||
-      (mxEdgeStyle.orthPointsFallback && controlHints != null && controlHints.length > 0) ||
-      sourceEdge ||
-      targetEdge
-    ) {
+    if (tooShort || (mxEdgeStyle.orthPointsFallback && controlHints != null && controlHints.length > 0) || sourceEdge || targetEdge) {
       mxEdgeStyle.SegmentConnector(state, sourceScaled, targetScaled, controlHints, result)
 
       return
@@ -1050,21 +976,13 @@ var mxEdgeStyle = {
     var rotation = 0
 
     if (source != null) {
-      portConstraint[0] = mxUtils.getPortConstraints(
-        source,
-        state,
-        true,
-        mxConstants.DIRECTION_MASK_ALL
-      )
+      portConstraint[0] = mxUtils.getPortConstraints(source, state, true, mxConstants.DIRECTION_MASK_ALL)
       rotation = mxUtils.getValue(source.style, mxConstants.STYLE_ROTATION, 0)
 
       //console.log('source rotation', rotation);
 
       if (rotation != 0) {
-        var newRect = mxUtils.getBoundingBox(
-          new mxRectangle(sourceX, sourceY, sourceWidth, sourceHeight),
-          rotation
-        )
+        var newRect = mxUtils.getBoundingBox(new mxRectangle(sourceX, sourceY, sourceWidth, sourceHeight), rotation)
         sourceX = newRect.x
         sourceY = newRect.y
         sourceWidth = newRect.width
@@ -1073,21 +991,13 @@ var mxEdgeStyle = {
     }
 
     if (target != null) {
-      portConstraint[1] = mxUtils.getPortConstraints(
-        target,
-        state,
-        false,
-        mxConstants.DIRECTION_MASK_ALL
-      )
+      portConstraint[1] = mxUtils.getPortConstraints(target, state, false, mxConstants.DIRECTION_MASK_ALL)
       rotation = mxUtils.getValue(target.style, mxConstants.STYLE_ROTATION, 0)
 
       //console.log('target rotation', rotation);
 
       if (rotation != 0) {
-        var newRect = mxUtils.getBoundingBox(
-          new mxRectangle(targetX, targetY, targetWidth, targetHeight),
-          rotation
-        )
+        var newRect = mxUtils.getBoundingBox(new mxRectangle(targetX, targetY, targetWidth, targetHeight), rotation)
         targetX = newRect.x
         targetY = newRect.y
         targetWidth = newRect.width
@@ -1213,14 +1123,8 @@ var mxEdgeStyle = {
     var horPref = []
     var vertPref = []
 
-    horPref[0] =
-      sourceLeftDist >= sourceRightDist
-        ? mxConstants.DIRECTION_MASK_WEST
-        : mxConstants.DIRECTION_MASK_EAST
-    vertPref[0] =
-      sourceTopDist >= sourceBottomDist
-        ? mxConstants.DIRECTION_MASK_NORTH
-        : mxConstants.DIRECTION_MASK_SOUTH
+    horPref[0] = sourceLeftDist >= sourceRightDist ? mxConstants.DIRECTION_MASK_WEST : mxConstants.DIRECTION_MASK_EAST
+    vertPref[0] = sourceTopDist >= sourceBottomDist ? mxConstants.DIRECTION_MASK_NORTH : mxConstants.DIRECTION_MASK_SOUTH
 
     horPref[1] = mxUtils.reversePortConstraints(horPref[0])
     vertPref[1] = mxUtils.reversePortConstraints(vertPref[0])
@@ -1373,8 +1277,7 @@ var mxEdgeStyle = {
     var currentIndex = 0
 
     // Orientation, 0 horizontal, 1 vertical
-    var lastOrientation =
-      (dir[0] & (mxConstants.DIRECTION_MASK_EAST | mxConstants.DIRECTION_MASK_WEST)) > 0 ? 0 : 1
+    var lastOrientation = (dir[0] & (mxConstants.DIRECTION_MASK_EAST | mxConstants.DIRECTION_MASK_WEST)) > 0 ? 0 : 1
     var initialOrientation = lastOrientation
     var currentOrientation = 0
 
@@ -1448,16 +1351,13 @@ var mxEdgeStyle = {
         }
       } else if (center) {
         // Which center we're travelling to depend on the current direction
-        mxEdgeStyle.wayPoints1[currentIndex][0] +=
-          direction[0] * Math.abs(mxEdgeStyle.vertexSeperations[directionIndex] / 2)
-        mxEdgeStyle.wayPoints1[currentIndex][1] +=
-          direction[1] * Math.abs(mxEdgeStyle.vertexSeperations[directionIndex] / 2)
+        mxEdgeStyle.wayPoints1[currentIndex][0] += direction[0] * Math.abs(mxEdgeStyle.vertexSeperations[directionIndex] / 2)
+        mxEdgeStyle.wayPoints1[currentIndex][1] += direction[1] * Math.abs(mxEdgeStyle.vertexSeperations[directionIndex] / 2)
       }
 
       if (
         currentIndex > 0 &&
-        mxEdgeStyle.wayPoints1[currentIndex][currentOrientation] ==
-          mxEdgeStyle.wayPoints1[currentIndex - 1][currentOrientation]
+        mxEdgeStyle.wayPoints1[currentIndex][currentOrientation] == mxEdgeStyle.wayPoints1[currentIndex - 1][currentOrientation]
       ) {
         currentIndex--
       } else {
@@ -1474,8 +1374,7 @@ var mxEdgeStyle = {
         // jx. Same orientation requires an even
         // number of turns (points), different requires
         // odd.
-        var targetOrientation =
-          (dir[1] & (mxConstants.DIRECTION_MASK_EAST | mxConstants.DIRECTION_MASK_WEST)) > 0 ? 0 : 1
+        var targetOrientation = (dir[1] & (mxConstants.DIRECTION_MASK_EAST | mxConstants.DIRECTION_MASK_WEST)) > 0 ? 0 : 1
         var sameOrient = targetOrientation == initialOrientation ? 0 : 1
 
         // (currentIndex + 1) % 2 is 0 for even number of points,
@@ -1500,12 +1399,7 @@ var mxEdgeStyle = {
     var index = 1
 
     while (index < result.length) {
-      if (
-        result[index - 1] == null ||
-        result[index] == null ||
-        result[index - 1].x != result[index].x ||
-        result[index - 1].y != result[index].y
-      ) {
+      if (result[index - 1] == null || result[index] == null || result[index - 1].x != result[index].x || result[index - 1].y != result[index].y) {
         index++
       } else {
         result.splice(index, 1)

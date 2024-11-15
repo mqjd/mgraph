@@ -789,23 +789,12 @@ mxGraphModel.prototype.updateEdgeParent = function (edge, root) {
   var cell = null
 
   // Uses the first non-relative descendants of the source terminal
-  while (
-    source != null &&
-    !this.isEdge(source) &&
-    source.geometry != null &&
-    source.geometry.relative
-  ) {
+  while (source != null && !this.isEdge(source) && source.geometry != null && source.geometry.relative) {
     source = this.getParent(source)
   }
 
   // Uses the first non-relative descendants of the target terminal
-  while (
-    target != null &&
-    this.ignoreRelativeEdgeParent &&
-    !this.isEdge(target) &&
-    target.geometry != null &&
-    target.geometry.relative
-  ) {
+  while (target != null && this.ignoreRelativeEdgeParent && !this.isEdge(target) && target.geometry != null && target.geometry.relative) {
     target = this.getParent(target)
   }
 
@@ -816,11 +805,7 @@ mxGraphModel.prototype.updateEdgeParent = function (edge, root) {
       cell = this.getNearestCommonAncestor(source, target)
     }
 
-    if (
-      cell != null &&
-      (this.getParent(cell) != this.root || this.isAncestor(cell, edge)) &&
-      this.getParent(edge) != cell
-    ) {
+    if (cell != null && (this.getParent(cell) != this.root || this.isAncestor(cell, edge)) && this.getParent(edge) != cell) {
       var geo = this.getGeometry(edge)
 
       if (geo != null) {
@@ -1088,11 +1073,7 @@ mxGraphModel.prototype.getChildCells = function (parent, vertices, edges) {
   for (var i = 0; i < childCount; i++) {
     var child = this.getChildAt(parent, i)
 
-    if (
-      (!edges && !vertices) ||
-      (edges && this.isEdge(child)) ||
-      (vertices && this.isVertex(child))
-    ) {
+    if ((!edges && !vertices) || (edges && this.isEdge(child)) || (vertices && this.isVertex(child))) {
       result.push(child)
     }
   }
@@ -1317,10 +1298,7 @@ mxGraphModel.prototype.getEdges = function (cell, incoming, outgoing, includeLoo
     var source = this.getTerminal(edge, true)
     var target = this.getTerminal(edge, false)
 
-    if (
-      (includeLoops && source == target) ||
-      (source != target && ((incoming && target == cell) || (outgoing && source == cell)))
-    ) {
+    if ((includeLoops && source == target) || (source != target && ((incoming && target == cell) || (outgoing && source == cell)))) {
       result.push(edge)
     }
   }

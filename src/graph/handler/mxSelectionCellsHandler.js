@@ -170,17 +170,11 @@ mxSelectionCellsHandler.prototype.refresh = function (refreshHandlers) {
   var tmp = mxUtils.sortCells(this.getHandledSelectionCells(), false)
 
   // Forces refresh if old/new count is below/above max cells
-  if (
-    !refreshHandlers &&
-    this.graph.graphHandler.maxCells > 0 &&
-    this.graph.getSelectionCount() > 0
-  ) {
+  if (!refreshHandlers && this.graph.graphHandler.maxCells > 0 && this.graph.getSelectionCount() > 0) {
     var oldCount = oldHandlers.getCount()
 
     if (oldCount > 0) {
-      refreshHandlers =
-        oldCount <= this.graph.graphHandler.maxCells !=
-        this.graph.getSelectionCount() <= this.graph.graphHandler.maxCells
+      refreshHandlers = oldCount <= this.graph.graphHandler.maxCells != this.graph.getSelectionCount() <= this.graph.graphHandler.maxCells
     }
   }
 

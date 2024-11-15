@@ -86,10 +86,8 @@ mxArrowConnector.prototype.apply = function (state) {
   mxShape.prototype.apply.apply(this, arguments)
 
   if (this.style != null) {
-    this.startSize =
-      mxUtils.getNumber(this.style, mxConstants.STYLE_STARTSIZE, mxConstants.ARROW_SIZE / 5) * 3
-    this.endSize =
-      mxUtils.getNumber(this.style, mxConstants.STYLE_ENDSIZE, mxConstants.ARROW_SIZE / 5) * 3
+    this.startSize = mxUtils.getNumber(this.style, mxConstants.STYLE_STARTSIZE, mxConstants.ARROW_SIZE / 5) * 3
+    this.endSize = mxUtils.getNumber(this.style, mxConstants.STYLE_ENDSIZE, mxConstants.ARROW_SIZE / 5) * 3
   }
 }
 
@@ -124,10 +122,7 @@ mxArrowConnector.prototype.paintEdgeShape = function (c, pts) {
   var strokeWidth = this.strokewidth
 
   if (this.outline) {
-    strokeWidth = Math.max(
-      1,
-      mxUtils.getNumber(this.style, mxConstants.STYLE_STROKEWIDTH, this.strokewidth)
-    )
+    strokeWidth = Math.max(1, mxUtils.getNumber(this.style, mxConstants.STYLE_STROKEWIDTH, this.strokewidth))
   }
 
   var startWidth = this.getStartArrowWidth() + strokeWidth
@@ -202,14 +197,7 @@ mxArrowConnector.prototype.paintEdgeShape = function (c, pts) {
 
   for (var i = 0; i < pts.length - 2; i++) {
     // Work out in which direction the line is bending
-    var pos = mxUtils.relativeCcw(
-      pts[i].x,
-      pts[i].y,
-      pts[i + 1].x,
-      pts[i + 1].y,
-      pts[i + 2].x,
-      pts[i + 2].y
-    )
+    var pos = mxUtils.relativeCcw(pts[i].x, pts[i].y, pts[i + 1].x, pts[i + 1].y, pts[i + 2].x, pts[i + 2].y)
 
     dx1 = pts[i + 2].x - pts[i + 1].x
     dy1 = pts[i + 2].y - pts[i + 1].y
@@ -235,8 +223,7 @@ mxArrowConnector.prototype.paintEdgeShape = function (c, pts) {
 
         // Higher strokewidths require a larger minimum bend, 0.35 covers all but the most extreme cases
         var strokeWidthFactor = Math.max(tmp, Math.min(this.strokewidth / 200 + 0.04, 0.35))
-        var angleFactor =
-          pos != 0 && isRounded ? Math.max(0.1, strokeWidthFactor) : Math.max(tmp, 0.06)
+        var angleFactor = pos != 0 && isRounded ? Math.max(0.1, strokeWidthFactor) : Math.max(tmp, 0.06)
 
         var outX = pts[i + 1].x + (ny2 * edgeWidth) / 2 / angleFactor
         var outY = pts[i + 1].y - (nx2 * edgeWidth) / 2 / angleFactor
@@ -247,7 +234,6 @@ mxArrowConnector.prototype.paintEdgeShape = function (c, pts) {
           // If the two segments are aligned, or if we're not drawing curved sections between segments
           // just draw straight to the intersection point
           c.lineTo(outX, outY)
-
           ;(function (x, y) {
             fns.push(function () {
               c.lineTo(x, y)
@@ -260,7 +246,6 @@ mxArrowConnector.prototype.paintEdgeShape = function (c, pts) {
           var c2y = inY - nx1 * edgeWidth
           c.lineTo(c1x, c1y)
           c.quadTo(outX, outY, c2x, c2y)
-
           ;(function (x, y) {
             fns.push(function () {
               c.lineTo(x, y)
@@ -268,7 +253,6 @@ mxArrowConnector.prototype.paintEdgeShape = function (c, pts) {
           })(inX, inY)
         } else {
           c.lineTo(outX, outY)
-
           ;(function (x, y) {
             var c1x = outX - ny * edgeWidth
             var c1y = outY + nx * edgeWidth
@@ -340,18 +324,7 @@ mxArrowConnector.prototype.paintEdgeShape = function (c, pts) {
     c.setMiterLimit(4)
     if (markerStart && !openEnded) {
       c.begin()
-      this.paintMarker(
-        c,
-        pts[0].x,
-        pts[0].y,
-        startNx,
-        startNy,
-        startSize,
-        startWidth,
-        edgeWidth,
-        spacing,
-        true
-      )
+      this.paintMarker(c, pts[0].x, pts[0].y, startNx, startNy, startSize, startWidth, edgeWidth, spacing, true)
       c.stroke()
       c.end()
     }
@@ -370,18 +343,7 @@ mxArrowConnector.prototype.paintEdgeShape = function (c, pts) {
  *
  * Paints the marker.
  */
-mxArrowConnector.prototype.paintMarker = function (
-  c,
-  ptX,
-  ptY,
-  nx,
-  ny,
-  size,
-  arrowWidth,
-  edgeWidth,
-  spacing,
-  initialMove
-) {
+mxArrowConnector.prototype.paintMarker = function (c, ptX, ptY, nx, ny, size, arrowWidth, edgeWidth, spacing, initialMove) {
   var widthArrowRatio = edgeWidth / arrowWidth
   var orthx = (edgeWidth * ny) / 2
   var orthy = (-edgeWidth * nx) / 2
@@ -452,9 +414,7 @@ mxArrowConnector.prototype.isOpenEnded = function () {
  * Returns whether the start marker is drawn
  */
 mxArrowConnector.prototype.isMarkerStart = function () {
-  return (
-    mxUtils.getValue(this.style, mxConstants.STYLE_STARTARROW, mxConstants.NONE) != mxConstants.NONE
-  )
+  return mxUtils.getValue(this.style, mxConstants.STYLE_STARTARROW, mxConstants.NONE) != mxConstants.NONE
 }
 
 /**
@@ -463,9 +423,7 @@ mxArrowConnector.prototype.isMarkerStart = function () {
  * Returns whether the end marker is drawn
  */
 mxArrowConnector.prototype.isMarkerEnd = function () {
-  return (
-    mxUtils.getValue(this.style, mxConstants.STYLE_ENDARROW, mxConstants.NONE) != mxConstants.NONE
-  )
+  return mxUtils.getValue(this.style, mxConstants.STYLE_ENDARROW, mxConstants.NONE) != mxConstants.NONE
 }
 
 export default mxArrowConnector

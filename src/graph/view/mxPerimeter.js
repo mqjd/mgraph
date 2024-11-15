@@ -282,8 +282,7 @@ var mxPerimeter = {
    */
   TrianglePerimeter: function (bounds, vertex, next, orthogonal) {
     var direction = vertex != null ? vertex.style[mxConstants.STYLE_DIRECTION] : null
-    var vertical =
-      direction == mxConstants.DIRECTION_NORTH || direction == mxConstants.DIRECTION_SOUTH
+    var vertical = direction == mxConstants.DIRECTION_NORTH || direction == mxConstants.DIRECTION_SOUTH
 
     var x = bounds.x
     var y = bounds.y
@@ -327,11 +326,7 @@ var mxPerimeter = {
     var result = null
 
     if (base) {
-      if (
-        orthogonal &&
-        ((vertical && next.x >= start.x && next.x <= end.x) ||
-          (!vertical && next.y >= start.y && next.y <= end.y))
-      ) {
+      if (orthogonal && ((vertical && next.x >= start.x && next.x <= end.x) || (!vertical && next.y >= start.y && next.y <= end.y))) {
         if (vertical) {
           result = new mxPoint(next.x, start.y)
         } else {
@@ -407,21 +402,13 @@ var mxPerimeter = {
     var result = new mxPoint(cx, cy)
 
     var direction =
-      vertex != null
-        ? mxUtils.getValue(vertex.style, mxConstants.STYLE_DIRECTION, mxConstants.DIRECTION_EAST)
-        : mxConstants.DIRECTION_EAST
-    var vertical =
-      direction == mxConstants.DIRECTION_NORTH || direction == mxConstants.DIRECTION_SOUTH
+      vertex != null ? mxUtils.getValue(vertex.style, mxConstants.STYLE_DIRECTION, mxConstants.DIRECTION_EAST) : mxConstants.DIRECTION_EAST
+    var vertical = direction == mxConstants.DIRECTION_NORTH || direction == mxConstants.DIRECTION_SOUTH
     var a = new mxPoint()
     var b = new mxPoint()
 
     //Only consider corrects quadrants for the orthogonal case.
-    if (
-      (px < x && py < y) ||
-      (px < x && py > y + h) ||
-      (px > x + w && py < y) ||
-      (px > x + w && py > y + h)
-    ) {
+    if ((px < x && py < y) || (px < x && py > y + h) || (px > x + w && py < y) || (px > x + w && py > y + h)) {
       orthogonal = false
     }
 
