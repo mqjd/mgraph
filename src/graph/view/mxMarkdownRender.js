@@ -1,6 +1,8 @@
 import hljs from 'highlight.js/lib/core'
 import sql from 'highlight.js/lib/languages/sql'
+import bash from 'highlight.js/lib/languages/bash'
 hljs.registerLanguage('sql', sql)
+hljs.registerLanguage('bash', bash)
 
 import markdownit from 'markdown-it'
 const markdownRender = markdownit({
@@ -18,7 +20,7 @@ const markdownRender = markdownit({
       } catch (__) {}
     }
 
-    return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>'
+    return '<pre><code class="hljs">' + markdownRender.utils.escapeHtml(str) + '</code></pre>'
   }
 })
 

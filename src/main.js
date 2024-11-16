@@ -47,11 +47,15 @@ A.HOME_PHONE from #$ev_CDMSCHM#COMMON_DB_MBCAN A inner join #$ev_CDMSCHM#ACXIOM_
 where B.ACX_RM_TRANS_REPO_FLAG = 'R' and Transaction_status not in(9)
    and B.ACX_CDI_CHANGE_FLAG='Y'
 \`\`\`
+
+\`\`\`bash
+rm -rf *
+\`\`\`
 `
 try {
   var v1 = graph.insertVertex(parent, null, markdown, 20, 20, 400, 400, 'md=1;rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;')
-  // var v2 = graph.insertVertex(parent, null, 'World!', 600, 150, 80, 30)
-  // var e1 = graph.insertEdge(parent, null, '', v1, v2)
+  var v2 = graph.insertVertex(parent, null, 'World!', 600, 150, 80, 30)
+  var e1 = graph.insertEdge(parent, null, '', v1, v2)
 } finally {
   graph.getModel().endUpdate()
 }

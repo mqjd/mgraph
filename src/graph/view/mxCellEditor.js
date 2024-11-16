@@ -759,7 +759,7 @@ mxCellEditor.prototype.startEditing = function (cell, trigger, initialText) {
           this.textarea.innerHTML.length > 0 &&
           (this.textarea.innerHTML != this.getEmptyLabelText() || !this.clearOnChange)
         ) {
-          document.execCommand('selectAll', false, null)
+          // document.execCommand('selectAll', false, null)
         }
       }
     })
