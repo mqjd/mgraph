@@ -11,41 +11,34 @@ window.graph = editor.graph
 var parent = graph.getDefaultParent()
 graph.getModel().beginUpdate()
 const markdown = `
-## Output: lnk_Common_DB1
-#### Job: BPM_AcxiomRefresh_Table_Load_CA
+## Output: Students
+#### Job: Load Students
 #### Type: DB2ConnectorPX
 #### AutoGenerateSQL: false
 
-| Name                     | SqlType | Precision | Nullable | DataType |     |
-| ------------------------ | ------- | --------- | -------- | -------- | --- |
-| TRANSACTION_ID           | 12      | 255       | 0        | VARCHAR  | 1   |
-| CITY                     | 12      | 50        | 1        | VARCHAR  | 2   |
-| GIVEN_NAME1              | 12      | 25        | 1        | VARCHAR  | 3   |
-| HOME_PHONE               | 12      | 255       | 1        | VARCHAR  | 4   |
-| LAST_NAME                | 12      | 30        | 1        | VARCHAR  | 5   |
-| MIDDLE_NAME              | 12      | 25        | 1        | VARCHAR  | 6   |
-| PRIMARY_EMAIL            | 12      | 255       | 1        | VARCHAR  | 7   |
-| PROVINCE                 | 12      | 28        | 1        | VARCHAR  | 8   |
-| ZIPCODE                  | 12      | 20        | 1        | VARCHAR  | 9   |
-| ACX_RM_NEW_INDIV_ID_CMMN | 12      | 16        | 1        | VARCHAR  | 10  |
-| ACX_RM_OLD_INDIV_ID_CMMN | 12      | 16        | 1        | VARCHAR  | 11  |
+| Name         | SqlType | Precision | Nullable | DataType |   |
+|--------------|---------|-----------|----------|----------|---|
+| user_id      | 12      | 255       | 0        | VARCHAR  | 1 |
+| user_name    | 12      | 50        | 1        | VARCHAR  | 2 |
+| class_id     | 12      | 25        | 1        | VARCHAR  | 3 |
+| class_name   | 12      | 255       | 1        | VARCHAR  | 4 |
+| school_id    | 12      | 30        | 1        | VARCHAR  | 5 |
+| schlool_name | 12      | 25        | 1        | VARCHAR  | 6 |
 
 \`\`\`sql
-SELECT 
-cast(a.transaction_id  as varchar(100)) TRANSACTION_ID,
-A.ACX_RM_OLD_INDIV_ID AS ACX_RM_OLD_INDIV_ID_Cmmn,
-A.ACX_RM_NEW_INDIV_ID AS ACX_RM_NEW_INDIV_ID_Cmmn,
-A.GIVEN_NAME1,
-A.MIDDLE_NAME,
-A.LAST_NAME,
-A.ADDRESS_LINE1,
-A.CITY,
-A.ACX_ENHANCED_STATE_ABREV as PROVINCE,
-A.ZIPCODE,
-A.PRIMARY_EMAIL,
-A.HOME_PHONE from #$ev_CDMSCHM#COMMON_DB_MBCAN A inner join #$ev_CDMSCHM#ACXIOM_RETURN B on Transaction_id = Customer_transaction_id  
-where B.ACX_RM_TRANS_REPO_FLAG = 'R' and Transaction_status not in(9)
-   and B.ACX_CDI_CHANGE_FLAG='Y'
+select
+  a.id   as user_id,
+  a.name as user_name,
+  b.id   as class_id,
+  b.name as class_name,
+  c.id   as school_id,
+  c.name as schlool_name,
+from student a
+inner join class b 
+  on a.class_id = b.id
+inner join school c 
+  on a.school_id = c.id
+where c.name = '向日葵幼儿园'
 \`\`\`
 
 \`\`\`bash
