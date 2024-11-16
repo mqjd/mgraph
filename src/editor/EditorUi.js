@@ -26,6 +26,7 @@ import {
 } from '../graph'
 
 import Graph, { HoverIcons } from './Graph'
+import  './Shapes'
 import Actions from './Actions'
 import Editor from './Editor'
 import Sidebar from './Sidebar'

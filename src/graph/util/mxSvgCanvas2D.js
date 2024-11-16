@@ -1558,7 +1558,7 @@ mxSvgCanvas2D.prototype.updateTextNodes = function (x, y, w, h, align, valign, w
       var text = box.firstChild
       if (format == 'md') {
         text.setAttribute('class', 'markdown-body')
-        block = `${block}; max-height:${h}px;max-width:${w}px;`
+        block = `${block}; height:${h}px;width:${w}px;`
       }
 
       var r = (this.rotateHtml ? this.state.rotation : 0) + (rotation != null ? rotation : 0)
