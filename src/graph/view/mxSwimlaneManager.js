@@ -1,4 +1,8 @@
+import mxConstants from '../util/mxConstants'
+import mxEvent from '../util/mxEvent'
 import mxEventSource from '../util/mxEventSource'
+import mxRectangle from '../util/mxRectangle'
+import mxUtils from '../util/mxUtils'
 
 /**
  * Copyright (c) 2006-2015, JGraph Ltd

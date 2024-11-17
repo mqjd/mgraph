@@ -1,54 +1,73 @@
 import './assets/main.css'
 import * as mGraph from './editor'
-import "highlight.js/styles/github.min.css"
-const { EditorUi, Editor } = mGraph
+import 'highlight.js/styles/github.min.css'
+const { EditorUi, Editor, useCanvasViewerActions, mxCell, mxGeometry } = mGraph
 
-Object.entries(mGraph).forEach((v) => (window[v[0]] = v[1]))
+const defaultStyle = 'md=1;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;spacing=0;dropTarget=0;'
 
-window.editorUi = new EditorUi(new Editor(), document.querySelector('#app'))
-window.editor = editorUi.editor
-window.graph = editor.graph
-var parent = graph.getDefaultParent()
-graph.getModel().beginUpdate()
-const markdown = `
-## Output: Students
-#### Job: Load Students
-#### Type: DB2ConnectorPX
-#### AutoGenerateSQL: false
+const themes = {
+  1: 'fillColor=#e57373;strokeColor=#c62828;strokeWidth=3;opacity=50;', // red
+  2: 'fillColor=#ffb74d;strokeColor=#ef6c00;strokeWidth=3;opacity=50;', // orange
+  3: 'fillColor=#fff176;strokeColor=#f9a825;strokeWidth=3;opacity=50;', // yellow
+  4: 'fillColor=#81c784;strokeColor=#2e7d32;strokeWidth=3;opacity=50;', // green
+  5: 'fillColor=#4dd0e1;strokeColor=#00838f;strokeWidth=3;opacity=50;', // cyan
+  6: 'fillColor=#ba68c8;strokeColor=#6a1b9a;strokeWidth=3;opacity=50;' // purple
+}
 
-| Name         | SqlType | Precision | Nullable | DataType |   |
-|--------------|---------|-----------|----------|----------|---|
-| user_id      | 12      | 255       | 0        | VARCHAR  | 1 |
-| user_name    | 12      | 50        | 1        | VARCHAR  | 2 |
-| class_id     | 12      | 25        | 1        | VARCHAR  | 3 |
-| class_name   | 12      | 255       | 1        | VARCHAR  | 4 |
-| school_id    | 12      | 30        | 1        | VARCHAR  | 5 |
-| schlool_name | 12      | 25        | 1        | VARCHAR  | 6 |
+const jsonToCell = (json) => {
+  const { x, y, width, height, text, id, color } = json
+  const themeKey = color
+  const cell = new mxCell(text, new mxGeometry(x, y, +width, +height), defaultStyle + (themes[themeKey] || ''))
+  cell.vertex = true
+  cell.id = id
+  return cell
+}
 
-\`\`\`sql
-select
-  a.id   as user_id,
-  a.name as user_name,
-  b.id   as class_id,
-  b.name as class_name,
-  c.id   as school_id,
-  c.name as schlool_name,
-from student a
-inner join class b 
-  on a.class_id = b.id
-inner join school c 
-  on a.school_id = c.id
-where c.name = '向日葵幼儿园'
-\`\`\`
+const jsonToEdge = (json, cellMap) => {
+  const { label, fromNode, toNode, id } = json
+  const edge = new mxCell(label, new mxGeometry())
+  edge.setId(id)
+  edge.setEdge(true)
+  edge.geometry.relative = true
+  edge.source = cellMap[fromNode]
+  edge.target = cellMap[toNode]
+  return edge
+}
 
-\`\`\`bash
-rm -rf *
-\`\`\`
-`
-try {
-  var v1 = graph.insertVertex(parent, null, markdown, 20, 20, 400, 400, 'md=1;rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;')
-  var v2 = graph.insertVertex(parent, null, 'World!', 600, 150, 80, 30)
-  var e1 = graph.insertEdge(parent, null, '', v1, v2)
-} finally {
-  graph.getModel().endUpdate()
+const jsonToCells = (json) => {
+  const root = new mxCell()
+  root.id = 'root'
+  const defaultParent = new mxCell()
+  defaultParent.id = 'default'
+  root.insert(defaultParent)
+
+  const { nodes, edges } = json
+  const cells = nodes.map(jsonToCell)
+  const cellMap = Object.fromEntries(cells.map((v) => [v.id, v]))
+
+  return cells.concat(
+    edges.map((edge) => {
+      return jsonToEdge(edge, cellMap)
+    })
+  )
+}
+
+const chunkArray = (array, chunkSize) => {
+  const result = []
+  for (let i = 0; i < array.length; i += chunkSize) {
+    const chunk = array.slice(i, i + chunkSize)
+    result.push(chunk)
+  }
+  return result
+}
+
+window.initGraph = function (element, jsonCanvas) {
+  window.editorUi = new EditorUi(new Editor(), element)
+  useCanvasViewerActions(editorUi)
+  window.editor = editorUi.editor
+  window.graph = editor.graph
+  if (jsonCanvas) {
+    const cells = jsonToCells(JSON.parse(jsonCanvas))
+    chunkArray(cells, 50).forEach((array) => graph.addCells(array))
+  }
 }

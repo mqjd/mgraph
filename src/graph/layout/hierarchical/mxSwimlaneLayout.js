@@ -1,3 +1,12 @@
+import mxConstants from '../../util/mxConstants'
+import mxDictionary from '../../util/mxDictionary'
+import mxObjectIdentity from '../../util/mxObjectIdentity'
+import mxRectangle from '../../util/mxRectangle'
+
+import mxGraphLayout from '../mxGraphLayout'
+
+import mxHierarchicalLayout, { mxHierarchicalEdgeStyle } from './mxHierarchicalLayout'
+
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder

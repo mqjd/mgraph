@@ -1,3 +1,8 @@
+import mxUtils from '../../../util/mxUtils'
+import mxDictionary from '../../../util/mxDictionary'
+
+import mxGraphHierarchyNode from './mxGraphHierarchyNode'
+import mxGraphHierarchyEdge from './mxGraphHierarchyEdge'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder
@@ -606,3 +611,5 @@ mxGraphHierarchyModel.prototype.extendedDfs = function (parent, root, connecting
     }
   }
 }
+
+export default mxGraphHierarchyModel

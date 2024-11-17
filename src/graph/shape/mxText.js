@@ -1,6 +1,8 @@
 import mxUtils from '../util/mxUtils'
 import mxConstants from '../util/mxConstants'
 import mxPoint from '../util/mxPoint'
+import mxRectangle from '../util/mxRectangle'
+import mxSvgCanvas2D from '../util/mxSvgCanvas2D'
 
 import mxShape from './mxShape'
 

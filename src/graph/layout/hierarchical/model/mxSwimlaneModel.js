@@ -1,3 +1,6 @@
+import mxUtils from '../../../util/mxUtils'
+import mxDictionary from '../../../util/mxDictionary'
+
 /**
  * Copyright (c) 2006-2018, JGraph Ltd
  * Copyright (c) 2006-2018, Gaudenz Alder
@@ -711,3 +714,5 @@ mxSwimlaneModel.prototype.extendedDfs = function (parent, root, connectingEdge, 
     }
   }
 }
+
+export default mxSwimlaneModel

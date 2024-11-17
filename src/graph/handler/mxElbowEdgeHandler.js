@@ -1,5 +1,12 @@
 import mxClient from '../mxClient'
+
+import mxConstants from '../util/mxConstants'
+import mxEvent from '../util/mxEvent'
+import mxPoint from '../util/mxPoint'
+import mxRectangle from '../util/mxRectangle'
+import mxResources from '../util/mxResources'
 import mxUtils from '../util/mxUtils'
+
 import mxEdgeHandler from './mxEdgeHandler'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd

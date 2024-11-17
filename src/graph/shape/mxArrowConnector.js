@@ -1,3 +1,4 @@
+import mxConstants from '../util/mxConstants'
 import mxUtils from '../util/mxUtils'
 
 import mxShape from './mxShape'

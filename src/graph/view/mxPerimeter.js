@@ -1,4 +1,6 @@
+import mxConstants from '../util/mxConstants'
 import mxPoint from '../util/mxPoint'
+import mxUtils from '../util/mxUtils'
 
 /**
  * Copyright (c) 2006-2015, JGraph Ltd

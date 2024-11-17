@@ -1,7 +1,8 @@
-import mxUtils from '../util/mxUtils'
 import mxConstants from '../util/mxConstants'
-import mxRectangle from '../util/mxRectangle'
+import mxLog from '../util/mxLog'
 import mxPoint from '../util/mxPoint'
+import mxRectangle from '../util/mxRectangle'
+import mxUtils from '../util/mxUtils'
 
 import mxCodecRegistry from '../io/mxCodecRegistry'
 

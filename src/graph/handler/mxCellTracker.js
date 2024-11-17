@@ -1,4 +1,6 @@
+import mxEvent from '../util/mxEvent'
 import mxUtils from '../util/mxUtils'
+
 import mxCellMarker from './mxCellMarker'
 
 /**

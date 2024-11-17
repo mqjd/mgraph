@@ -1,6 +1,9 @@
 import mxCodecRegistry from './mxCodecRegistry'
 import mxObjectCodec from './mxObjectCodec'
 
+import mxConstants from '../util/mxConstants'
+import mxUtils from '../util/mxUtils'
+
 import { mxChildChange } from '../model/mxGraphModel'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd

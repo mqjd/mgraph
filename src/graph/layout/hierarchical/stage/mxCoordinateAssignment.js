@@ -1,3 +1,13 @@
+import mxConstants from '../../../util/mxConstants'
+import mxDictionary from '../../../util/mxDictionary'
+import mxPoint from '../../../util/mxPoint'
+import mxLog from '../../../util/mxLog'
+
+import { WeightedCellSorter } from '../../mxGraphLayout'
+
+import mxHierarchicalLayoutStage from '../stage/mxHierarchicalLayoutStage'
+import { mxHierarchicalEdgeStyle } from '../mxHierarchicalLayout'
+
 /**
  * Copyright (c) 2006-2018, JGraph Ltd
  * Copyright (c) 2006-2018, Gaudenz Alder
@@ -1397,7 +1407,7 @@ mxCoordinateAssignment.prototype.setEdgePosition = function (cell) {
 
       // Resets edge label position
       if (this.layout.resetEdgeLabels && realEdge.geometry != null) {
-        geometry = realEdge.geometry.clone()
+        var geometry = realEdge.geometry.clone()
         geometry.relative = true
         geometry.x = 0
         geometry.y = 0
@@ -1461,3 +1471,5 @@ mxCoordinateAssignment.prototype.setVertexLocation = function (cell) {
 mxCoordinateAssignment.prototype.processReversedEdge = function (graph, model) {
   // hook for subclassers
 }
+
+export default mxCoordinateAssignment

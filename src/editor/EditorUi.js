@@ -12,6 +12,7 @@ import {
   mxWindow,
   mxResources,
   mxDictionary,
+  mxImageShape,
   mxStackLayout,
   mxImage,
   mxEventSource,
@@ -26,7 +27,7 @@ import {
 } from '../graph'
 
 import Graph, { HoverIcons } from './Graph'
-import  './Shapes'
+import './Shapes'
 import Actions from './Actions'
 import Editor from './Editor'
 import Sidebar from './Sidebar'
@@ -498,6 +499,7 @@ const EditorUi = function (editor, container, lightbox) {
         cellEditorStopEditing.apply(this, arguments)
         updateToolbar()
       } catch (e) {
+        console.log(e)
         ui.handleError(e)
       }
     }
@@ -525,6 +527,7 @@ const EditorUi = function (editor, container, lightbox) {
 
         graphFireMouseEvent.apply(this, arguments)
       } catch (e) {
+        console.log(e)
         ui.handleError(e)
       }
     }
@@ -535,6 +538,7 @@ const EditorUi = function (editor, container, lightbox) {
       try {
         graphFoldCells.apply(this, arguments)
       } catch (e) {
+        console.log(e)
         ui.handleError(e)
       }
     }
@@ -5812,7 +5816,7 @@ EditorUi.prototype.createKeyHandler = function (editor) {
     keyHandler.bindAction(46, true, 'deleteAll') // Ctrl+Delete
     keyHandler.bindAction(46, false, 'deleteLabels', true) // Shift+Delete
     keyHandler.bindAction(36, false, 'resetView') // Home
-    keyHandler.bindAction(72, true, 'fitWindow', true) // Ctrl+Shift+H
+    keyHandler.bindAction(77, true, "fitWindow"); // Ctrl+M
     keyHandler.bindAction(74, true, 'fitPage') // Ctrl+J
     keyHandler.bindAction(74, true, 'fitTwoPages', true) // Ctrl+Shift+J
     keyHandler.bindAction(48, true, 'customZoom') // Ctrl+0
@@ -5827,7 +5831,7 @@ EditorUi.prototype.createKeyHandler = function (editor) {
     keyHandler.bindAction(69, true, 'editStyle') // Ctrl+E
     keyHandler.bindAction(66, true, 'bold') // Ctrl+B
     keyHandler.bindAction(66, true, 'toBack', true) // Ctrl+Shift+B
-    keyHandler.bindAction(70, true, 'toFront', true) // Ctrl+Shift+F
+    // keyHandler.bindAction(70, true, 'toFront', true) // Ctrl+Shift+F
     keyHandler.bindAction(68, true, 'duplicate') // Ctrl+D
     keyHandler.bindAction(68, true, 'setAsDefaultStyle', true) // Ctrl+Shift+D
     keyHandler.bindAction(90, true, 'undo') // Ctrl+Z
@@ -5838,7 +5842,7 @@ EditorUi.prototype.createKeyHandler = function (editor) {
     keyHandler.bindAction(67, true, 'copy') // Ctrl+C
     keyHandler.bindAction(86, true, 'paste') // Ctrl+V
     keyHandler.bindAction(71, true, 'group') // Ctrl+G
-    keyHandler.bindAction(77, true, 'editData') // Ctrl+M
+    // keyHandler.bindAction(77, true, 'editData') // Ctrl+M
     keyHandler.bindAction(71, true, 'grid', true) // Ctrl+Shift+G
     keyHandler.bindAction(73, true, 'italic') // Ctrl+I
     keyHandler.bindAction(76, true, 'lockUnlock') // Ctrl+L

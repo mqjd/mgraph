@@ -1,4 +1,6 @@
 import mxUtils from '../util/mxUtils'
+import mxConstants from '../util/mxConstants'
+import mxPoint from '../util/mxPoint'
 
 import mxShape from './mxShape'
 

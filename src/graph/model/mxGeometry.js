@@ -1,5 +1,6 @@
-import mxUtils from '../util/mxUtils'
+import mxPoint from '../util/mxPoint'
 import mxRectangle from '../util/mxRectangle'
+import mxUtils from '../util/mxUtils'
 
 /**
  * Copyright (c) 2006-2015, JGraph Ltd

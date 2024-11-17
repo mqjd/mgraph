@@ -1,4 +1,5 @@
 export * from '../graph'
+export * from './CanvasViewActions'
 
 import Graph from './Graph'
 import Editor from './Editor'

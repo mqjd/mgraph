@@ -1,5 +1,13 @@
 import mxClient from '../mxClient'
 
+import mxPoint from '../util/mxPoint'
+import mxConstants from '../util/mxConstants'
+import mxRectangle from '../util/mxRectangle'
+import mxUtils from '../util/mxUtils'
+import mxEvent from '../util/mxEvent'
+
+import { HoverIcons } from '../ge'
+
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder

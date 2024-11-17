@@ -2,6 +2,8 @@ import mxClient from '../mxClient'
 
 import mxObjectIdentity from './mxObjectIdentity'
 import mxConstants from './mxConstants'
+import mxRectangle from './mxRectangle'
+import mxEvent from './mxEvent'
 import mxPoint from './mxPoint'
 import mxDictionary from './mxDictionary'
 

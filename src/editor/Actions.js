@@ -13,7 +13,7 @@ import {
 } from '../graph'
 
 import Editor from './Editor'
-import Sidebar from './Sidebar'
+import { OutlineWindow } from './CanvasViewActions'
 
 /**
  * Copyright (c) 2006-2020, JGraph Ltd

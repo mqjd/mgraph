@@ -1,3 +1,7 @@
+import mxGraphAbstractHierarchyCell from './mxGraphAbstractHierarchyCell'
+
+import mxObjectIdentity from '../../../util/mxObjectIdentity'
+
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder
@@ -165,3 +169,5 @@ mxGraphHierarchyEdge.prototype.getCoreCell = function () {
 
   return null
 }
+
+export default mxGraphHierarchyEdge

@@ -1,3 +1,6 @@
+import mxUtils from '../../../util/mxUtils'
+
+import mxHierarchicalLayoutStage from '../stage/mxHierarchicalLayoutStage'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder
@@ -107,3 +110,5 @@ mxMinimumCycleRemover.prototype.execute = function (parent) {
     seenNodesCopy
   )
 }
+
+export default mxMinimumCycleRemover
