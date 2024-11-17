@@ -94,21 +94,21 @@ mxHierarchicalLayout.prototype.parentBorder = 0
  *
  * The spacing buffer added between cells on the same layer. Default is 30.
  */
-mxHierarchicalLayout.prototype.intraCellSpacing = 30
+mxHierarchicalLayout.prototype.intraCellSpacing = 80
 
 /**
  * Variable: interRankCellSpacing
  *
  * The spacing buffer added between cell on adjacent layers. Default is 100.
  */
-mxHierarchicalLayout.prototype.interRankCellSpacing = 100
+mxHierarchicalLayout.prototype.interRankCellSpacing = 200
 
 /**
  * Variable: interHierarchySpacing
  *
  * The spacing buffer between unconnected hierarchies. Default is 60.
  */
-mxHierarchicalLayout.prototype.interHierarchySpacing = 60
+mxHierarchicalLayout.prototype.interHierarchySpacing = 120
 
 /**
  * Variable: parallelEdgeSpacing
@@ -116,7 +116,7 @@ mxHierarchicalLayout.prototype.interHierarchySpacing = 60
  * The distance between each parallel edge on each ranks for long edges.
  * Default is 10.
  */
-mxHierarchicalLayout.prototype.parallelEdgeSpacing = 10
+mxHierarchicalLayout.prototype.parallelEdgeSpacing = 20
 
 /**
  * Variable: orientation

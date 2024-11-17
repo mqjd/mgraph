@@ -15,30 +15,65 @@
     const canvasStr = {
       "nodes": [
         {
-          "id": "e36e26df089cfa14",
-          "x": -400,
-          "y": -280,
-          "width": 700,
-          "height": 1100,
+          "id": "1",
+          "x": -100,
+          "y": -200,
+          "width": 300,
+          "height": 300,
           "type": "text",
-          "text": "# Dillinger\n## _The Last Markdown Editor, Ever_\n\n[![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)\n\n[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)\n\nDillinger is a cloud-enabled, mobile-ready, offline-storage compatible,\nAngularJS-powered HTML5 Markdown editor.\n\n- Type some Markdown on the left\n- See HTML in the right\n- ✨Magic ✨\n\n## Features\n\n- Import a HTML file and watch it magically convert to Markdown\n- Drag and drop images (requires your Dropbox account be linked)\n- Import and save files from GitHub, Dropbox, Google Drive and One Drive\n- Drag and drop markdown and HTML files into Dillinger\n- Export documents as Markdown, HTML and PDF\n\nMarkdown is a lightweight markup language based on the formatting conventions\nthat people naturally use in email.\nAs [John Gruber] writes on the [Markdown site][df1]\n\n> The overriding design goal for Markdown's\n> formatting syntax is to make it as readable\n> as possible. The idea is that a\n> Markdown-formatted document should be\n> publishable as-is, as plain text, without\n> looking like it's been marked up with tags\n> or formatting instructions.\n\nThis text you see here is *actually- written in Markdown! To get a feel\nfor Markdown's syntax, type some text into the left window and\nwatch the results in the right.\n\n## Tech\n\nDillinger uses a number of open source projects to work properly:\n\n- [AngularJS] - HTML enhanced for web apps!\n- [Ace Editor] - awesome web-based text editor\n- [markdown-it] - Markdown parser done right. Fast and easy to extend.\n- [Twitter Bootstrap] - great UI boilerplate for modern web apps\n- [node.js] - evented I/O for the backend\n- [Express] - fast node.js network app framework [@tjholowaychuk]\n- [Gulp] - the streaming build system\n- [Breakdance](https://breakdance.github.io/breakdance/) - HTML\nto Markdown converter\n- [jQuery] - duh\n\nAnd of course Dillinger itself is open source with a [public repository][dill]\n on GitHub.\n\n## Installation\n\nDillinger requires [Node.js](https://nodejs.org/) v10+ to run.\n\nInstall the dependencies and devDependencies and start the server.\n\n```sh\ncd dillinger\nnpm i\nnode app\n```\n\nFor production environments...\n\n```sh\nnpm install --production\nNODE_ENV=production node app\n```\n\n## Plugins\n\nDillinger is currently extended with the following plugins.\nInstructions on how to use them in your own application are linked below.\n\n| Plugin | README |\n| ------ | ------ |\n| Dropbox | [plugins/dropbox/README.md][PlDb] |\n| GitHub | [plugins/github/README.md][PlGh] |\n| Google Drive | [plugins/googledrive/README.md][PlGd] |\n| OneDrive | [plugins/onedrive/README.md][PlOd] |\n| Medium | [plugins/medium/README.md][PlMe] |\n| Google Analytics | [plugins/googleanalytics/README.md][PlGa] |\n\n## Development\n\nWant to contribute? Great!\n\nDillinger uses Gulp + Webpack for fast developing.\nMake a change in your file and instantaneously see your updates!\n\nOpen your favorite Terminal and run these commands.\n\nFirst Tab:\n\n```sh\nnode app\n```\n\nSecond Tab:\n\n```sh\ngulp watch\n```\n\n(optional) Third:\n\n```sh\nkarma test\n```\n\n#### Building for source\n\nFor production release:\n\n```sh\ngulp build --prod\n```\n\nGenerating pre-built zip archives for distribution:\n\n```sh\ngulp build dist --prod\n```\n\n## Docker\n\nDillinger is very easy to install and deploy in a Docker container.\n\nBy default, the Docker will expose port 8080, so change this within the\nDockerfile if necessary. When ready, simply use the Dockerfile to\nbuild the image.\n\n```sh\ncd dillinger\ndocker build -t <youruser>/dillinger:${package.json.version} .\n```\n\nThis will create the dillinger image and pull in the necessary dependencies.\nBe sure to swap out `${package.json.version}` with the actual\nversion of Dillinger.\n\nOnce done, run the Docker image and map the port to whatever you wish on\nyour host. In this example, we simply map port 8000 of the host to\nport 8080 of the Docker (or whatever port was exposed in the Dockerfile):\n\n```sh\ndocker run -d -p 8000:8080 --restart=always --cap-add=SYS_ADMIN --name=dillinger <youruser>/dillinger:${package.json.version}\n```\n\n> Note: `--capt-add=SYS-ADMIN` is required for PDF rendering.\n\nVerify the deployment by navigating to your server address in\nyour preferred browser.\n\n```sh\n127.0.0.1:8000\n```\n\n## License\n\nMIT\n\n**Free Software, Hell Yeah!**\n\n[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)\n\n   [dill]: <https://github.com/joemccann/dillinger>\n   [git-repo-url]: <https://github.com/joemccann/dillinger.git>\n   [john gruber]: <http://daringfireball.net>\n   [df1]: <http://daringfireball.net/projects/markdown/>\n   [markdown-it]: <https://github.com/markdown-it/markdown-it>\n   [Ace Editor]: <http://ace.ajax.org>\n   [node.js]: <http://nodejs.org>\n   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>\n   [jQuery]: <http://jquery.com>\n   [@tjholowaychuk]: <http://twitter.com/tjholowaychuk>\n   [express]: <http://expressjs.com>\n   [AngularJS]: <http://angularjs.org>\n   [Gulp]: <http://gulpjs.com>\n\n   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>\n   [PlGh]: <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>\n   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>\n   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>\n   [PlMe]: <https://github.com/joemccann/dillinger/tree/master/plugins/medium/README.md>\n   [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>\n"
+          "text": "# 用户\n \n | 姓名   | 性别 | 年龄 | 电话        |\n |------|-----|------|-------------|\n | 张三   | 男   | 25   | 13800000001 |\n | 李四   | 女   | 30   | 13800000002 |\n | 王五   | 男   | 28   | 13800000003 |\n | 赵六   | 女   | 35   | 13800000004 |\n | 钱七   | 男   | 22   | 13800000005 |\n | 孙八   | 女   | 29   | 13800000006 |\n | 周九   | 男   | 40   | 13800000007 |\n | 吴十   | 女   | 33   | 13800000008 |\n | 郑十一 | 男   | 27   | 13800000009 |\n | 冯十二 | 女   | 31   | 13800000010 |"
         },
         {
-          "id": "912cb1893f6f6214",
-          "x": 380,
-          "y": 280,
-          "width": 1000,
-          "height": 1640,
+          "id": "2",
+          "x": 400,
+          "y": -200,
+          "width": 300,
+          "height": 300,
           "type": "text",
-          "text": "# Welcome to StackEdit!\n\nHi! I'm your first Markdown file in **StackEdit**. If you want to learn about StackEdit, you can read me. If you want to play with Markdown, you can edit me. Once you have finished with me, you can create new files by opening the **file explorer** on the left corner of the navigation bar.\n\n\n# Files\n\nStackEdit stores your files in your browser, which means all your files are automatically saved locally and are accessible **offline!**\n\n## Create files and folders\n\nThe file explorer is accessible using the button in left corner of the navigation bar. You can create a new file by clicking the **New file** button in the file explorer. You can also create folders by clicking the **New folder** button.\n\n## Switch to another file\n\nAll your files and folders are presented as a tree in the file explorer. You can switch from one to another by clicking a file in the tree.\n\n## Rename a file\n\nYou can rename the current file by clicking the file name in the navigation bar or by clicking the **Rename** button in the file explorer.\n\n## Delete a file\n\nYou can delete the current file by clicking the **Remove** button in the file explorer. The file will be moved into the **Trash** folder and automatically deleted after 7 days of inactivity.\n\n## Export a file\n\nYou can export the current file by clicking **Export to disk** in the menu. You can choose to export the file as plain Markdown, as HTML using a Handlebars template or as a PDF.\n\n\n# Synchronization\n\nSynchronization is one of the biggest features of StackEdit. It enables you to synchronize any file in your workspace with other files stored in your **Google Drive**, your **Dropbox** and your **GitHub** accounts. This allows you to keep writing on other devices, collaborate with people you share the file with, integrate easily into your workflow... The synchronization mechanism takes place every minute in the background, downloading, merging, and uploading file modifications.\n\nThere are two types of synchronization and they can complement each other:\n\n- The workspace synchronization will sync all your files, folders and settings automatically. This will allow you to fetch your workspace on any other device.\n\t> To start syncing your workspace, just sign in with Google in the menu.\n\n- The file synchronization will keep one file of the workspace synced with one or multiple files in **Google Drive**, **Dropbox** or **GitHub**.\n\t> Before starting to sync files, you must link an account in the **Synchronize** sub-menu.\n\n## Open a file\n\nYou can open a file from **Google Drive**, **Dropbox** or **GitHub** by opening the **Synchronize** sub-menu and clicking **Open from**. Once opened in the workspace, any modification in the file will be automatically synced.\n\n## Save a file\n\nYou can save any file of the workspace to **Google Drive**, **Dropbox** or **GitHub** by opening the **Synchronize** sub-menu and clicking **Save on**. Even if a file in the workspace is already synced, you can save it to another location. StackEdit can sync one file with multiple locations and accounts.\n\n## Synchronize a file\n\nOnce your file is linked to a synchronized location, StackEdit will periodically synchronize it by downloading/uploading any modification. A merge will be performed if necessary and conflicts will be resolved.\n\nIf you just have modified your file and you want to force syncing, click the **Synchronize now** button in the navigation bar.\n\n> **Note:** The **Synchronize now** button is disabled if you have no file to synchronize.\n\n## Manage file synchronization\n\nSince one file can be synced with multiple locations, you can list and manage synchronized locations by clicking **File synchronization** in the **Synchronize** sub-menu. This allows you to list and remove synchronized locations that are linked to your file.\n\n\n# Publication\n\nPublishing in StackEdit makes it simple for you to publish online your files. Once you're happy with a file, you can publish it to different hosting platforms like **Blogger**, **Dropbox**, **Gist**, **GitHub**, **Google Drive**, **WordPress** and **Zendesk**. With [Handlebars templates](http://handlebarsjs.com/), you have full control over what you export.\n\n> Before starting to publish, you must link an account in the **Publish** sub-menu.\n\n## Publish a File\n\nYou can publish your file by opening the **Publish** sub-menu and by clicking **Publish to**. For some locations, you can choose between the following formats:\n\n- Markdown: publish the Markdown text on a website that can interpret it (**GitHub** for instance),\n- HTML: publish the file converted to HTML via a Handlebars template (on a blog for example).\n\n## Update a publication\n\nAfter publishing, StackEdit keeps your file linked to that publication which makes it easy for you to re-publish it. Once you have modified your file and you want to update your publication, click on the **Publish now** button in the navigation bar.\n\n> **Note:** The **Publish now** button is disabled if your file has not been published yet.\n\n## Manage file publication\n\nSince one file can be published to multiple locations, you can list and manage publish locations by clicking **File publication** in the **Publish** sub-menu. This allows you to list and remove publication locations that are linked to your file.\n\n\n# Markdown extensions\n\nStackEdit extends the standard Markdown syntax by adding extra **Markdown extensions**, providing you with some nice features.\n\n> **ProTip:** You can disable any **Markdown extension** in the **File properties** dialog.\n\n\n## SmartyPants\n\nSmartyPants converts ASCII punctuation characters into \"smart\" typographic punctuation HTML entities. For example:\n\n|                |ASCII                          |HTML                         |\n|----------------|-------------------------------|-----------------------------|\n|Single backticks|`'Isn't this fun?'`            |'Isn't this fun?'            |\n|Quotes          |`\"Isn't this fun?\"`            |\"Isn't this fun?\"            |\n|Dashes          |`-- is en-dash, --- is em-dash`|-- is en-dash, --- is em-dash|\n"
+          "color": 2,
+          "text": "# 学校\n \n | 学校名称     | 所在地   | 成立年份 | 学校类型   |\n |--------------|----------|----------|------------|\n | 北京大学     | 北京     | 1898     | 综合性大学 |\n | 清华大学     | 北京     | 1911     | 综合性大学 |\n | 复旦大学     | 上海     | 1905     | 综合性大学 |\n | 浙江大学     | 杭州     | 1897     | 综合性大学 |\n | 上海交通大学 | 上海     | 1896     | 综合性大学 |\n | 武汉大学     | 武汉     | 1893     | 综合性大学 |\n | 中山大学     | 广州     | 1924     | 综合性大学 |\n | 南京大学     | 南京     | 1902     | 综合性大学 |\n | 西安交通大学 | 西安     | 1896     | 综合性大学 |\n | 哈尔滨工业大学 | 哈尔滨   | 1920     | 工程类大学 |"
+        },
+        {
+          "id": "3",
+          "x": 400,
+          "y": 300,
+          "width": 300,
+          "height": 300,
+          "type": "text",
+          "color": 3,
+          "text": "# 邮编\n \n | 城市名称   | 所在省份   | 邮政编码  | 地区类型   |\n |------------|------------|-----------|------------|\n | 北京       | 北京市     | 100000    | 直辖市     |\n | 上海       | 上海市     | 200000    | 直辖市     |\n | 广州       | 广东省     | 510000    | 省会       |\n | 深圳       | 广东省     | 518000    | 副省级城市 |\n | 成都       | 四川省     | 610000    | 省会       |\n | 南京       | 江苏省     | 210000    | 省会       |\n | 西安       | 陕西省     | 710000    | 省会       |\n | 杭州       | 浙江省     | 310000    | 省会       |\n | 武汉       | 湖北省     | 430000    | 省会       |\n | 重庆       | 重庆市     | 400000    | 直辖市     |"
+        },
+        {
+          "id": "4",
+          "x": -100,
+          "y": 300,
+          "width": 300,
+          "height": 300,
+          "type": "text",
+          "color": 4,
+          "text": "# 购物\n \n | 商品名称     | 价格   | 购买地点     | 购买日期   |\n |--------------|--------|--------------|------------|\n | iPhone 15    | 7999元 | 苹果官网     | 2024-10-15 |\n | MacBook Pro  | 15999元| 京东商城     | 2024-11-05 |\n | 任天堂Switch | 2399元 | 苏宁易购     | 2024-09-20 |\n | 无线耳机     | 499元  | 天猫商城     | 2024-08-30 |\n | 小米电视     | 1999元 | 小米官网     | 2024-07-18 |\n | Kindle Paperwhite | 899元  | 亚马逊官网   | 2024-06-12 |\n | 小米手环7    | 249元  | 京东商城     | 2024-11-01 |\n | 耳机支架     | 69元   | 淘宝         | 2024-09-10 |\n | 洗发水       | 39元   | 大润发超市   | 2024-12-01 |\n | 羽毛球拍     | 189元  | 运动专卖店   | 2024-10-02 |\n"
         }
       ],
       "edges": [
         {
-          "id": "6613441253de801c",
-          "fromNode": "e36e26df089cfa14",
+          "id": "1",
+          "fromNode": "1",
           "fromSide": "right",
-          "toNode": "912cb1893f6f6214",
+          "toNode": "2",
+          "toSide": "top"
+        },
+        {
+          "id": "1",
+          "fromNode": "2",
+          "fromSide": "right",
+          "toNode": "3",
+          "toSide": "top"
+        },
+        {
+          "id": "1",
+          "fromNode": "3",
+          "fromSide": "right",
+          "toNode": "4",
           "toSide": "top"
         }
       ]

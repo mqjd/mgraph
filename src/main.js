@@ -1,23 +1,24 @@
 import './assets/main.css'
 import * as mGraph from './editor'
 import 'highlight.js/styles/github.min.css'
+
 const { EditorUi, Editor, useCanvasViewerActions, mxCell, mxGeometry } = mGraph
 
-const defaultStyle = 'md=1;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;spacing=0;dropTarget=0;'
+const defaultStyle = 'md=1;html=1;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;spacing=0;dropTarget=0;strokeColor=none;shadow=1;shadowOffsetX=0;shadowOffsetY=0;shadowBlur=5;shadowColor=#424242;shadowOpacity=70;'
 
 const themes = {
-  1: 'fillColor=#e57373;strokeColor=#c62828;strokeWidth=3;opacity=50;', // red
-  2: 'fillColor=#ffb74d;strokeColor=#ef6c00;strokeWidth=3;opacity=50;', // orange
-  3: 'fillColor=#fff176;strokeColor=#f9a825;strokeWidth=3;opacity=50;', // yellow
-  4: 'fillColor=#81c784;strokeColor=#2e7d32;strokeWidth=3;opacity=50;', // green
-  5: 'fillColor=#4dd0e1;strokeColor=#00838f;strokeWidth=3;opacity=50;', // cyan
-  6: 'fillColor=#ba68c8;strokeColor=#6a1b9a;strokeWidth=3;opacity=50;' // purple
+  1: 'fillColor=#e57373;opacity=90;', // red
+  2: 'fillColor=#ffca28;opacity=90;', // orange
+  3: 'fillColor=#fff176;opacity=90;', // yellow
+  4: 'fillColor=#66bb6a;opacity=90;', // green
+  5: 'fillColor=#4dd0e1;opacity=90;', // cyan
+  6: 'fillColor=#ba68c8;opacity=90;' // purple
 }
 
 const jsonToCell = (json) => {
   const { x, y, width, height, text, id, color } = json
-  const themeKey = color
-  const cell = new mxCell(text, new mxGeometry(x, y, +width, +height), defaultStyle + (themes[themeKey] || ''))
+  const cell = new mxCell(text, new mxGeometry(x, y, +width, +height),
+    defaultStyle + (themes[color] || ''))
   cell.vertex = true
   cell.id = id
   return cell
@@ -61,13 +62,13 @@ const chunkArray = (array, chunkSize) => {
   return result
 }
 
-window.initGraph = function (element, jsonCanvas) {
+window.initGraph = function(element, jsonCanvas) {
   window.editorUi = new EditorUi(new Editor(), element)
-  useCanvasViewerActions(editorUi)
-  window.editor = editorUi.editor
-  window.graph = editor.graph
+  useCanvasViewerActions(window.editorUi)
+  window.editor = window.editorUi.editor
+  window.graph = window.editor.graph
   if (jsonCanvas) {
     const cells = jsonToCells(JSON.parse(jsonCanvas))
-    chunkArray(cells, 50).forEach((array) => graph.addCells(array))
+    chunkArray(cells, 50).forEach((array) => window.graph.addCells(array))
   }
 }

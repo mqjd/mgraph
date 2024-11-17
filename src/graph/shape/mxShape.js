@@ -344,6 +344,7 @@ mxShape.prototype.redraw = function () {
 
   if (this.visible && this.checkBounds()) {
     this.node.style.visibility = 'visible'
+    this.beforeClear()
     this.clear()
 
     if (this.node.nodeName == 'DIV') {
@@ -356,6 +357,8 @@ mxShape.prototype.redraw = function () {
     this.boundingBox = null
   }
 }
+
+mxShape.prototype.beforeClear = function () {}
 
 /**
  * Function: clear
