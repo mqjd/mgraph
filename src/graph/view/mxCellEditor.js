@@ -1,9 +1,10 @@
 import mxClient from '../mxClient'
 
-import mxUtils from '../util/mxUtils'
-import mxRectangle from '../util/mxRectangle'
-import mxEvent from '../util/mxEvent'
 import mxConstants from '../util/mxConstants'
+import mxEvent from '../util/mxEvent'
+import mxRectangle from '../util/mxRectangle'
+import mxSvgCanvas2D from '../util/mxSvgCanvas2D'
+import mxUtils from '../util/mxUtils'
 
 /**
  * Copyright (c) 2006-2015, JGraph Ltd

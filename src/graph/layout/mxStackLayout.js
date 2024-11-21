@@ -1,5 +1,9 @@
 import mxGraphLayout from './mxGraphLayout'
 
+import mxConstants from '../util/mxConstants'
+import mxRectangle from '../util/mxRectangle'
+import mxUtils from '../util/mxUtils'
+
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder

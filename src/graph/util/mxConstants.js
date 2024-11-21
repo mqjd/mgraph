@@ -132,21 +132,21 @@ var mxConstants = {
    *
    * Specifies the x-offset of the shadow. Default is 2.
    */
-  SHADOW_OFFSET_X: 2,
+  SHADOW_OFFSET_X: 0,
 
   /**
    * Variable: SHADOW_OFFSET_Y
    *
    * Specifies the y-offset of the shadow. Default is 3.
    */
-  SHADOW_OFFSET_Y: 3,
+  SHADOW_OFFSET_Y: 0,
 
   /**
    * Variable: SHADOW_BLUR
    *
    * Specifies the blur of the shadow. Default is 2.
    */
-  SHADOW_BLUR: 2,
+  SHADOW_BLUR: 4,
 
   /**
    * Variable: SHADOW_OPACITY

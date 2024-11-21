@@ -12,6 +12,7 @@ import {
   mxWindow,
   mxResources,
   mxDictionary,
+  mxImageShape,
   mxStackLayout,
   mxImage,
   mxEventSource,
@@ -26,7 +27,7 @@ import {
 } from '../graph'
 
 import Graph, { HoverIcons } from './Graph'
-import  './Shapes'
+import './Shapes'
 import Actions from './Actions'
 import Editor from './Editor'
 import Sidebar from './Sidebar'
@@ -498,6 +499,7 @@ const EditorUi = function (editor, container, lightbox) {
         cellEditorStopEditing.apply(this, arguments)
         updateToolbar()
       } catch (e) {
+        console.log(e)
         ui.handleError(e)
       }
     }
@@ -525,6 +527,7 @@ const EditorUi = function (editor, container, lightbox) {
 
         graphFireMouseEvent.apply(this, arguments)
       } catch (e) {
+        console.log(e)
         ui.handleError(e)
       }
     }
@@ -535,6 +538,7 @@ const EditorUi = function (editor, container, lightbox) {
       try {
         graphFoldCells.apply(this, arguments)
       } catch (e) {
+        console.log(e)
         ui.handleError(e)
       }
     }
@@ -4314,10 +4318,10 @@ EditorUi.prototype.refresh = function (sizeDidChange) {
 	this.diagramContainer.style.right = fw + 'px';
 	this.diagramContainer.style.bottom = (this.footerHeight + off + th) + 'px';
   */
-  this.diagramContainer.style.left = '20px'
-  this.diagramContainer.style.top = '20px'
-  this.diagramContainer.style.right = '20px'
-  this.diagramContainer.style.bottom = '20px'
+  this.diagramContainer.style.left = '10px'
+  this.diagramContainer.style.top = '10px'
+  this.diagramContainer.style.right = '10px'
+  this.diagramContainer.style.bottom = '10px'
   if (sizeDidChange) {
     this.editor.graph.sizeDidChange()
   }

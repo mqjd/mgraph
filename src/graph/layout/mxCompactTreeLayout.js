@@ -1,5 +1,10 @@
 import mxGraphLayout from './mxGraphLayout'
 
+import mxDictionary from '../util/mxDictionary'
+import mxPoint from '../util/mxPoint'
+import mxRectangle from '../util/mxRectangle'
+import mxUtils from '../util/mxUtils'
+
 /**
  * Copyright (c) 2006-2018, JGraph Ltd
  * Copyright (c) 2006-2018, Gaudenz Alder

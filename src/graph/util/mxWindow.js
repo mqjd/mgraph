@@ -1,4 +1,8 @@
 import mxClient from '../mxClient'
+import mxUtils from './mxUtils'
+import mxConstants from './mxConstants'
+import mxEvent from './mxEvent'
+import mxEventObject from './mxEventObject'
 import mxEventSource from './mxEventSource'
 import mxRectangle from './mxRectangle'
 /**

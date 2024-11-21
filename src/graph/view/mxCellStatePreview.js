@@ -1,3 +1,7 @@
+import mxDictionary from '../util/mxDictionary'
+import mxPoint from '../util/mxPoint'
+import mxUtils from '../util/mxUtils'
+
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder

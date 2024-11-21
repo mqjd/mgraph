@@ -1,10 +1,10 @@
 import mxClient from '../mxClient'
 
-import mxUtils from '../util/mxUtils'
 import mxEvent from '../util/mxEvent'
+import mxMouseEvent from '../util/mxMouseEvent'
 import mxPoint from '../util/mxPoint'
 import mxRectangle from '../util/mxRectangle'
-
+import mxUtils from '../util/mxUtils'
 /**
  * Copyright (c) 2006-2016, JGraph Ltd
  * Copyright (c) 2006-2016, Gaudenz Alder

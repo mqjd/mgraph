@@ -1,4 +1,8 @@
 import mxUtils from '../util/mxUtils'
+import mxConstants from '../util/mxConstants'
+import mxPoint from '../util/mxPoint'
+import mxRectangle from '../util/mxRectangle'
+import mxResources from '../util/mxResources'
 
 import mxShape from './mxShape'
 

@@ -1,5 +1,7 @@
 import mxClient from '../mxClient'
 
+import mxImageShape from '../shape/mxImageShape'
+
 import mxUtils from '../util/mxUtils'
 import mxImage from '../util/mxImage'
 import mxConstants from '../util/mxConstants'

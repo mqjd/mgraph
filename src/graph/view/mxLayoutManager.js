@@ -1,6 +1,7 @@
-import mxUtils from '../util/mxUtils'
-import mxEventSource from '../util/mxEventSource'
 import mxEvent from '../util/mxEvent'
+import mxEventObject from '../util/mxEventObject'
+import mxEventSource from '../util/mxEventSource'
+import mxUtils from '../util/mxUtils'
 
 import { mxRootChange, mxChildChange, mxValueChange, mxTerminalChange, mxGeometryChange, mxVisibleChange, mxStyleChange } from '../model/mxGraphModel'
 

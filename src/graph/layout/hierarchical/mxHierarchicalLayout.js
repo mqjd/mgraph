@@ -1,3 +1,14 @@
+import mxConstants from '../../util/mxConstants'
+import mxDictionary from '../../util/mxDictionary'
+import mxObjectIdentity from '../../util/mxObjectIdentity'
+
+import mxGraphHierarchyModel from './model/mxGraphHierarchyModel'
+import mxMinimumCycleRemover from './stage/mxMinimumCycleRemover'
+import mxMedianHybridCrossingReduction from './stage/mxMedianHybridCrossingReduction'
+import mxCoordinateAssignment from './stage/mxCoordinateAssignment'
+
+import mxGraphLayout from '../mxGraphLayout'
+
 /**
  * Copyright (c) 2006-2018, JGraph Ltd
  * Copyright (c) 2006-2018, Gaudenz Alder
@@ -761,3 +772,4 @@ mxHierarchicalLayout.prototype.placementStage = function (initialX, parent) {
 }
 
 export default mxHierarchicalLayout
+export { mxHierarchicalEdgeStyle }

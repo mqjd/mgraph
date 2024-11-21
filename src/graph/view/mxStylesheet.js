@@ -1,5 +1,6 @@
 import mxUtils from '../util/mxUtils'
 import mxConstants from '../util/mxConstants'
+
 import mxPerimeter from './mxPerimeter'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd

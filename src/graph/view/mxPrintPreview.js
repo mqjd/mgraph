@@ -1,3 +1,9 @@
+import mxConstants from '../util/mxConstants'
+import mxEvent from '../util/mxEvent'
+import mxPoint from '../util/mxPoint'
+import mxRectangle from '../util/mxRectangle'
+import mxUtils from '../util/mxUtils'
+
 /**
  * Copyright (c) 2006-2019, JGraph Ltd
  * Copyright (c) 2006-2017, draw.io AG

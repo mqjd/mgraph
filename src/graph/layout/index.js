@@ -9,6 +9,8 @@ import mxPartitionLayout from './mxPartitionLayout'
 import mxRadialTreeLayout from './mxRadialTreeLayout'
 import mxStackLayout from './mxStackLayout'
 
+export * from './hierarchical'
+
 export {
   mxCircleLayout,
   mxCompactTreeLayout,

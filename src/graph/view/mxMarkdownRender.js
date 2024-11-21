@@ -5,6 +5,27 @@ hljs.registerLanguage('sql', sql)
 hljs.registerLanguage('bash', bash)
 
 import markdownit from 'markdown-it'
+
+function replaceAttr(token, env) {
+  token.attrs.push(['onclick', "window.dispatchEvent(new CustomEvent('open_link', {detail: {event: event}}))"])
+}
+
+const replace = (md, opts) => {
+  md.core.ruler.after('inline', 'replace-link', function (state) {
+    state.tokens.forEach(function (blockToken) {
+      if (blockToken.type === 'inline' && blockToken.children) {
+        blockToken.children.forEach(function (token) {
+          const type = token.type
+          if (type === 'link_open') {
+            replaceAttr(token, state.env)
+          }
+        })
+      }
+    })
+    return false
+  })
+}
+
 const markdownRender = markdownit({
   html: true, // Enable HTML tags in source
   xhtmlOut: false, // Use '/' to close single tags (<br />)
@@ -22,6 +43,6 @@ const markdownRender = markdownit({
 
     return '<pre><code class="hljs">' + markdownRender.utils.escapeHtml(str) + '</code></pre>'
   }
-})
+}).use(replace)
 
 export default markdownRender
