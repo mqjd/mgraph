@@ -760,6 +760,10 @@ mxCellEditor.prototype.startEditing = function (cell, trigger, initialText) {
           this.textarea.innerHTML.length > 0 &&
           (this.textarea.innerHTML != this.getEmptyLabelText() || !this.clearOnChange)
         ) {
+          if(state.style.md == 1) {
+            let mdDiv = state.text.node.querySelector(".markdown-body")
+            this.textarea.scrollTop = mdDiv.scrollTop
+          }
           // document.execCommand('selectAll', false, null)
         }
       }

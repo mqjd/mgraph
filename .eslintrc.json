@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "constructor-super": "error",
+    "new-cap": [
+      "error",
+      {
+        "capIsNew": false,
+        "newIsCap": true
+      }
+    ]
+  }
+}

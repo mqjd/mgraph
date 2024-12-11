@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "allowJs": true,
+    "composite": true,
+    "module": "es2020",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  }
+}

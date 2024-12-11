@@ -834,7 +834,7 @@ const Graph = function (container, model, renderHint, stylesheet, themes, standa
     if (state.view.graph.isHtmlLabel(state.cell)) {
       if (state.style['html'] != 1) {
         result = mxUtils.htmlEntities(result, false)
-      } else {
+      } else if (state.style['md'] != 1) { //@m-graph sanitizeHtml when not md
         // Skips sanitizeHtml for unchanged labels
         if (state.lastLabelValue != result) {
           state.lastLabelValue = result
