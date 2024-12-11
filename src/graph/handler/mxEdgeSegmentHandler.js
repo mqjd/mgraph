@@ -1,3 +1,4 @@
+import mxEdgeHandler from './mxEdgeHandler'
 import mxElbowEdgeHandler from './mxElbowEdgeHandler'
 
 import mxConstants from '../util/mxConstants'

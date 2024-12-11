@@ -7,6 +7,8 @@ import mxRectangle from '../util/mxRectangle'
 import mxResources from '../util/mxResources'
 import mxUtils from '../util/mxUtils'
 
+import mxEdgeStyle from '../view/mxEdgeStyle'
+
 import mxEdgeHandler from './mxEdgeHandler'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd

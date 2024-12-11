@@ -1,5 +1,6 @@
 import mxUrlConverter from './mxUrlConverter'
 import mxConstants from './mxConstants'
+import mxUtils from './mxUtils'
 
 /**
  * Copyright (c) 2006-2015, JGraph Ltd

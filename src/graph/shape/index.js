@@ -20,6 +20,7 @@ import mxStencilRegistry from './mxStencilRegistry'
 import mxSwimlane from './mxSwimlane'
 import mxText from './mxText'
 import mxTriangle from './mxTriangle'
+import './resolveCycle'
 
 export {
   mxActor,

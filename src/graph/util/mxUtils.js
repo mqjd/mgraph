@@ -2,6 +2,8 @@ import mxClient from '../mxClient'
 
 import mxObjectIdentity from './mxObjectIdentity'
 import mxConstants from './mxConstants'
+import mxXmlRequest from './mxXmlRequest'
+import mxDragSource from './mxDragSource'
 import mxRectangle from './mxRectangle'
 import mxEvent from './mxEvent'
 import mxPoint from './mxPoint'
@@ -486,7 +488,11 @@ var mxUtils = {
    * attributeValue - Optional attribute value to check.
    */
   isNode: function (value, nodeName, attributeName, attributeValue) {
-    if (value != null && value.constructor === Element && (nodeName == null || value.nodeName.toLowerCase() == nodeName.toLowerCase())) {
+    if (
+      value != null &&
+      value.constructor === Element &&
+      (nodeName == null || value.nodeName.toLowerCase() == nodeName.toLowerCase())
+    ) {
       return attributeName == null || value.getAttribute(attributeName) == attributeValue
     }
 
@@ -623,13 +629,18 @@ var mxUtils = {
 
         if (node.attributes && node.attributes.length > 0) {
           for (var i = 0; i < node.attributes.length; i++) {
-            newNode.setAttribute(node.attributes[i].nodeName, node.getAttribute(node.attributes[i].nodeName))
+            newNode.setAttribute(
+              node.attributes[i].nodeName,
+              node.getAttribute(node.attributes[i].nodeName)
+            )
           }
         }
 
         if (allChildren && node.childNodes && node.childNodes.length > 0) {
           for (var i = 0; i < node.childNodes.length; i++) {
-            newNode.appendChild(mxUtils.importNodeImplementation(doc, node.childNodes[i], allChildren))
+            newNode.appendChild(
+              mxUtils.importNodeImplementation(doc, node.childNodes[i], allChildren)
+            )
           }
         }
 
@@ -696,7 +707,10 @@ var mxUtils = {
     var defsElt = null
 
     if (defs.length == 0 || defs[0].parentNode != svgRoot) {
-      defsElt = doc.createElementNS != null ? doc.createElementNS(mxConstants.NS_SVG, 'defs') : doc.createElement('defs')
+      defsElt =
+        doc.createElementNS != null
+          ? doc.createElementNS(mxConstants.NS_SVG, 'defs')
+          : doc.createElement('defs')
 
       if (svgRoot.firstChild != null) {
         svgRoot.insertBefore(defsElt, svgRoot.firstChild)
@@ -954,7 +968,21 @@ var mxUtils = {
    */
   extractTextWithWhitespace: function (elems) {
     // Known block elements for handling linefeeds (list is not complete)
-    var blocks = ['BLOCKQUOTE', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'OL', 'P', 'PRE', 'TABLE', 'UL']
+    var blocks = [
+      'BLOCKQUOTE',
+      'DIV',
+      'H1',
+      'H2',
+      'H3',
+      'H4',
+      'H5',
+      'H6',
+      'OL',
+      'P',
+      'PRE',
+      'TABLE',
+      'UL'
+    ]
     var ret = []
 
     function doExtract(elts) {
@@ -970,7 +998,9 @@ var mxUtils = {
         if (
           elem.nodeName == 'BR' ||
           elem.innerHTML == '\n' ||
-          ((elts.length == 1 || i == 0) && elem.nodeName == 'DIV' && elem.innerHTML.toLowerCase() == '<br>')
+          ((elts.length == 1 || i == 0) &&
+            elem.nodeName == 'DIV' &&
+            elem.innerHTML.toLowerCase() == '<br>')
         ) {
           ret.push('\n')
         } else {
@@ -1028,7 +1058,11 @@ var mxUtils = {
     var result = []
 
     while (node != null) {
-      if ((node.nodeType == mxConstants.NODETYPE_TEXT || node.nodeType == mxConstants.NODETYPE_CDATA) && node.nodeValue != null) {
+      if (
+        (node.nodeType == mxConstants.NODETYPE_TEXT ||
+          node.nodeType == mxConstants.NODETYPE_CDATA) &&
+        node.nodeValue != null
+      ) {
         result.push(mxUtils.trim(node.nodeValue))
       }
 
@@ -1305,7 +1339,9 @@ var mxUtils = {
    */
   addTransparentBackgroundFilter: function (node) {
     node.style.filter +=
-      "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + mxClient.imageBasePath + "/transparent.gif', sizingMethod='scale')"
+      "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" +
+      mxClient.imageBasePath +
+      "/transparent.gif', sizingMethod='scale')"
   },
 
   /**
@@ -1405,7 +1441,12 @@ var mxUtils = {
     var d = document.documentElement
 
     try {
-      return new mxRectangle(0, 0, b.clientWidth || d.clientWidth, Math.max(b.clientHeight || 0, d.clientHeight))
+      return new mxRectangle(
+        0,
+        0,
+        b.clientWidth || d.clientWidth,
+        Math.max(b.clientHeight || 0, d.clientHeight)
+      )
     } catch (e) {
       return new mxRectangle()
     }
@@ -1785,7 +1826,10 @@ var mxUtils = {
         clone = new obj.constructor()
 
         for (var i in obj) {
-          if (i != mxObjectIdentity.FIELD_NAME && (transients == null || mxUtils.indexOf(transients, i) < 0)) {
+          if (
+            i != mxObjectIdentity.FIELD_NAME &&
+            (transients == null || mxUtils.indexOf(transients, i) < 0)
+          ) {
             if (!shallow && typeof obj[i] == 'object') {
               clone[i] = mxUtils.clone(obj[i])
             } else {
@@ -1810,7 +1854,11 @@ var mxUtils = {
    * b - Array of <mxPoints> to be compared.
    */
   equalPoints: function (a, b) {
-    if ((a == null && b != null) || (a != null && b == null) || (a != null && b != null && a.length != b.length)) {
+    if (
+      (a == null && b != null) ||
+      (a != null && b == null) ||
+      (a != null && b != null && a.length != b.length)
+    ) {
       return false
     } else if (a != null && b != null) {
       for (var i = 0; i < a.length; i++) {
@@ -1842,7 +1890,11 @@ var mxUtils = {
     // Counts keys in b to check if all values have been compared
     var count = 0
 
-    if ((a == null && b != null) || (a != null && b == null) || (a != null && b != null && a.length != b.length)) {
+    if (
+      (a == null && b != null) ||
+      (a != null && b == null) ||
+      (a != null && b != null && a.length != b.length)
+    ) {
       return false
     } else if (a != null && b != null) {
       for (var key in b) {
@@ -2019,7 +2071,9 @@ var mxUtils = {
     var ty = spsi * txd + cpsi * tyd + y / 2
     var rad = Math.atan2((ryd - tyd) / r2, (rxd - txd) / r1) - Math.atan2(0, 1)
     var s1 = rad >= 0 ? rad : 2 * Math.PI + rad
-    rad = Math.atan2((-ryd - tyd) / r2, (-rxd - txd) / r1) - Math.atan2((ryd - tyd) / r2, (rxd - txd) / r1)
+    rad =
+      Math.atan2((-ryd - tyd) / r2, (-rxd - txd) / r1) -
+      Math.atan2((ryd - tyd) / r2, (rxd - txd) / r1)
     var dr = rad >= 0 ? rad : 2 * Math.PI + rad
 
     if (fS == 0 && dr > 0) {
@@ -2145,7 +2199,13 @@ var mxUtils = {
     var value = mxUtils.getValue(
       terminal.style,
       mxConstants.STYLE_PORT_CONSTRAINT,
-      mxUtils.getValue(edge.style, source ? mxConstants.STYLE_SOURCE_PORT_CONSTRAINT : mxConstants.STYLE_TARGET_PORT_CONSTRAINT, null)
+      mxUtils.getValue(
+        edge.style,
+        source
+          ? mxConstants.STYLE_SOURCE_PORT_CONSTRAINT
+          : mxConstants.STYLE_TARGET_PORT_CONSTRAINT,
+        null
+      )
     )
 
     if (value == null) {
@@ -2153,7 +2213,11 @@ var mxUtils = {
     } else {
       var directions = value.toString()
       var returnValue = mxConstants.DIRECTION_MASK_NONE
-      var constraintRotationEnabled = mxUtils.getValue(terminal.style, mxConstants.STYLE_PORT_CONSTRAINT_ROTATION, 0)
+      var constraintRotationEnabled = mxUtils.getValue(
+        terminal.style,
+        mxConstants.STYLE_PORT_CONSTRAINT_ROTATION,
+        0
+      )
       var rotation = 0
 
       if (constraintRotationEnabled == 1) {
@@ -2344,7 +2408,12 @@ var mxUtils = {
       m2.height = m.x
     }
 
-    return new mxRectangle(rect.x + m2.x, rect.y + m2.y, rect.width - m2.width - m2.x, rect.height - m2.height - m2.y)
+    return new mxRectangle(
+      rect.x + m2.x,
+      rect.y + m2.y,
+      rect.width - m2.width - m2.x,
+      rect.height - m2.height - m2.y
+    )
   },
 
   /**
@@ -2357,7 +2426,16 @@ var mxUtils = {
     var min = null
 
     for (var i = 0; i < pts.length - 1; i++) {
-      var pt = mxUtils.intersection(pts[i].x, pts[i].y, pts[i + 1].x, pts[i + 1].y, center.x, center.y, point.x, point.y)
+      var pt = mxUtils.intersection(
+        pts[i].x,
+        pts[i].y,
+        pts[i + 1].x,
+        pts[i + 1].y,
+        center.x,
+        center.y,
+        point.x,
+        point.y
+      )
 
       if (pt != null) {
         var dx = point.x - pt.x
@@ -2480,7 +2558,12 @@ var mxUtils = {
    * y - Y-coordinate of the point.
    */
   contains: function (bounds, x, y) {
-    return bounds.x <= x && bounds.x + bounds.width >= x && bounds.y <= y && bounds.y + bounds.height >= y
+    return (
+      bounds.x <= x &&
+      bounds.x + bounds.width >= x &&
+      bounds.y <= y &&
+      bounds.y + bounds.height >= y
+    )
   },
 
   /**
@@ -2514,7 +2597,9 @@ var mxUtils = {
     tw += tx
     th += ty
 
-    return (rw < rx || rw > tx) && (rh < ry || rh > ty) && (tw < tx || tw > rx) && (th < ty || th > ry)
+    return (
+      (rw < rx || rw > tx) && (rh < ry || rh > ty) && (tw < tx || tw > rx) && (th < ty || th > ry)
+    )
   },
 
   /**
@@ -2762,7 +2847,9 @@ var mxUtils = {
       var code = text.charCodeAt(i)
 
       // Removes all control chars except TAB, LF and CR
-      if (!((code >= 32 || code == 9 || code == 10 || code == 13) && code != 0xffff && code != 0xfffe)) {
+      if (
+        !((code >= 32 || code == 9 || code == 10 || code == 13) && code != 0xffff && code != 0xfffe)
+      ) {
         checked.push(text.substring(lastIndex, i))
         lastIndex = i + 1
       }
@@ -2842,7 +2929,11 @@ var mxUtils = {
    * n - String representing the possibly numeric value.
    */
   isNumeric: function (n) {
-    return !isNaN(parseFloat(n)) && isFinite(n) && (typeof n != 'string' || n.toLowerCase().indexOf('0x') < 0)
+    return (
+      !isNaN(parseFloat(n)) &&
+      isFinite(n) &&
+      (typeof n != 'string' || n.toLowerCase().indexOf('0x') < 0)
+    )
   },
 
   /**
@@ -2971,7 +3062,10 @@ var mxUtils = {
    * py - Y-coordinate of the point.
    */
   ptLineDist: function (x1, y1, x2, y2, px, py) {
-    return Math.abs((y2 - y1) * px - (x2 - x1) * py + x2 * y1 - y2 * x1) / Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1))
+    return (
+      Math.abs((y2 - y1) * px - (x2 - x1) * py + x2 * y1 - y2 * x1) /
+      Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1))
+    )
   },
 
   /**
@@ -3055,7 +3149,10 @@ var mxUtils = {
    * value - Opacity in %. Possible values are between 0 and 100.
    */
   setOpacity: function (node, value) {
-    if (mxClient.IS_IE && (typeof document.documentMode === 'undefined' || document.documentMode < 9)) {
+    if (
+      mxClient.IS_IE &&
+      (typeof document.documentMode === 'undefined' || document.documentMode < 9)
+    ) {
       if (value >= 100) {
         node.style.filter = ''
       } else {
@@ -3368,7 +3465,10 @@ var mxUtils = {
    *  Converts the given RGBA color value to a hexadecimal string (or return the original input if it's not rgb).
    */
   rgba2hex: function (color) {
-    rgb = color && color.match ? color.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i) : color
+    rgb =
+      color && color.match
+        ? color.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i)
+        : color
 
     return rgb && rgb.length === 4
       ? '#' +
@@ -3419,7 +3519,12 @@ var mxUtils = {
           var next = style.indexOf(';', index + 1)
 
           if (isValue) {
-            style = style.substring(0, index + 1) + key + '=' + value + (next < 0 ? ';' : style.substring(next))
+            style =
+              style.substring(0, index + 1) +
+              key +
+              '=' +
+              value +
+              (next < 0 ? ';' : style.substring(next))
           } else {
             style = style.substring(0, index) + (next < 0 ? ';' : style.substring(next))
           }
@@ -3521,7 +3626,8 @@ var mxUtils = {
           tmp = parseInt(tmp) & ~flag
         }
 
-        style = style.substring(0, index) + key + '=' + tmp + (cont >= 0 ? style.substring(cont) : '')
+        style =
+          style.substring(0, index) + key + '=' + tmp + (cont >= 0 ? style.substring(cont) : '')
       }
     }
 
@@ -3559,6 +3665,7 @@ var mxUtils = {
 
   /**
    * Function: getSizeForString
+   * move to resolveCycle.js @m-graph
    *
    * Returns an <mxRectangle> with the size (width and height in pixels) of
    * the given string. The string may contain HTML markup. Newlines should be
@@ -3581,7 +3688,6 @@ var mxUtils = {
    * is <mxConstants.DEFAULT_FONTFAMILY>.
    * textWidth - Optional width for text wrapping.
    * fontStyle - Optional font style.
-   */
   getSizeForString: function (text, fontSize, fontFamily, textWidth, fontStyle) {
     fontSize = fontSize != null ? fontSize : mxConstants.DEFAULT_FONTSIZE
     fontFamily = fontFamily != null ? fontFamily : mxConstants.DEFAULT_FONTFAMILY
@@ -3592,7 +3698,8 @@ var mxUtils = {
     div.style.fontSize = Math.round(fontSize) + 'px'
     div.style.lineHeight = mxConstants.ABSOLUTE_LINE_HEIGHT
       ? fontSize * mxConstants.LINE_HEIGHT + 'px'
-      : mxConstants.LINE_HEIGHT * mxSvgCanvas2D.prototype.lineHeightCorrection
+      : mxConstants.LINE_HEIGHT * 1
+    // : mxConstants.LINE_HEIGHT * mxSvgCanvas2D.prototype.lineHeightCorrection @m-graph
 
     // Sets the font style
     if (fontStyle != null) {
@@ -3642,7 +3749,7 @@ var mxUtils = {
 
     return size
   },
-
+  */
   /**
    * Function: getViewXml
    */
@@ -4048,7 +4155,10 @@ var mxUtils = {
       div.style.height = '460px'
 
       var pre = document.createElement('pre')
-      pre.innerHTML = mxUtils.htmlEntities(content, false).replace(/\n/g, '<br>').replace(/ /g, '&nbsp;')
+      pre.innerHTML = mxUtils
+        .htmlEntities(content, false)
+        .replace(/\n/g, '<br>')
+        .replace(/ /g, '&nbsp;')
 
       div.appendChild(pre)
 
@@ -4067,7 +4177,10 @@ var mxUtils = {
       } else {
         var wnd = window.open()
         var pre = wnd.document.createElement('pre')
-        pre.innerHTML = mxUtils.htmlEntities(content, false).replace(/\n/g, '<br>').replace(/ /g, '&nbsp;')
+        pre.innerHTML = mxUtils
+          .htmlEntities(content, false)
+          .replace(/\n/g, '<br>')
+          .replace(/ /g, '&nbsp;')
         wnd.document.body.appendChild(pre)
       }
     }
@@ -4149,7 +4262,16 @@ var mxUtils = {
 
     var w = document.body.clientWidth
     var h = document.body.clientHeight || document.documentElement.clientHeight
-    var warn = new mxWindow(mxResources.get(mxUtils.errorResource) || mxUtils.errorResource, div, (w - width) / 2, h / 4, width, null, false, true)
+    var warn = new mxWindow(
+      mxResources.get(mxUtils.errorResource) || mxUtils.errorResource,
+      div,
+      (w - width) / 2,
+      h / 4,
+      width,
+      null,
+      false,
+      true
+    )
 
     if (close) {
       mxUtils.br(div)
@@ -4250,9 +4372,23 @@ var mxUtils = {
    * getDropTarget - Optional function to return the drop target for a given
    * location (x, y). Default is mxGraph.getCellAt.
    */
-  makeDraggable: function (element, graphF, funct, dragElement, dx, dy, autoscroll, scalePreview, highlightDropTargets, getDropTarget) {
+  makeDraggable: function (
+    element,
+    graphF,
+    funct,
+    dragElement,
+    dx,
+    dy,
+    autoscroll,
+    scalePreview,
+    highlightDropTargets,
+    getDropTarget
+  ) {
     var dragSource = new mxDragSource(element, funct)
-    dragSource.dragOffset = new mxPoint(dx != null ? dx : 0, dy != null ? dy : mxConstants.TOOLTIP_VERTICAL_OFFSET)
+    dragSource.dragOffset = new mxPoint(
+      dx != null ? dx : 0,
+      dy != null ? dy : mxConstants.TOOLTIP_VERTICAL_OFFSET
+    )
     dragSource.autoscroll = autoscroll
 
     // Cannot enable this by default. This needs to be enabled in the caller

@@ -1,3 +1,4 @@
+import mxConstants from './mxConstants'
 import mxClient from '../mxClient'
 const { mxResourceExtension } = mxClient
 /**

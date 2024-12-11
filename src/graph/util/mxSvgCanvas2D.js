@@ -1,8 +1,8 @@
-import mxUtils from './mxUtils'
 import mxClient from '../mxClient'
 import mxAbstractCanvas2D from './mxAbstractCanvas2D'
 import mxConstants from './mxConstants'
 import mxShape from '../shape/mxShape'
+import mxUtils from './mxUtils'
 
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
@@ -1556,6 +1556,10 @@ mxSvgCanvas2D.prototype.updateTextNodes = function (x, y, w, h, align, valign, w
       var div = fo.firstChild
       var box = div.firstChild
       var text = box.firstChild
+      if (format == 'md') {
+        text.setAttribute('class', 'markdown-body')
+        block = `${block}; height:${h}px;width:${w}px;`
+      }
 
       var r = (this.rotateHtml ? this.state.rotation : 0) + (rotation != null ? rotation : 0)
       var t = (this.foOffset != 0 ? 'translate(' + this.foOffset + ' ' + this.foOffset + ')' : '') + (s != 1 ? 'scale(' + s + ')' : '')

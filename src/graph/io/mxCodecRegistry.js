@@ -1,4 +1,6 @@
 import mxUtils from '../util/mxUtils'
+
+import mxObjectCodec from './mxObjectCodec'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder
@@ -116,6 +118,7 @@ var mxCodecRegistry = {
           mxCodecRegistry.register(codec)
         } catch (e) {
           // ignore
+          console.error(e)
         }
       }
     }

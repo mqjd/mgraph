@@ -1,4 +1,5 @@
 import mxUtils from './mxUtils'
+import mxEventObject from './mxEventObject'
 import mxEvent from './mxEvent'
 
 /**

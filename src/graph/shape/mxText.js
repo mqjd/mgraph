@@ -3,7 +3,6 @@ import mxConstants from '../util/mxConstants'
 import mxPoint from '../util/mxPoint'
 import mxRectangle from '../util/mxRectangle'
 import mxSvgCanvas2D from '../util/mxSvgCanvas2D'
-
 import mxShape from './mxShape'
 
 /**
@@ -110,7 +109,6 @@ function mxText(
   this.labelPadding = labelPadding != null ? labelPadding : 0
   this.textDirection = textDirection
   this.rotation = 0
-  this.scrollTop = 0
   this.updateMargin()
 }
 
@@ -380,36 +378,6 @@ mxText.prototype.redraw = function () {
 }
 
 /**
- * Function: beforeClear
- *
- * cache prev element state
- */
-mxText.prototype.beforeClear = function () {
-  if (this.dialect == mxConstants.DIALECT_MARKDOWN) {
-    const mdBody = this.node.querySelector('.markdown-body')
-    mdBody && (this.scrollTop = mdBody.scrollTop)
-  }
-}
-
-/**
- * Function: afterPaint
- *
- * restore markdown-body scrollTop
- */
-mxText.prototype.afterPaint = function (canvas) {
-  if (this.dialect == mxConstants.DIALECT_MARKDOWN) {
-    var s = this.scale
-    var w = this.bounds.width / s
-    var h = this.bounds.height / s
-    const mdBody = this.node.querySelector('foreignObject>div>div>div')
-    mdBody.setAttribute('class', 'markdown-body')
-    mdBody.style.width = `${w}px`
-    mdBody.style.height = `${h}px`
-    mdBody.scrollTop = this.scrollTop
-  }
-}
-
-/**
  * Function: resetStyles
  *
  * Resets all styles.
@@ -465,7 +433,6 @@ mxText.prototype.apply = function (state) {
     this.border = mxUtils.getValue(this.style, mxConstants.STYLE_LABEL_BORDERCOLOR, this.border)
     this.textDirection = mxUtils.getValue(this.style, mxConstants.STYLE_TEXT_DIRECTION, mxConstants.DEFAULT_TEXT_DIRECTION)
     this.opacity = mxUtils.getValue(this.style, mxConstants.STYLE_TEXT_OPACITY, 100)
-    this.scrollTop = mxUtils.getValue(this.style, mxConstants.STYLE_SCROLL_TOP, 0)
     this.updateMargin()
   }
 

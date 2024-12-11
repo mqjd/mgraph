@@ -4,6 +4,9 @@ import mxPoint from '../util/mxPoint'
 import mxRectangle from '../util/mxRectangle'
 import mxUtils from '../util/mxUtils'
 
+import mxImageShape from '../shape/mxImageShape'
+
+
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder

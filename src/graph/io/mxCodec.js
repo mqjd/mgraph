@@ -492,6 +492,7 @@ mxCodec.prototype.getConstructor = function (name) {
     }
   } catch (err) {
     // ignore
+    console.error(err)
   }
 
   return ctor

@@ -3,6 +3,8 @@ import mxLog from '../util/mxLog'
 import mxObjectIdentity from '../util/mxObjectIdentity'
 import mxPoint from '../util/mxPoint'
 import mxUtils from '../util/mxUtils'
+
+import mxGeometry from '../model/mxGeometry'
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder

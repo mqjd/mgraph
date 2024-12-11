@@ -1,3 +1,10 @@
+import mxClient from '../mxClient'
+import mxConstants from './mxConstants'
+import mxPoint from './mxPoint'
+import mxEvent from './mxEvent'
+import mxUtils from './mxUtils'
+import mxCellHighlight from '../handler/mxCellHighlight'
+
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
  * Copyright (c) 2006-2015, Gaudenz Alder
@@ -327,7 +334,12 @@ mxDragSource.prototype.mouseDown = function (evt) {
 
     if (mxClient.IS_TOUCH && !mxEvent.isMouseEvent(evt)) {
       this.eventSource = mxEvent.getSource(evt)
-      mxEvent.addGestureListeners(this.eventSource, null, this.mouseMoveHandler, this.mouseUpHandler)
+      mxEvent.addGestureListeners(
+        this.eventSource,
+        null,
+        this.mouseMoveHandler,
+        this.mouseUpHandler
+      )
     }
   }
 }
@@ -445,7 +457,10 @@ mxDragSource.prototype.mouseMove = function (evt) {
     this.dragOver(this.currentGraph, evt)
   }
 
-  if (this.dragElement != null && (this.previewElement == null || this.previewElement.style.visibility != 'visible')) {
+  if (
+    this.dragElement != null &&
+    (this.previewElement == null || this.previewElement.style.visibility != 'visible')
+  ) {
     var x = mxEvent.getClientX(evt)
     var y = mxEvent.getClientY(evt)
 
@@ -479,7 +494,10 @@ mxDragSource.prototype.mouseMove = function (evt) {
  */
 mxDragSource.prototype.mouseUp = function (evt) {
   if (this.currentGraph != null) {
-    if (this.currentPoint != null && (this.previewElement == null || this.previewElement.style.visibility != 'hidden')) {
+    if (
+      this.currentPoint != null &&
+      (this.previewElement == null || this.previewElement.style.visibility != 'hidden')
+    ) {
       var scale = this.currentGraph.view.scale
       var tr = this.currentGraph.view.translate
       var x = this.currentPoint.x / scale - tr.x
@@ -505,7 +523,12 @@ mxDragSource.prototype.mouseUp = function (evt) {
  */
 mxDragSource.prototype.removeListeners = function () {
   if (this.eventSource != null) {
-    mxEvent.removeGestureListeners(this.eventSource, null, this.mouseMoveHandler, this.mouseUpHandler)
+    mxEvent.removeGestureListeners(
+      this.eventSource,
+      null,
+      this.mouseMoveHandler,
+      this.mouseUpHandler
+    )
     this.eventSource = null
   }
 
