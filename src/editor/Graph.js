@@ -301,8 +301,10 @@ mxGraphModel.prototype.ignoreRelativeEdgeParent = false
 mxGraphView.prototype.gridImage = mxClient.IS_SVG
   ? 'data:image/gif;base64,R0lGODlhCgAKAJEAAAAAAP///8zMzP///yH5BAEAAAMALAAAAAAKAAoAAAIJ1I6py+0Po2wFADs='
   : IMAGE_PATH + '/grid.gif'
+mxGraph.prototype.gridSize = 10
 mxGraphView.prototype.gridSteps = 4
 mxGraphView.prototype.minGridSize = 4
+mxGraphView.prototype.backgroundType = 'dot'
 
 // UrlParams is null in embed mode
 mxGraphView.prototype.defaultGridColor = '#d0d0d0'

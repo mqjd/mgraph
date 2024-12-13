@@ -2658,8 +2658,48 @@ var WrapperWindow = function (editorUi, title, x, y, w, h, fn) {
     }
   }
 
-  // Returns the SVG required for painting the background grid.
   mxGraphView.prototype.createSvgGrid = function (color, factor) {
+    if (this.backgroundType === 'dot') {
+      return this.createSvgDot(color, factor)
+    }
+    return this.createSvgTable(color, factor)
+  }
+  mxGraphView.prototype.createSvgDot = function (color, factor) {
+    factor = factor != null ? factor : 1
+    var tmp = this.graph.gridSize * this.scale * factor
+
+    while (tmp < this.minGridSize) {
+      tmp *= 2
+    }
+
+    var tmp2 = this.gridSteps * tmp
+
+    // Small grid lines
+    var circles = []
+    var r = this.scale
+    for (var i = 0; i <= this.gridSteps; i++) {
+      for (var j = 0; j <= this.gridSteps; j++) {
+        circles.push(`<circle r="${r}" opacity="0.5" cx="${i * tmp}" cy="${j * tmp}" fill="${color}" />`)
+      }
+    }
+    // KNOWN: Rounding errors for certain scales (eg. 144%, 121% in Chrome, FF and Safari). Workaround
+    // in Chrome is to use 100% for the svg size, but this results in blurred grid for large diagrams.
+    var size = tmp2
+    var svg =`
+    <svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="${size}" height="${size}" patternUnits="userSpaceOnUse">
+        ${circles.join("\n")}
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)" />
+    </svg>
+    `
+    return svg
+  }
+
+  // Returns the SVG required for painting the background grid.
+  mxGraphView.prototype.createSvgTable = function (color, factor) {
     factor = factor != null ? factor : 1
     var tmp = this.graph.gridSize * this.scale * factor
 
@@ -2676,7 +2716,6 @@ var WrapperWindow = function (editorUi, title, x, y, w, h, fn) {
       var tmp3 = i * tmp
       d.push('M 0 ' + tmp3 + ' L ' + tmp2 + ' ' + tmp3 + ' M ' + tmp3 + ' 0 L ' + tmp3 + ' ' + tmp2)
     }
-
     // KNOWN: Rounding errors for certain scales (eg. 144%, 121% in Chrome, FF and Safari). Workaround
     // in Chrome is to use 100% for the svg size, but this results in blurred grid for large diagrams.
     var size = tmp2
