@@ -291,7 +291,7 @@ mxGraph.prototype.pageScale = 1
 })()
 
 // Matches label positions of mxGraph 1.x
-mxText.prototype.baseSpacingTop = 5
+// mxText.prototype.baseSpacingTop = 5
 mxText.prototype.baseSpacingBottom = 1
 
 // Keeps edges between relative child cells inside parent

@@ -519,10 +519,14 @@ mxCellEditor.prototype.resize = function () {
     this.bounds.y += m.y == -0.5 ? 0 : m.y == 0 ? -scale : scale
 
     if (state.style['md'] == 1) {
-      var h = state.height / scale
-      var w = state.width / scale
-      this.textarea.style.width = `${w}px`
-      this.textarea.style.height = `${h}px`
+      const mdBody = this.textShape.node.querySelector(".markdown-body")
+      this.textarea.style.width = mdBody.style.width
+      this.textarea.style.height = mdBody.style.height
+      mdBody.classList.forEach(className => {
+        if(className.indexOf("scroll" === 0)) {
+          this.textarea.classList.add(className)
+        }
+      })
     }
 
     this.textarea.style.left = Math.max(0, Math.round(this.bounds.x)) + 'px'
@@ -842,9 +846,12 @@ mxCellEditor.prototype.startEditing = function (cell, trigger, initialText) {
           this.textarea.innerHTML.length > 0 &&
           (this.textarea.innerHTML != this.getEmptyLabelText() || !this.clearOnChange)
         ) {
-          if (state.style.md != 1) {
-            document.execCommand('selectAll', false, null)
+          if(state.style.md == 1) {
+            let mdDiv = state.text.node.querySelector(".markdown-body")
+            this.textarea.scrollTop = mdDiv.scrollTop
+            this.textarea.scrollLeft = mdDiv.scrollLeft
           }
+          // document.execCommand('selectAll', false, null)
         }
       }
     })

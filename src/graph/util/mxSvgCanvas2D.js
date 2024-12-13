@@ -1556,10 +1556,6 @@ mxSvgCanvas2D.prototype.updateTextNodes = function (x, y, w, h, align, valign, w
       var div = fo.firstChild
       var box = div.firstChild
       var text = box.firstChild
-      if (format == 'md') {
-        text.setAttribute('class', 'markdown-body')
-        block = `${block}; height:${h}px;width:${w}px;`
-      }
 
       var r = (this.rotateHtml ? this.state.rotation : 0) + (rotation != null ? rotation : 0)
       var t = (this.foOffset != 0 ? 'translate(' + this.foOffset + ' ' + this.foOffset + ')' : '') + (s != 1 ? 'scale(' + s + ')' : '')
@@ -1597,7 +1593,7 @@ mxSvgCanvas2D.prototype.updateTextNodes = function (x, y, w, h, align, valign, w
         fo.removeAttribute('y')
         flex += 'padding-top: ' + yp + 'px; '
       }
-
+      
       this.setCssText(div, flex + 'margin-left: ' + Math.round(x + dx) + 'px;')
       t += r != 0 ? 'rotate(' + r + ' ' + x + ' ' + y + ')' : ''
 

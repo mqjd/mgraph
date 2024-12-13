@@ -418,7 +418,6 @@ mxCellRenderer.prototype.createTextShape = function (state, value, dialect) {
   text.dialect = dialect
   text.style = state.style
   text.state = state
-  text.markdown = markdownRender.render(value)
 
   return text
 }

@@ -4,6 +4,7 @@ import mxPoint from '../util/mxPoint'
 import mxRectangle from '../util/mxRectangle'
 import mxSvgCanvas2D from '../util/mxSvgCanvas2D'
 import mxShape from './mxShape'
+import markdownRender from '../view/mxMarkdownRender'
 
 /**
  * Copyright (c) 2006-2015, JGraph Ltd
@@ -109,6 +110,8 @@ function mxText(
   this.labelPadding = labelPadding != null ? labelPadding : 0
   this.textDirection = textDirection
   this.rotation = 0
+  this.scrollTop = 0
+  this.scrollLeft = 0
   this.updateMargin()
 }
 
@@ -206,6 +209,21 @@ mxText.prototype.textWidthPadding = document.documentMode == 8 && !mxClient.IS_E
 mxText.prototype.lastValue = null
 
 /**
+ * Function: init
+ *
+ * Initializes the shape by creaing the DOM node using <create>
+ * and adding it into the given container.
+ *
+ * Parameters:
+ *
+ * container - DOM node that will contain the shape.
+ */
+mxText.prototype.init = function () {
+  mxShape.prototype.init.apply(this, arguments)
+  this.markdown = markdownRender.render(this.value)
+}
+
+/**
  * Variable: cacheEnabled
  *
  * Specifies if caching for HTML labels should be enabled. Default is true.
@@ -294,7 +312,6 @@ mxText.prototype.paint = function (c, update) {
   var y = this.bounds.y / s
   var w = this.bounds.width / s
   var h = this.bounds.height / s
-
   this.updateTransform(c, x, y, w, h)
   this.configureCanvas(c, x, y, w, h)
   this.updateSvgFilters(c != null ? c.state.scale : s)
@@ -377,6 +394,48 @@ mxText.prototype.redraw = function () {
   }
 }
 
+
+/**
+ * Function: beforeClear
+ *
+ * cache prev element state
+ */
+mxText.prototype.beforeClear = function () {
+  if (this.dialect == mxConstants.DIALECT_MARKDOWN) {
+    const mdBody = this.node.querySelector('.markdown-body')
+    if (mdBody) {
+      this.scrollTop = mdBody.scrollTop
+      this.scrollLeft = mdBody.scrollLeft
+    }
+  }
+}
+
+/**
+ * Function: afterPaint
+ *
+ * restore markdown-body scroll
+ */
+mxText.prototype.afterPaint = function (canvas) {
+  if (this.dialect == mxConstants.DIALECT_MARKDOWN) {
+    var s = this.scale
+    var w = this.bounds.width / s
+    var h = this.bounds.height / s
+    const mdBody = this.node.querySelector('foreignObject>div>div>div')
+    mdBody.style.width = `${w}px`
+    mdBody.style.height = `${h}px`
+
+    mdBody.classList.add('markdown-body');
+    if (mdBody.scrollHeight > mdBody.clientHeight) {
+      mdBody.scrollTop = this.scrollTop
+      mdBody.classList.add('scroll-top');
+    }
+    if (mdBody.scrollWidth > mdBody.clientWidth) {
+      mdBody.scrollLeft = this.scrollLeft
+      mdBody.classList.add('scroll-left');
+    }
+  }
+}
+
 /**
  * Function: resetStyles
  *
@@ -433,6 +492,8 @@ mxText.prototype.apply = function (state) {
     this.border = mxUtils.getValue(this.style, mxConstants.STYLE_LABEL_BORDERCOLOR, this.border)
     this.textDirection = mxUtils.getValue(this.style, mxConstants.STYLE_TEXT_DIRECTION, mxConstants.DEFAULT_TEXT_DIRECTION)
     this.opacity = mxUtils.getValue(this.style, mxConstants.STYLE_TEXT_OPACITY, 100)
+    this.scrollTop = mxUtils.getValue(this.style, mxConstants.STYLE_SCROLL_TOP, 0)
+    this.scrollLeft = mxUtils.getValue(this.style, mxConstants.STYLE_SCROLL_LEFT, 0)
     this.updateMargin()
   }
 

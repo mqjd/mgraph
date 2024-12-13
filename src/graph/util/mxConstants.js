@@ -1700,6 +1700,24 @@ var mxConstants = {
    */
   STYLE_HORIZONTAL: 'horizontal',
 
+
+  /**
+   * Variable: STYLE_SCROLL_TOP
+   *
+   * Defines the key for the scrollTop style. Possible values are
+   * int. This value only applies to DIALECT_MARKDOWN
+   */
+  STYLE_SCROLL_TOP: 'scrollTop',
+
+
+  /**
+   * Variable: STYLE_SCROLL_LEFT
+   *
+   * Defines the key for the scrollTop style. Possible values are
+   * int. This value only applies to DIALECT_MARKDOWN
+   */
+  STYLE_SCROLL_LEFT: 'scrollLeft',
+
   /**
    * Variable: STYLE_DIRECTION
    *
